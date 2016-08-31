@@ -1,0 +1,10 @@
+[package]
+name = "mersh"
+version = "0.1.0"
+authors = ["AlexandreImperiale <https://github.com/AlexandreImperiale>"]
+# description = "..."
+# documentation = "..."
+# homepage = "..."
+# repository = "..."
+
+[dependencies]
