@@ -1,9 +1,17 @@
 extern crate std;
 
+use super::base::*;
 use super::elements::*;
-use super::vertices::*;
 use super::views::*;
 use std::vec::*;
+
+/// Structure for defining 2D mesh vertices.
+pub struct Vertex2d {
+    /// Associated point.
+    pub point: Pnt2d,
+    /// Associated tag.
+    pub tag: usize,
+}
 
 /// Structure defining a 2D mesh.
 pub struct Mesh2d {
@@ -11,6 +19,28 @@ pub struct Mesh2d {
     pub vertices: Vec<Vertex2d>,
     /// Set of mesh elements.
     pub elements: MeshElements,
+}
+
+impl Vertex2d {
+    // Creating a new vertex.
+    ///
+    /// * `x` - First coordinate of the vertex.
+    /// * `y` - Second coordinate of the vertex.
+    /// * `tag` - An integer representing a specific tag of the vertex.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::mesh::*;
+    ///
+    /// let v = Vertex2d::new(0., 0., 0);
+    /// assert!(v.point.coords.x.abs() < 1e-10);
+    /// assert!(v.point.coords.y.abs() < 1e-10);
+    /// assert!(v.tag == 0);
+    /// ```
+    pub fn new(x: f64, y: f64, tag: usize) -> Vertex2d
+    {
+        Vertex2d { point: Pnt2d::new(x, y), tag: tag }
+    }
 }
 
 impl Mesh2d {

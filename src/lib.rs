@@ -13,8 +13,5 @@ pub mod mesh;
 /// Creation of topology information (*e.g.* adjency relations) in meshes.
 pub mod topology;
 
-/// Data structures for mesh vertices.
-pub mod vertices;
-
 /// Definition of view on mesh elements.
 pub mod views;
