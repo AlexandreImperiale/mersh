@@ -17,7 +17,7 @@ title: Mersh, rust meshes
 email: alexandre.imperiale.io@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   A rust crate for meshes.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "mersh/" # the subpath of your site, e.g. /blog
 url: "https://alexandreimperiale.github.io/mersh/" # the base hostname & protocol for your site
 url_doc: "https://alexandreimperiale.github.io/mersh-doc/"
 twitter_username: asimperial
