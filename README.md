@@ -1,2 +1,2 @@
 # mersh
-A rusted mesh module -- rust burst.
+A rust crate for meshes.
