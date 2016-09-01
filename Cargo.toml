@@ -2,9 +2,9 @@
 name = "mersh"
 version = "0.1.0"
 authors = ["AlexandreImperiale <https://github.com/AlexandreImperiale>"]
-# description = "..."
-# documentation = "..."
-# homepage = "..."
-# repository = "..."
+description = "A rust crate for manipulating meshes."
+documentation = "https://alexandreimperiale.github.io/mersh-doc/"
+homepage = "https://alexandreimperiale.github.io/mersh/"
+repository = "https://github.com/AlexandreImperiale/mersh"
 
 [dependencies]
