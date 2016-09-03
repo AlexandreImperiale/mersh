@@ -18,6 +18,7 @@ body {
     margin:/*10px*/ auto;
     text-indent: 10px;
     border-bottom: 1px solid #B7410E;
+    border-top: 15px solid #FFFFFF;
 }
 
 .post-header {
@@ -29,6 +30,7 @@ body {
     margin:/*10px*/ auto;
     text-indent: 10px;
     border-bottom: 1px solid #B7410E;
+    border-top: 15px solid #FFFFFF;
 }
 
 .title {
@@ -44,7 +46,7 @@ body {
   font:400 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #FFFFFF;
   border: 1px solid #FFFFFF;
-  margin: 125px auto;
+  margin: 140px auto;
 }
 
 a:link {
