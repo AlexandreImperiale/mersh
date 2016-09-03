@@ -18,20 +18,21 @@ Css file.
   //-->
   <script>
     // Post data structure.
-    function post(name, description, date) {
+    function post(name, description, date, path) {
 
         // Properties.
         this.postName = name;
         this.postDescription = description;
         this.postDate = date;
+        this.postPath = path;
     }
 
     // Array of published posts.
     var publishedPost = [
-      new post("Post1", "Small description 1.", "Date1"),
-      new post("Post2", "Small description 2.", "Date2"),
-      new post("Post3", "Small description 3.", "Date3"),
-      new post("Post4", "Small description 4.", "Date4"),
+      new post("Post1", "Small description 1.", "Date1", "post1.html"),
+      new post("Post2", "Small description 2.", "Date2", "post2.html"),
+      new post("Post3", "Small description 3.", "Date3", "post3.html"),
+      new post("Post4", "Small description 4.", "Date4", "post4.html"),
     ];
     var nPost = publishedPost.length;
   </script>
@@ -73,8 +74,7 @@ Css file.
     for (i = 0; i < nPost; i++)
     {
       text +=
-        "<div class=post-name> <a href=https://alexandreimperiale.github.io/mersh/" + publishedPost[i].postName + ".html> " +
-        publishedPost[i].postName + "</a> </div>" +
+        "<div class=post-name> <a href=" + publishedPost[i].postPath + "> " + publishedPost[i].postName + "</a> </div>" +
         "<div class=post-date>" + publishedPost[i].postDate + "</div>" +
         "<div class=post-description>" + publishedPost[i].postDescription + "</div>";
     }
