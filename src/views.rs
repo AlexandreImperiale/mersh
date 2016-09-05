@@ -60,7 +60,7 @@ impl<'a> TriView2d<'a> {
     pub fn get_area(&self) -> f64
     {
         let u01 = self.p0.to(&self.p1);
-        let u02 = self.p1.to(&self.p2);
+        let u02 = self.p0.to(&self.p2);
 
         0.5 * (u01.coords.x * u02.coords.y - u01.coords.y * u02.coords.x).abs()
     }
