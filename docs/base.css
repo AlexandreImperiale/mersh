@@ -92,6 +92,11 @@ a:visited {
   text-justify: inter-word;
 }
 
+h1 {
+  font:400 22px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color:#B7410E;
+  margin: 30px auto;
+}
 
 .post-name + .post-date { margin-top: 10px; }
 .post-date + .post-description { margin-top: 15px; }
