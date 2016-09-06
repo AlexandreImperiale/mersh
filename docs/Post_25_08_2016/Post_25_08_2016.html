@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Mersh</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="../base.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../pygments.css" media="screen" />
+
+<body>
+
+  <!--------------------------------------------------------------------------->
+  <!--
+  Header.
+  //-->
+    <div class=post-header>
+      <div class=title> 2d mesh structures </div>
+    </div>
+
+  <!--
+  Content.
+  //-->
+  <div class=post-content>
+    We present in this post the implementation of 2d meshes in the mersh crate. We will
+    restrict oursevles to triangular meshes as for now, but the extension to quadrangle
+    elements follows the same architecture.
+
+    <h1>
+      Set of 2d vertices
+    </h1>
+
+    To start with, a mesh is made of a set of vertices, i.e. gemoetrical elements
+    defined as a 2d point - as described in the <a href="../Post_10_08_2016/Post_10_08_2016.html"> previous post </a> -
+    and an integer, typically used to form groups of vertices.
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">Vertex2d</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated point.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">point</span><span class="o">:</span><span class="w"> </span><span class="n">Pnt2d</span><span class="p">,</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated tag.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tag</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="p">,</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span> </pre></div>
+    <!--
+    End snippet.
+    //-->
+
+    Hence, the data structure of 2d meshes would be so far
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">Mesh2d</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated set of vertices.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">vertices</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">Vertex2d</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Set of mesh elements.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">elements</span><span class="o">:</span><span class="w"> </span><span class="n">MeshElements</span><span class="p">,</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span> </pre></div>
+    <!--
+    End snippet.
+    //-->
+
+    where we specifically gathered the remaining part into the embedded structure of
+    mesh elements.
+
+    <h1>
+      Representation of mesh elements
+    </h1>
+
+    The main rational for such separation is that the only geometrical structure
+    that are intrasically 2d - in 2d meshes - are the vertices. Thus, gathering
+    the information on mesh elements in an exterior structure induces some genericity
+    - due to their independence w.r.t. the spatial dimension. As we focus on
+    triangular meshes, the structure of mesh elements simply reads
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">MeshElements</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Set of edges.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">edges</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">Edge</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Set of triangles.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tris</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">Tri</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span> </pre></div>
+    <!--
+    End snippet.
+    //-->
+
+    Defining an edge is simply done by gathering the indices in a table of - 2d or 3d -
+    vertices forming the first and last extrimities of the edge, and a tag - as proposed
+    previously for vertices. Hence,
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">Edge</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated index of vertices in mesh.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">usize</span><span class="p">;</span><span class="w"> </span><span class="mi">2</span><span class="p">],</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated tag.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tag</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="p">,</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span> </pre></div>
+    <!--
+    End snippet.
+    //-->
+
+    Following the same idea, triangles are defined by regrouping the indices of <thead>
+    2d or 3d vertices forming their three summit plus a tag, therefore,
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">Tri</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated index of vertices in mesh.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">usize</span><span class="p">;</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Associated tag.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tag</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span> </pre></div>
+    <!--
+    End snippet.
+    //-->
+
+    <h1>
+      Views on 2d mesh elements
+    </h1>
+
+
+  </div>
+  <!--------------------------------------------------------------------------->
+
+</body>
+</html>

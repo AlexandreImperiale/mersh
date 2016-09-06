@@ -20,9 +20,9 @@ pub struct Tri {
 
 /// Structure for regrouping mesh elements.
 pub struct MeshElements {
-    /// Set of vertices index defining edges.
+    /// Set of edges.
     pub edges: Vec<Edge>,
-    /// Set of vertices index defining triangles.
+    /// Set of triangles.
     pub tris: Vec<Tri>,
 }
 
