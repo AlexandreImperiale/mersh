@@ -130,6 +130,113 @@
       Views on 2d mesh elements
     </h1>
 
+    This definition of mesh elements is somehow insufficient, since it is very common
+    to see an edge or a triangle as in fact 2d geometrical objects. Therefore we need to
+    come up with the construction of views on elements, and as a matter of fact the
+    impressive feature of rust language called <i> lifetime </i> will make our task
+    quite easy.
+
+    To start with, let us consider views on 2d edges. They are called views since
+    by definition we do not allowed modification of any internal data through them.
+    What we really want to do is de regroup adresses of the two geometrical points
+    forming the edge and stored in the mesh set of vertices. Hence, the data structure
+    for 2d edge views reads
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">EdgeView2d</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Reference to first point in the edge.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">p0</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">Pnt2d</span><span class="p">,</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Reference to second point in the edge.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">p1</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">Pnt2d</span><span class="p">,</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span></pre></div>
+    <!--
+    End snippet.
+    //-->
+
+    We see here the use of rust lifetime feature, avoiding <i> use-after-free </i>
+    errors. For triangles, the data structure is equivalent
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">TriView2d</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Reference to first vertex of the triangle.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">p0</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">Pnt2d</span><span class="p">,</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Reference to second vertex of the triangle.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">p1</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">Pnt2d</span><span class="p">,</span><span class="w"></span>
+    <span class="w">    </span><span class="c-Doc">/// Reference to third vertex of the triangle.</span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">p2</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">Pnt2d</span><span class="p">,</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span></div>
+    <!--
+    End snippet.
+    //-->
+
+    Of course, these views can be created from an instance of mesh through natural
+    builder functions as
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">impl</span><span class="w"> </span><span class="n">Mesh2d</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">view_edge</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">EdgeView2d</span><span class="w"></span>
+    <span class="w">    </span><span class="p">{</span><span class="w"></span>
+    <span class="w">        </span><span class="n">EdgeView2d</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">            </span><span class="n">p0</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">elements</span><span class="p">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]].</span><span class="n">point</span><span class="w"> </span><span class="p">,</span><span class="w"></span>
+    <span class="w">            </span><span class="n">p1</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">elements</span><span class="p">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]].</span><span class="n">point</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+    <span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">view_tri</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">TriView2d</span><span class="w"></span>
+    <span class="w">    </span><span class="p">{</span><span class="w"></span>
+    <span class="w">        </span><span class="n">TriView2d</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">            </span><span class="n">p0</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">elements</span><span class="p">.</span><span class="n">tris</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]].</span><span class="n">point</span><span class="w"> </span><span class="p">,</span><span class="w"></span>
+    <span class="w">            </span><span class="n">p1</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">elements</span><span class="p">.</span><span class="n">tris</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]].</span><span class="n">point</span><span class="w"> </span><span class="p">,</span><span class="w"></span>
+    <span class="w">            </span><span class="n">p2</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">elements</span><span class="p">.</span><span class="n">tris</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]].</span><span class="n">point</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+    <span class="w">    </span><span class="p">}</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span></div>
+    <!--
+    End snippet.
+    //-->
+
+    Once views are instanciated, we can query various informations on the element,
+    for instance length, area, position of barycenter, ...
+
+    <!--
+    Start snippet.
+    //-->
+    <div class="highlight"><pre>
+    <span class="k">impl</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="n">EdgeView2d</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">get_length</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">f64</span><span class="w"></span>
+    <span class="w">    </span><span class="p">{</span><span class="w"></span>
+    <span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">p0</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">p1</span><span class="p">).</span><span class="n">norm</span><span class="p">()</span><span class="w"></span>
+    <span class="w">    </span><span class="p">}</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span>
+
+    <span class="k">impl</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="n">TriView2d</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">get_area</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">f64</span><span class="w"></span>
+    <span class="w">    </span><span class="p">{</span><span class="w"></span>
+    <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">u01</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">p0</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">p1</span><span class="p">);</span><span class="w"></span>
+    <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">u02</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">p0</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">p2</span><span class="p">);</span><span class="w"></span>
+
+    <span class="w">        </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">u01</span><span class="p">.</span><span class="n">coords</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">u02</span><span class="p">.</span><span class="n">coords</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">u01</span><span class="p">.</span><span class="n">coords</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">u02</span><span class="p">.</span><span class="n">coords</span><span class="p">.</span><span class="n">x</span><span class="p">).</span><span class="n">abs</span><span class="p">()</span><span class="w"></span>
+    <span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+    <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">get_barycenter</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Pnt2d</span><span class="w"></span>
+    <span class="w">    </span><span class="p">{</span><span class="w"></span>
+    <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">bary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">p0</span><span class="p">.</span><span class="n">coords</span><span class="p">.</span><span class="n">clone</span><span class="p">();</span><span class="w"></span>
+    <span class="w">        </span><span class="n">bary</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">p1</span><span class="p">.</span><span class="n">coords</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">coords</span><span class="p">).</span><span class="n">amplify</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+
+    <span class="w">        </span><span class="n">Pnt2d</span><span class="p">{</span><span class="w"> </span><span class="n">coords</span><span class="o">:</span><span class="w"> </span><span class="n">bary</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+    <span class="w">    </span><span class="p">}</span><span class="w"></span>
+    <span class="p">}</span><span class="w"></span></div>
+    <!--
+    End snippet.
+    //-->
 
   </div>
   <!--------------------------------------------------------------------------->
