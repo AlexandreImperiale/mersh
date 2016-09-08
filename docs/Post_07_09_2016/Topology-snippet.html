@@ -1,0 +1,32 @@
+<div class="highlight"><pre><span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">VertexTopology</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Incident edges.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">incident_edges</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">VertexToEdge</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Incident triangles.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">incident_tris</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">VertexToTri</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">EdgeTopology</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Connections with other edges.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">edge_connections</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">EdgeToEdge</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Connections with triangles.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tri_connections</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">EdgeToTri</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">TriTopology</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Connections with other triangles.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tri_connections</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">TriToTri</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="n">Topology</span><span class="o">&lt;</span><span class="nl">&#39;a</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Number of vertices in the topology.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">nvertices</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Borrowed mesh elements the topology is based upon.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">elements</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">MeshElements</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Set of vertices topology informations.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">vertices</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">VertexTopology</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Set of edges topology informations.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">edges</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">EdgeTopology</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c-Doc">/// Set of triangles topology informations.</span>
+<span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tris</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">TriTopology</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
