@@ -15,7 +15,7 @@
   Header.
   //-->
     <div class=post-header>
-      <div class=title> Building topology informations </div>
+      <div class=title> Building topology information </div>
     </div>
 
   <!--
@@ -25,11 +25,11 @@
 
     The mesh structure described in <a href="../Post_05_09_2016/Post_05_09_2016.html">
     previous post</a> yields access to information such as <i>"which vertices forms an edge"</i> and
-    <i>"which vertices forms a triangle"</i>. However, we expect complex procudes such meshing
+    <i>"which vertices forms a triangle"</i>. However, we expect complex procudes such as meshing
     algorithm to require more intel on the underlying topology. For instance, with a mesh
     at hand, one could ask <i>"which edges are incident to a vertex ?"</i> or <i>"which triangles are
     neighbouring a triangle ?"</i>. These information can be build from the mesh elements data structure,
-    and to start with, we propose in this post to detail the set of <i>connections</i> one generally
+    and to start with, we propose to detail the set of <i>connections</i> one generally
     needs to consider in 2d or 3d triangular meshes.
 
     <h1>
@@ -241,11 +241,11 @@
     <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">nvertices</span><span class="o">:</span><span class="w"> </span><span class="n">usize</span><span class="p">,</span><span class="w"></span>
     <span class="w">    </span><span class="c-Doc">/// Borrowed mesh elements the topology is based upon.</span>
     <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">elements</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">&#39;a</span><span class="w"> </span><span class="n">MeshElements</span><span class="p">,</span><span class="w"></span>
-    <span class="w">    </span><span class="c-Doc">/// Set of vertices topology informations.</span>
+    <span class="w">    </span><span class="c-Doc">/// Set of vertices topology information.</span>
     <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">vertices</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">VertexTopology</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-    <span class="w">    </span><span class="c-Doc">/// Set of edges topology informations.</span>
+    <span class="w">    </span><span class="c-Doc">/// Set of edges topology information.</span>
     <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">edges</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">EdgeTopology</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-    <span class="w">    </span><span class="c-Doc">/// Set of triangles topology informations.</span>
+    <span class="w">    </span><span class="c-Doc">/// Set of triangles topology information.</span>
     <span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">tris</span><span class="o">:</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">TriTopology</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
     <span class="p">}</span><span class="w"></span>
     </pre></div>
