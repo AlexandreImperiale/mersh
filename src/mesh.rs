@@ -22,7 +22,7 @@ pub struct Mesh2d {
 }
 
 impl Vertex2d {
-    // Creating a new vertex.
+    /// Creating a new vertex.
     ///
     /// * `x` - First coordinate of the vertex.
     /// * `y` - Second coordinate of the vertex.
@@ -31,10 +31,11 @@ impl Vertex2d {
     /// # Examples
     /// ```
     /// use mersh::mesh::*;
+    /// use mersh::base::*;
     ///
     /// let v = Vertex2d::new(0., 0., 0);
-    /// assert!(v.point.coords.x.abs() < 1e-10);
-    /// assert!(v.point.coords.y.abs() < 1e-10);
+    /// assert!(v.point.coords.x.abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!(v.point.coords.y.abs() < GEOMETRICAL_TOLERANCE);
     /// assert!(v.tag == 0);
     /// ```
     pub fn new(x: f64, y: f64, tag: usize) -> Vertex2d
@@ -70,6 +71,7 @@ impl Mesh2d {
     /// # Examples
     /// ```
     /// use mersh::mesh::*;
+    /// use mersh::base::*;
     ///
     /// let mut mesh = Mesh2d::new();
     /// let x = 0.0;
@@ -77,8 +79,8 @@ impl Mesh2d {
     /// mesh.add_vertex(x, y, 0);
     ///
     /// assert!(mesh.vertices.len() == 1);
-    /// assert!((mesh.vertices[0].point.coords.x - x).abs() < 1e-10);
-    /// assert!((mesh.vertices[0].point.coords.y - y).abs() < 1e-10);
+    /// assert!((mesh.vertices[0].point.coords.x - x).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((mesh.vertices[0].point.coords.y - y).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!(mesh.vertices[0].tag == 0);
     /// ```
     pub fn add_vertex(&mut self, x: f64, y: f64, tag: usize) -> &mut Self
@@ -150,6 +152,7 @@ impl Mesh2d {
     /// # Examples
     /// ```
     /// use mersh::mesh::*;
+    /// use mersh::base::*;
     ///
     /// let mut mesh = Mesh2d::new();
     ///
@@ -158,8 +161,8 @@ impl Mesh2d {
     ///     .add_edge(0, 1, 0);
     ///
     /// let e = mesh.view_edge(0);
-    /// assert!((e.p1.coords.x - 1.).abs() < 1e-10);
-    /// assert!((e.p1.coords.y - 0.).abs() < 1e-10);
+    /// assert!((e.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn view_edge(&self, i: usize) -> EdgeView2d
     {
@@ -175,6 +178,7 @@ impl Mesh2d {
     /// # Examples
     /// ```
     /// use mersh::mesh::*;
+    /// use mersh::base::*;
     ///
     /// let mut mesh = Mesh2d::new();
     ///
@@ -184,8 +188,8 @@ impl Mesh2d {
     ///     .add_tri(0, 1, 2, 0);
     ///
     /// let tri = mesh.view_tri(0);
-    /// assert!((tri.p1.coords.x - 1.).abs() < 1e-10);
-    /// assert!((tri.p1.coords.y - 0.).abs() < 1e-10);
+    /// assert!((tri.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn view_tri(&self, i: usize) -> TriView2d
     {
