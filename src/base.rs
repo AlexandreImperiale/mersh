@@ -8,7 +8,7 @@ pub const GEOMETRICAL_TOLERANCE: f64 = 1e-12;
 //////////////////////////////////////////////////////////////
 
 /// Structure for defining 2d coordinates.
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Coord2d {
     /// First coordinate.
     pub x: f64,
@@ -17,21 +17,21 @@ pub struct Coord2d {
 }
 
 /// Structure for defining 2d points.
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Pnt2d {
     /// Coordinates associated to the point.
     pub coords: Coord2d,
 }
 
 /// Structure for defining 2d vectors.
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Vec2d {
     /// Coordinates associated to the vector.
     pub coords: Coord2d,
 }
 
 /// Structure for defining 2d directions (i.e. unit vectors).
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Dir2d {
     /// Coordinates associated to the direction.
     pub coords: Coord2d,
@@ -44,7 +44,7 @@ pub struct Dir2d {
 //////////////////////////////////////////////////////////////
 
 /// Structure for defining 2d coordinates.
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Coord3d {
     /// First coordinate.
     pub x: f64,
@@ -55,21 +55,21 @@ pub struct Coord3d {
 }
 
 /// Structure for defining 3d points.
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Pnt3d {
     /// Coordinates associated to the point.
     pub coords: Coord3d,
 }
 
 /// Structure for defining 3d vectors.
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Vec3d {
     /// Coordinates associated to the vector.
     pub coords: Coord3d,
 }
 
 /// Structure for defining 3d directions (i.e. unit vectors).
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Dir3d {
     /// Coordinates associated to the direction.
     pub coords: Coord3d,
@@ -233,7 +233,7 @@ impl Pnt2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// let q = Pnt2d::new(0.0, 1.0);
     ///
     /// assert!((p.distance_to(&q) - 1.0) < GEOMETRICAL_TOLERANCE);
@@ -241,7 +241,7 @@ impl Pnt2d {
     ///
     /// ```
     /// use mersh::base::*;
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// assert!(p.distance_to(&p) < GEOMETRICAL_TOLERANCE);
     ///```
     pub fn distance_to(&self, q: &Pnt2d) -> f64
@@ -277,7 +277,7 @@ impl Pnt2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// let q = Pnt2d::new(1.0, 0.0);
     ///
     /// let v0 = p.to(&q);
@@ -355,7 +355,7 @@ impl Dir2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// let q = Pnt2d::new(3.0, 0.0);
     /// let d = Dir2d::new(&p, &q);
     /// assert!(d.coords.equals(&Coord2d { x: 1.0, y: 0.0}, GEOMETRICAL_TOLERANCE));
@@ -364,7 +364,7 @@ impl Dir2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// let d = Dir2d::new(&p, &p);
     /// assert!(d.coords.equals(&Coord2d { x: 1.0, y: 0.0}, GEOMETRICAL_TOLERANCE));
     /// ```
@@ -388,7 +388,7 @@ impl Dir2d {
     /// use mersh::base::*;
     /// use std::f64;
     ///
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// let q = Pnt2d::new(1.0, 1.0);
     /// let d0 = Dir2d::new(&p, &q); // => Direction is (1 / sqrt(2), 1 / sqrt(2))
     /// let d1 = d0.ortho(); // => Direction is (-1 / sqrt(2), 1 / sqrt(2))
@@ -399,7 +399,7 @@ impl Dir2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(0.0, 0.0);
+    /// let p = Pnt2d::default();
     /// let ex = Dir2d::new(&p, &p); // => Direction is by default Ex = (1, 0).
     /// let ey = ex.ortho(); // Direction is Ey = (0, 1).
     /// assert!(ey.coords.equals(&Coord2d { x: 0.0, y: 1.0}, GEOMETRICAL_TOLERANCE));
@@ -573,7 +573,7 @@ impl Pnt3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt3d::new(0.0, 0.0, 0.0);
+    /// let p = Pnt3d::default();
     /// let q = Pnt3d::new(0.0, 1.0, 0.0);
     ///
     /// assert!((p.distance_to(&q) - 1.0) < GEOMETRICAL_TOLERANCE);
@@ -618,7 +618,7 @@ impl Pnt3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt3d::new(0.0, 0.0, 0.0);
+    /// let p = Pnt3d::default();
     /// let q = Pnt3d::new(1.0, 0.0, 0.0);
     ///
     /// let v0 = p.to(&q);
@@ -697,7 +697,7 @@ impl Dir3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt3d::new(0.0, 0.0, 0.0);
+    /// let p = Pnt3d::default();
     /// let q = Pnt3d::new(0.0, 3.0, 0.0);
     /// let d = Dir3d::new(&p, &q);
     /// assert!(d.coords.equals(&Coord3d { x: 0.0, y: 1.0, z: 0.0}, GEOMETRICAL_TOLERANCE));

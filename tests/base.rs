@@ -11,7 +11,7 @@ fn compute_triangle_area(p0: &mersh::base::Pnt2d, p1: &mersh::base::Pnt2d, p2: &
 fn area_triangle() {
 
     // Defining points of triangle
-    let p0 = mersh::base::Pnt2d::new(0., 0.);
+    let p0 = mersh::base::Pnt2d::default();
     let p1 = mersh::base::Pnt2d::new(1., 0.);
     let p2 = mersh::base::Pnt2d::new(0., 1.);
 
