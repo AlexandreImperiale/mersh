@@ -35,7 +35,7 @@ impl<'a> EdgeView2d<'a> {
     /// ```
     pub fn get_length(&self) -> f64
     {
-        self.p0.to(&self.p1).norm()
+        self.p0.to(&self.p1).coords.norm()
     }
 }
 
@@ -85,7 +85,7 @@ impl<'a> TriView2d<'a> {
     pub fn get_barycenter(&self) -> Pnt2d
     {
         let mut bary = self.p0.coords.clone();
-        bary.add(1.0, &self.p1.coords).add(1.0, &self.p2.coords).amplify(0.5);
+        bary.add_in(1.0, &self.p1.coords).add_in(1.0, &self.p2.coords).amplify_in(0.5);
 
         Pnt2d{ coords: bary }
     }

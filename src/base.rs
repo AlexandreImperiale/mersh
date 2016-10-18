@@ -82,7 +82,7 @@ pub struct Dir3d {
 //////////////////////////////////////////////////////////////
 
 impl Coord2d {
-    /// Amplifying coordinates by a scalar coefficient.
+    /// Amplifying coordinates by a scalar coefficient. In-place function.
     ///
     /// * `a` - Scalar coefficient used for amplification.
     ///
@@ -91,16 +91,38 @@ impl Coord2d {
     /// use mersh::base::*;
     ///
     /// let mut c = Coord2d{x: 1.0, y: 1.0};
-    /// c.amplify(3.0);
+    /// c.amplify_in(3.0);
     /// assert!((c.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn amplify(&mut self, a: f64) -> &mut Self
+    pub fn amplify_in(&mut self, a: f64) -> &mut Self
     {
-        self.x *= a; self.y *= a; self
+        self.x *= a;
+        self.y *= a;
+        self
     }
 
-    /// Adding potentially amplified coordinate to coordinate,
+    /// Amplifying coordinates by a scalar coefficient. Out-of-place function.
+    ///
+    /// * `a` - Scalar coefficient used for amplification.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let c0 = Coord2d{x: 1.0, y: 1.0};
+    /// let c1 = c0.amplify_out(3.0);
+    /// assert!((c1.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.y - 3.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn amplify_out(&self, a: f64) -> Self
+    {
+        Coord2d{
+            x: a * self.x,
+            y: a * self.y }
+    }
+
+    /// Adding potentially amplified coordinate to coordinate. In-place function.
     ///
     /// * `a` - Coefficient applied on input coordinate.
     /// * `c` - Coordinate to add.
@@ -110,49 +132,90 @@ impl Coord2d {
     /// use mersh::base::*;
     ///
     /// let mut c = Coord2d{x: 1.0, y: 1.0};
-    /// c.add(1.0, &Coord2d{x: 10.0, y: 10.0});
+    /// c.add_in(1.0, &Coord2d{x: 10.0, y: 10.0});
     /// assert!((c.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn add(&mut self, a: f64, c: &Coord2d) -> &mut Self
+    pub fn add_in(&mut self, a: f64, c: &Coord2d) -> &mut Self
     {
-        self.x += a * c.x; self.y += a * c.y; self
+        self.x += a * c.x;
+        self.y += a * c.y;
+        self
     }
 
-    /// Creating 2d coordinate using linear combination of two coordinates.
+    /// Adding potentially amplified coordinate to coordinate. Out-of-place function.
     ///
-    /// * `a` - First scalar coefficient in combination.
-    /// * `c0` - First coordinate in combination.
-    /// * `b` - Second scalar coefficient in combination.
-    /// * `c1` - Second coordinate in combination.
+    /// * `a` - Coefficient applied on input coordinate.
+    /// * `c` - Coordinate to add.
     ///
     /// # Examples
     /// ```
     /// use mersh::base::*;
     ///
-    /// let a = 4.09;
-    /// let c0 = Coord2d { x: 1.0, y: 3.4 };
-    /// let b = -13.6;
-    /// let c1 = Coord2d { x: 10.1, y: -6.4 };
-    ///
-    /// let c2 = Coord2d::mlt_add(a, &c0, b, &c1);
-    ///
-    /// assert!((c2.x - a * c0.x - b * c1.x).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c2.y - a * c0.y - b * c1.y).abs() < GEOMETRICAL_TOLERANCE);
+    /// let c0 = Coord2d{x: 1.0, y: 1.0};
+    /// let c1 = c0.add_out(1.0, &Coord2d{x: 10.0, y: 10.0});
+    /// assert!((c1.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
+    pub fn add_out(&self, a: f64, c: &Coord2d) -> Self
+    {
+        Coord2d{
+            x: self.x + a * c.x,
+            y: self.y + a * c.y }
+    }
+
+    /// Computing 2d coordinate using linear combination of two coordinates. In-place function.
     ///
+    /// * `a` - First scalar coefficient in combination applied on calling instance.
+    /// * `b` - Second scalar coefficient in combination.
+    /// * `c` - Second coordinate in combination.
+    ///
+    /// # Examples
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord2d { x: 1.0, y: 3.4 };
-    /// let c1 = Coord2d::mlt_add(1.0, &c0, -1.0, &c0);
+    /// let a = 4.;
+    /// let mut c0 = Coord2d { x: 1.0, y: 3.0 };
+    /// let b = -2.;
+    /// let c1 = Coord2d { x: 10., y: 10. };
     ///
-    /// assert!(c1.x.abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!(c1.y.abs() < GEOMETRICAL_TOLERANCE);
-    ///```
-    pub fn mlt_add(a: f64, c0: &Coord2d, b: f64, c1: &Coord2d) -> Self
+    /// c0.mlt_add_in(a, b, &c1);
+    ///
+    /// assert!((c0.x + 16.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c0.y + 8.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn mlt_add_in(&mut self, a: f64, b: f64, c: &Coord2d) -> &mut Self
     {
-        Coord2d { x: a * c0.x + b * c1.x, y: a * c0.y + b * c1.y }
+        self.x = a * self.x + b * c.x;
+        self.y = a * self.y + b * c.y;
+        self
+    }
+
+    /// Creating 2d coordinate using linear combination of two coordinates. Out-of-place function.
+    ///
+    /// * `a` - First scalar coefficient in combination.
+    /// * `b` - Second scalar coefficient in combination.
+    /// * `c` - Second coordinate in combination.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let a = 4.;
+    /// let c0 = Coord2d { x: 1.0, y: 3.0 };
+    /// let b = -2.;
+    /// let c1 = Coord2d { x: 10., y: 10. };
+    ///
+    /// let c2 = c0.mlt_add_out(a, b, &c1);
+    ///
+    /// assert!((c2.x + 16.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c2.y + 8.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn mlt_add_out(&self, a: f64, b: f64, c: &Coord2d) -> Self
+    {
+        Coord2d {
+            x: a * self.x + b * c.x,
+            y: a * self.y + b * c.y }
     }
 
     /// Comparing a coordinate with another one using a fixed epsilon. The comparison is done by
@@ -175,7 +238,7 @@ impl Coord2d {
     /// ```
     pub fn equals(&self, c: &Coord2d, eps: f64) -> bool
     {
-        Coord2d::mlt_add(1.0, &self, -1.0, &c).sq_norm() < eps
+        self.add_out(-1.0, &c).sq_norm() < eps
     }
 
     /// Computing square norm of a 2d coordinate.
@@ -246,7 +309,7 @@ impl Pnt2d {
     ///```
     pub fn distance_to(&self, q: &Pnt2d) -> f64
     {
-        Coord2d::mlt_add(1.0, &self.coords, -1.0, &q.coords).norm()
+        self.coords.add_out(-1.0, &q.coords).norm()
     }
 
     /// Creating new point by adding an input vector.
@@ -266,7 +329,7 @@ impl Pnt2d {
     /// ```
     pub fn add(&self, v: &Vec2d) -> Self
     {
-        Pnt2d { coords: Coord2d::mlt_add(1.0, &self.coords, 1.0, &v.coords) }
+        Pnt2d { coords: self.coords.add_out(1.0, &v.coords) }
     }
 
     /// Creating a vector pointing to an input point.
@@ -288,7 +351,7 @@ impl Pnt2d {
     /// ```
     pub fn to(&self, p: &Pnt2d) -> Vec2d
     {
-        Vec2d { coords: Coord2d::mlt_add(1.0, &p.coords, -1.0, &self.coords) }
+        Vec2d { coords: p.coords.add_out(-1.0, &self.coords) }
     }
 }
 
@@ -308,38 +371,6 @@ impl Vec2d {
     pub fn new(x: f64, y: f64) -> Self
     {
         Vec2d{ coords: Coord2d { x: x, y: y} }
-    }
-
-    /// Amplifying a vector by a scalar coefficient.
-    ///
-    /// * `a` - Scalar coefficient used for amplification.
-    ///
-    /// # Examples
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let mut v = Vec2d::new(1.0, 0.0);
-    /// let a = 12.3;
-    ///
-    /// assert!((v.amplify(a).coords.norm() - a).abs() < GEOMETRICAL_TOLERANCE);
-    /// ```
-    pub fn amplify(&mut self, a: f64) -> &mut Self
-    {
-        self.coords.amplify(a); self
-    }
-
-    /// Computing norm of a vector.
-    ///
-    /// # Examples
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let v = Vec2d::new(1.0, 0.0);
-    /// assert!((v.norm() - 1.0) < GEOMETRICAL_TOLERANCE);
-    /// ```
-    pub fn norm(&self) -> f64
-    {
-        self.coords.norm()
     }
 }
 
@@ -370,13 +401,12 @@ impl Dir2d {
     /// ```
     pub fn new(p: &Pnt2d, q: &Pnt2d) -> Self
     {
-        let mut v = p.to(q);
-        let norm = v.norm();
+        let v = p.to(q);
+        let norm = v.coords.norm();
         if norm < GEOMETRICAL_TOLERANCE {
             Dir2d{ coords: Coord2d { x: 1.0, y: 0.0} }
         } else {
-            v.amplify(1.0 / norm);
-            Dir2d{ coords: v.coords }
+            Dir2d{ coords: v.coords.amplify_out(1.0 / norm) }
         }
     }
 
@@ -417,7 +447,7 @@ impl Dir2d {
 //////////////////////////////////////////////////////////////
 
 impl Coord3d {
-    /// Amplifying coordinates by a scalar coefficient.
+    /// Amplifying coordinates by a scalar coefficient. In-place function.
     ///
     /// * `a` - Scalar coefficient used for amplification.
     ///
@@ -425,18 +455,43 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let mut c = Coord3d{x: 1.0, y: 2.0, z: 3.0};
-    /// c.amplify(3.0);
+    /// let mut c = Coord3d{ x: 1.0, y: 2.0, z: 3.0 };
+    /// c.amplify_in(3.0);
     /// assert!((c.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 6.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.z - 9.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn amplify(&mut self, a: f64) -> &mut Self
+    pub fn amplify_in(&mut self, a: f64) -> &mut Self
     {
-        self.x *= a; self.y *= a; self.z *= a; self
+        self.x *= a;
+        self.y *= a;
+        self.z *= a;
+        self
     }
 
-    /// Adding potentially amplified coordinate to coordinate,
+    /// Amplifying coordinates by a scalar coefficient. Out-of-place function.
+    ///
+    /// * `a` - Scalar coefficient used for amplification.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let c0 = Coord3d{ x: 1.0, y: 2.0, z: 3.0 };
+    /// let c1 = c0.amplify_out(3.0);
+    /// assert!((c1.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.y - 6.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.z - 9.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn amplify_out(&self, a: f64) -> Self
+    {
+        Coord3d {
+            x: a * self.x,
+            y: a * self.y,
+            z: a * self.z }
+    }
+
+    /// Adding potentially amplified coordinate to coordinate. In-place function.
     ///
     /// * `a` - Coefficient applied on input coordinate.
     /// * `c` - Coordinate to add.
@@ -445,53 +500,99 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let mut c = Coord3d{x: 1.0, y: 1.0, z: 1.0};
-    /// c.add(1.0, &Coord3d{x: 10.0, y: 10.0, z: 10.0});
+    /// let mut c = Coord3d{ x: 1.0, y: 1.0, z: 1.0 };
+    /// c.add_in(1.0, &Coord3d{x: 10.0, y: 10.0, z: 10.0});
     /// assert!((c.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.z - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn add(&mut self, a: f64, c: &Coord3d) -> &mut Self
+    pub fn add_in(&mut self, a: f64, c: &Coord3d) -> &mut Self
     {
-        self.x += a * c.x; self.y += a * c.y; self.z += a * c.y; self
+        self.x += a * c.x;
+        self.y += a * c.y;
+        self.z += a * c.y;
+        self
     }
 
-    /// Creating 3d coordinate using linear combination of two coordinates.
+    /// Adding potentially amplified coordinate to coordinate. Out-of-place function.
     ///
-    /// * `a` - First scalar coefficient in combination.
-    /// * `c0` - First coordinate in combination.
-    /// * `b` - Second scalar coefficient in combination.
-    /// * `c1` - Second coordinate in combination.
+    /// * `a` - Coefficient applied on input coordinate.
+    /// * `c` - Coordinate to add.
     ///
     /// # Examples
     /// ```
     /// use mersh::base::*;
     ///
-    /// let a = 4.09;
-    /// let c0 = Coord3d { x: 1.0, y: 3.4, z: 2.0 };
-    /// let b = -13.6;
-    /// let c1 = Coord3d { x: 10.1, y: -6.4, z: 1.0 };
-    ///
-    /// let c2 = Coord3d::mlt_add(a, &c0, b, &c1);
-    ///
-    /// assert!((c2.x - a * c0.x - b * c1.x).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c2.y - a * c0.y - b * c1.y).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c2.z - a * c0.z - b * c1.z).abs() < GEOMETRICAL_TOLERANCE);
+    /// let c0 = Coord3d{x: 1.0, y: 1.0, z: 1.0};
+    /// let c1 = c0.add_out(1.0, &Coord3d{x: 10.0, y: 10.0, z: 10.0});
+    /// assert!((c1.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.z - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
+    pub fn add_out(&self, a: f64, c: &Coord3d) -> Self
+    {
+        Coord3d {
+            x: self.x + a * c.x,
+            y: self.y + a * c.y,
+            z: self.z + a * c.z }
+    }
+
+    /// Computing 3d coordinate using linear combination of two coordinates. In-place function.
     ///
+    /// * `a` - First scalar coefficient in combination applied on calling instance.
+    /// * `b` - Second scalar coefficient in combination.
+    /// * `c` - Second coordinate in combination.
+    ///
+    /// # Examples
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord3d { x: 1.0, y: 3.4, z: 4.1 };
-    /// let c1 = Coord3d::mlt_add(1.0, &c0, -1.0, &c0);
+    /// let a = 4.;
+    /// let mut c0 = Coord3d{ x: 1.0, y: 3.0, z: 5.0 };
+    /// let b = -2.;
+    /// let c1 = Coord3d{ x: 10., y: 10., z: 10. };
     ///
-    /// assert!(c1.x.abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!(c1.y.abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!(c1.z.abs() < GEOMETRICAL_TOLERANCE);
-    ///```
-    pub fn mlt_add(a: f64, c0: &Coord3d, b: f64, c1: &Coord3d) -> Self
+    /// c0.mlt_add_in(a, b, &c1);
+    ///
+    /// assert!((c0.x + 16.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c0.y + 8.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!(c0.z.abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn mlt_add_in(&mut self, a: f64, b: f64, c: &Coord3d) -> &mut Self
     {
-        Coord3d { x: a * c0.x + b * c1.x, y: a * c0.y + b * c1.y, z: a * c0.z + b * c1.z }
+        self.x = a * self.x + b * c.x;
+        self.y = a * self.y + b * c.y;
+        self.z = a * self.z + b * c.z;
+        self
+    }
+
+    /// Creating 3d coordinate using linear combination of two coordinates. Out-of-place function.
+    ///
+    /// * `a` - First scalar coefficient in combination.
+    /// * `b` - Second scalar coefficient in combination.
+    /// * `c` - Second coordinate in combination.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let a = 4.;
+    /// let c0 = Coord3d{ x: 1.0, y: 3.0, z: 5.0 };
+    /// let b = -2.;
+    /// let c1 = Coord3d{ x: 10., y: 10., z: 10. };
+    ///
+    /// let c2 = c0.mlt_add_out(a, b, &c1);
+    ///
+    /// assert!((c2.x + 16.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c2.y + 8.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!(c2.z.abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn mlt_add_out(&self, a: f64, b: f64, c: &Coord3d) -> Self
+    {
+        Coord3d {
+            x: a * self.x + b * c.x,
+            y: a * self.y + b * c.y,
+            z: a * self.z + b * c.z }
     }
 
     /// Comparing a coordinate with another one using a fixed epsilon. The comparison is done by
@@ -514,7 +615,7 @@ impl Coord3d {
     /// ```
     pub fn equals(&self, c: &Coord3d, eps: f64) -> bool
     {
-        Coord3d::mlt_add(1.0, &self, -1.0, &c).sq_norm() < eps
+        self.add_out(-1.0, &c).sq_norm() < eps
     }
 
     /// Computing square norm of a 3d coordinate.
@@ -586,7 +687,7 @@ impl Pnt3d {
     ///```
     pub fn distance_to(&self, q: &Pnt3d) -> f64
     {
-        Coord3d::mlt_add(1.0, &self.coords, -1.0, &q.coords).norm()
+        self.coords.add_out(-1.0, &q.coords).norm()
     }
 
     /// Creating new point by adding an input vector.
@@ -607,7 +708,7 @@ impl Pnt3d {
     /// ```
     pub fn add(&self, v: &Vec3d) -> Self
     {
-        Pnt3d { coords: Coord3d::mlt_add(1.0, &self.coords, 1.0, &v.coords) }
+        Pnt3d { coords: self.coords.add_out(1.0, &v.coords) }
     }
 
     /// Creating a vector pointing to an input point.
@@ -629,7 +730,7 @@ impl Pnt3d {
     /// ```
     pub fn to(&self, p: &Pnt3d) -> Vec3d
     {
-        Vec3d { coords: Coord3d::mlt_add(1.0, &p.coords, -1.0, &self.coords) }
+        Vec3d { coords: p.coords.add_out(-1.0, &self.coords) }
     }
 }
 
@@ -650,38 +751,6 @@ impl Vec3d {
     pub fn new(x: f64, y: f64, z: f64) -> Self
     {
         Vec3d{ coords: Coord3d { x: x, y: y, z: z} }
-    }
-
-    /// Amplifying a vector by a scalar coefficient.
-    ///
-    /// * `a` - Scalar coefficient used for amplification.
-    ///
-    /// # Examples
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let mut v = Vec3d::new(1.0, 0.0, 0.0);
-    /// let a = 12.3;
-    ///
-    /// assert!((v.amplify(a).coords.norm() - a).abs() < GEOMETRICAL_TOLERANCE);
-    /// ```
-    pub fn amplify(&mut self, a: f64) -> &mut Self
-    {
-        self.coords.amplify(a); self
-    }
-
-    /// Computing norm of a vector.
-    ///
-    /// # Examples
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let v = Vec3d::new(1.0, 0.0, 0.0);
-    /// assert!((v.norm() - 1.0) < GEOMETRICAL_TOLERANCE);
-    /// ```
-    pub fn norm(&self) -> f64
-    {
-        self.coords.norm()
     }
 }
 
@@ -712,13 +781,12 @@ impl Dir3d {
     /// ```
     pub fn new(p: &Pnt3d, q: &Pnt3d) -> Self
     {
-        let mut v = p.to(q);
-        let norm = v.norm();
+        let v = p.to(q);
+        let norm = v.coords.norm();
         if norm < GEOMETRICAL_TOLERANCE {
             Dir3d{ coords: Coord3d { x: 1.0, y: 0.0, z: 0.0 } }
         } else {
-            v.amplify(1.0 / norm);
-            Dir3d{ coords: v.coords }
+            Dir3d{ coords: v.coords.amplify_out(1.0 / norm) }
         }
     }
 }
