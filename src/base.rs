@@ -8,7 +8,7 @@ pub const GEOMETRICAL_TOLERANCE: f64 = 1e-12;
 //////////////////////////////////////////////////////////////
 
 /// Structure for defining 2d coordinates.
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Coord2d {
     /// First coordinate.
     pub x: f64,
@@ -17,21 +17,21 @@ pub struct Coord2d {
 }
 
 /// Structure for defining 2d points.
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Pnt2d {
     /// Coordinates associated to the point.
     pub coords: Coord2d,
 }
 
 /// Structure for defining 2d vectors.
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Vec2d {
     /// Coordinates associated to the vector.
     pub coords: Coord2d,
 }
 
 /// Structure for defining 2d directions (i.e. unit vectors).
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Dir2d {
     /// Coordinates associated to the direction.
     pub coords: Coord2d,
@@ -43,8 +43,8 @@ pub struct Dir2d {
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
-/// Structure for defining 2d coordinates.
-#[derive(Clone, Default)]
+/// Structure for defining 3d coordinates.
+#[derive(Clone, Default, Debug)]
 pub struct Coord3d {
     /// First coordinate.
     pub x: f64,
@@ -55,21 +55,21 @@ pub struct Coord3d {
 }
 
 /// Structure for defining 3d points.
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Pnt3d {
     /// Coordinates associated to the point.
     pub coords: Coord3d,
 }
 
 /// Structure for defining 3d vectors.
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Vec3d {
     /// Coordinates associated to the vector.
     pub coords: Coord3d,
 }
 
 /// Structure for defining 3d directions (i.e. unit vectors).
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Dir3d {
     /// Coordinates associated to the direction.
     pub coords: Coord3d,
