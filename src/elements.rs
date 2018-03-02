@@ -6,8 +6,8 @@ use std::vec::*;
 pub struct Edge {
     /// Associated index of vertices in mesh.
     pub v: [usize; 2],
-    /// Associated tag.
-    pub tag: usize,
+    /// Associated tags.
+    pub tags: Vec<usize>,
 }
 
 /// Triangle as a mesh element.
@@ -15,31 +15,103 @@ pub struct Tri {
     /// Associated index of vertices in mesh.
     pub v: [usize; 3],
     /// Associated tag.
-    pub tag: usize
+    pub tags: Vec<usize>
 }
 
-/// Structure for regrouping mesh elements.
-pub struct MeshElements {
+/// Quadrangle as a mesh element.
+pub struct Quad {
+    /// Associated index of vertices in mesh.
+    pub v: [usize; 4],
+    /// Associated tag.
+    pub tags: Vec<usize>
+}
+
+/// Tetrahedron as a mesh element.
+pub struct Tet {
+    /// Associated index of vertices in mesh.
+    pub v: [usize; 4],
+    /// Associated tag.
+    pub tags: Vec<usize>
+}
+
+/// Hexahedron as a mesh element.
+pub struct Hexa {
+    /// Associated index of vertices in mesh.
+    pub v: [usize; 8],
+    /// Associated tag.
+    pub tags: Vec<usize>
+}
+
+/// Prism as a mesh element.
+pub struct Prism {
+    /// Associated index of vertices in mesh.
+    pub v: [usize; 6],
+    /// Associated tag.
+    pub tags: Vec<usize>
+}
+
+/// Structure for regrouping 2d mesh elements.
+pub struct Elements2d {
     /// Set of edges.
     pub edges: Vec<Edge>,
     /// Set of triangles.
     pub tris: Vec<Tri>,
+    /// Set of quadrangles.
+    pub quads: Vec<Quad>,
 }
 
-impl MeshElements {
+/// Structure for regrouping 3d mesh elements.
+pub struct Elements3d {
+    /// Set 2d mesh elements.
+    pub surface_elements: Elements2d,
+    /// Set of tetrahedra.
+    pub tet: Vec<Tet>,
+    /// Set of hexahedra.
+    pub hexa: Vec<Hexa>,
+    /// Set of prisms.
+    pub prism: Vec<Prism>
+}
+
+impl Elements2d {
     // Creating a new set of mesh elements.
     ///
     /// # Examples
     /// ```
     /// use mersh::elements::*;
     ///
-    /// let elems = MeshElements::new();
+    /// let elems = Elements2d::new();
     ///
     /// assert!(elems.edges.len() == 0);
     /// assert!(elems.tris.len() == 0);
+    /// assert!(elems.quads.len() == 0);
     /// ```
-    pub fn new() -> MeshElements
+    pub fn new() -> Elements2d
     {
-        MeshElements { edges: Vec::new(), tris: Vec::new() }
+        Elements2d { edges: Vec::new(), tris: Vec::new(), quads: Vec::new() }
+    }
+}
+
+impl Elements3d {
+    // Creating a new set of mesh elements.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::elements::*;
+    ///
+    /// let elems = Elements3d::new();
+    ///
+    /// assert!(elems.surface_elements.edges.len() == 0);
+    /// assert!(elems.surface_elements.tris.len() == 0);
+    /// assert!(elems.surface_elements.quads.len() == 0);
+    ///
+    /// assert!(elems.tet.len() == 0);
+    /// assert!(elems.hexa.len() == 0);
+    /// assert!(elems.prism.len() == 0);
+    /// ```
+    pub fn new() -> Elements3d
+    {
+        Elements3d {
+             surface_elements: Elements2d::new(),
+             tet: Vec::new(), hexa: Vec::new(), prism: Vec::new() }
     }
 }

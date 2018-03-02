@@ -5,20 +5,36 @@ use super::elements::*;
 use super::views::*;
 use std::vec::*;
 
-/// Structure for defining 2D mesh vertices.
+/// Structure for defining 2d mesh vertices.
 pub struct Vertex2d {
     /// Associated point.
     pub point: Pnt2d,
     /// Associated tag.
-    pub tag: usize,
+    pub tags: Vec<usize>,
 }
 
-/// Structure defining a 2D mesh.
+/// Structure for defining 3d mesh vertices.
+pub struct Vertex3d {
+    /// Associated point.
+    pub point: Pnt3d,
+    /// Associated tag.
+    pub tags: Vec<usize>,
+}
+
+/// Structure defining a 2d mesh.
 pub struct Mesh2d {
     /// Associated set of vertices.
     pub vertices: Vec<Vertex2d>,
-    /// Set of mesh elements.
-    pub elements: MeshElements,
+    /// Set of 2d mesh elements.
+    pub elements: Elements2d,
+}
+
+/// Structure defining a 3d mesh.
+pub struct Mesh3d {
+    /// Associated set of vertices.
+    pub vertices: Vec<Vertex3d>,
+    /// Set of 3d mesh elements.
+    pub elements: Elements3d,
 }
 
 impl Vertex2d {
@@ -26,21 +42,45 @@ impl Vertex2d {
     ///
     /// * `x` - First coordinate of the vertex.
     /// * `y` - Second coordinate of the vertex.
-    /// * `tag` - An integer representing a specific tag of the vertex.
+    /// * `tags` - vector of integers representing specific tags of the vertex.
     ///
     /// # Examples
     /// ```
     /// use mersh::mesh::*;
     /// use mersh::base::*;
     ///
-    /// let v = Vertex2d::new(0., 0., 0);
+    /// let v = Vertex2d::new(0., 0., vec![0]);
     /// assert!(v.point.coords.x.abs() < GEOMETRICAL_TOLERANCE);
     /// assert!(v.point.coords.y.abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!(v.tag == 0);
+    /// assert!(v.tags[0] == 0);
     /// ```
-    pub fn new(x: f64, y: f64, tag: usize) -> Vertex2d
+    pub fn new(x: f64, y: f64, tags: Vec<usize>) -> Vertex2d
     {
-        Vertex2d { point: Pnt2d::new(x, y), tag: tag }
+        Vertex2d { point: Pnt2d::new(x, y), tags: tags }
+    }
+}
+
+impl Vertex3d {
+    /// Creating a new vertex.
+    ///
+    /// * `x` - First coordinate of the vertex.
+    /// * `y` - Second coordinate of the vertex.
+    /// * `z` - Second coordinate of the vertex.
+    /// * `tags` - vector of integers representing specific tags of the vertex.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::mesh::*;
+    /// use mersh::base::*;
+    ///
+    /// let v = Vertex2d::new(0., 0., vec![0]);
+    /// assert!(v.point.coords.x.abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!(v.point.coords.y.abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!(v.tags[0] == 0);
+    /// ```
+    pub fn new(x: f64, y: f64, z: f64, tags: Vec<usize>) -> Vertex3d
+    {
+        Vertex3d { point: Pnt3d::new(x, y, z), tags: tags }
     }
 }
 
@@ -59,7 +99,7 @@ impl Mesh2d {
     /// ```
     pub fn new() -> Mesh2d
     {
-        Mesh2d { vertices: Vec::new(), elements: MeshElements::new() }
+        Mesh2d { vertices: Vec::new(), elements: Elements2d::new() }
     }
 
     /// Adding a vertex in a mesh.
@@ -76,16 +116,16 @@ impl Mesh2d {
     /// let mut mesh = Mesh2d::new();
     /// let x = 0.0;
     /// let y = 1.0;
-    /// mesh.add_vertex(x, y, 0);
+    /// mesh.add_vertex(x, y, vec![0]);
     ///
     /// assert!(mesh.vertices.len() == 1);
     /// assert!((mesh.vertices[0].point.coords.x - x).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((mesh.vertices[0].point.coords.y - y).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!(mesh.vertices[0].tag == 0);
+    /// assert!(mesh.vertices[0].tags[0] == 0);
     /// ```
-    pub fn add_vertex(&mut self, x: f64, y: f64, tag: usize) -> &mut Self
+    pub fn add_vertex(&mut self, x: f64, y: f64, tags: Vec<usize>) -> &mut Self
     {
-        self.vertices.push(Vertex2d::new(x, y, tag));
+        self.vertices.push(Vertex2d::new(x, y, tags));
         self
     }
 
@@ -100,18 +140,18 @@ impl Mesh2d {
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::new();
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(0., 0., 0)
-    ///     .add_edge(0, 1, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(0., 0., vec![0])
+    ///     .add_edge(0, 1, vec![0]);
     ///
     /// assert!(mesh.elements.edges.len() == 1);
     /// assert!(mesh.elements.edges[0].v[0] == 0);
     /// assert!(mesh.elements.edges[0].v[1] == 1);
-    /// assert!(mesh.elements.edges[0].tag == 0);
+    /// assert!(mesh.elements.edges[0].tags[0] == 0);
     /// ```
-    pub fn add_edge(&mut self, v0: usize, v1: usize, tag: usize) -> &mut Self
+    pub fn add_edge(&mut self, v0: usize, v1: usize, tags: Vec<usize>) -> &mut Self
     {
-        self.elements.edges.push(Edge { v: [v0, v1], tag: tag });
+        self.elements.edges.push(Edge { v: [v0, v1], tags: tags });
         self
     }
 
@@ -128,20 +168,20 @@ impl Mesh2d {
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::new();
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(0., 0., 0)
-    ///     .add_vertex(0., 0., 0)
-    ///     .add_tri(0, 1, 2, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(0., 0., vec![0])
+    ///     .add_vertex(0., 0., vec![0])
+    ///     .add_tri(0, 1, 2, vec![0]);
     ///
     /// assert!(mesh.elements.tris.len() == 1);
     /// assert!(mesh.elements.tris[0].v[0] == 0);
     /// assert!(mesh.elements.tris[0].v[1] == 1);
     /// assert!(mesh.elements.tris[0].v[2] == 2);
-    /// assert!(mesh.elements.tris[0].tag == 0);
+    /// assert!(mesh.elements.tris[0].tags[0] == 0);
     /// ```
-    pub fn add_tri(&mut self, v0: usize, v1: usize, v2: usize, tag: usize) -> &mut Self
+    pub fn add_tri(&mut self, v0: usize, v1: usize, v2: usize, tags: Vec<usize>) -> &mut Self
     {
-        self.elements.tris.push(Tri {v: [v0, v1, v2], tag: tag } );
+        self.elements.tris.push(Tri {v: [v0, v1, v2], tags: tags } );
         self
     }
 
@@ -156,9 +196,9 @@ impl Mesh2d {
     ///
     /// let mut mesh = Mesh2d::new();
     ///
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(1., 0., 0)
-    ///     .add_edge(0, 1, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(1., 0., vec![0])
+    ///     .add_edge(0, 1, vec![0]);
     ///
     /// let e = mesh.view_edge(0);
     /// assert!((e.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
@@ -182,10 +222,10 @@ impl Mesh2d {
     ///
     /// let mut mesh = Mesh2d::new();
     ///
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(1., 0., 0)
-    ///     .add_vertex(0., 1., 0)
-    ///     .add_tri(0, 1, 2, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(1., 0., vec![0])
+    ///     .add_vertex(0., 1., vec![0])
+    ///     .add_tri(0, 1, 2, vec![0]);
     ///
     /// let tri = mesh.view_tri(0);
     /// assert!((tri.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);

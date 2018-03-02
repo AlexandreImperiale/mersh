@@ -26,9 +26,9 @@ impl<'a> EdgeView2d<'a> {
     ///
     /// let mut mesh = Mesh2d::new();
     ///
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(1., 0., 0)
-    ///     .add_edge(0, 1, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(1., 0., vec![0])
+    ///     .add_edge(0, 1, vec![0]);
     ///
     /// let e = mesh.view_edge(0);
     /// assert!((e.get_length() - 1.0) < 1e-10);
@@ -48,10 +48,10 @@ impl<'a> TriView2d<'a> {
     ///
     /// let mut mesh = Mesh2d::new();
     ///
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(1., 0., 0)
-    ///     .add_vertex(0., 1., 0)
-    ///     .add_tri(0, 1, 2, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(1., 0., vec![0])
+    ///     .add_vertex(0., 1., vec![0])
+    ///     .add_tri(0, 1, 2, vec![0]);
     ///
     /// let tri = mesh.view_tri(0);
     /// let area = tri.get_area();
@@ -72,10 +72,10 @@ impl<'a> TriView2d<'a> {
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::new();
-    /// mesh.add_vertex(0., 0., 0)
-    ///     .add_vertex(1., 0., 0)
-    ///     .add_vertex(0., 1., 0)
-    ///     .add_tri(0, 1, 2, 0);
+    /// mesh.add_vertex(0., 0., vec![0])
+    ///     .add_vertex(1., 0., vec![0])
+    ///     .add_vertex(0., 1., vec![0])
+    ///     .add_tri(0, 1, 2, vec![0]);
     ///
     /// let tri = mesh.view_tri(0);
     /// let bary = tri.get_barycenter();
