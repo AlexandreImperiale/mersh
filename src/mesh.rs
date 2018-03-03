@@ -94,7 +94,7 @@ impl Mesh2d {
     /// let mesh = Mesh2d::new();
     ///
     /// assert!(mesh.vertices.len() == 0);
-    /// assert!(mesh.elements.edges.len() == 0);
+    /// assert!(mesh.elements.line_elements.edges.len() == 0);
     /// assert!(mesh.elements.tris.len() == 0);
     /// ```
     pub fn new() -> Mesh2d
@@ -144,14 +144,14 @@ impl Mesh2d {
     ///     .add_vertex(0., 0., vec![0])
     ///     .add_edge(0, 1, vec![0]);
     ///
-    /// assert!(mesh.elements.edges.len() == 1);
-    /// assert!(mesh.elements.edges[0].v[0] == 0);
-    /// assert!(mesh.elements.edges[0].v[1] == 1);
-    /// assert!(mesh.elements.edges[0].tags[0] == 0);
+    /// assert!(mesh.elements.line_elements.edges.len() == 1);
+    /// assert!(mesh.elements.line_elements.edges[0].v[0] == 0);
+    /// assert!(mesh.elements.line_elements.edges[0].v[1] == 1);
+    /// assert!(mesh.elements.line_elements.edges[0].tags[0] == 0);
     /// ```
     pub fn add_edge(&mut self, v0: usize, v1: usize, tags: Vec<usize>) -> &mut Self
     {
-        self.elements.edges.push(Edge { v: [v0, v1], tags: tags });
+        self.elements.line_elements.edges.push(Edge { v: [v0, v1], tags: tags });
         self
     }
 
@@ -207,8 +207,8 @@ impl Mesh2d {
     pub fn view_edge(&self, i: usize) -> EdgeView2d
     {
         EdgeView2d {
-            p0: &self.vertices[self.elements.edges[i].v[0]].point ,
-            p1: &self.vertices[self.elements.edges[i].v[1]].point }
+            p0: &self.vertices[self.elements.line_elements.edges[i].v[0]].point ,
+            p1: &self.vertices[self.elements.line_elements.edges[i].v[1]].point }
     }
 
     /// Extracting a view to a triangle in a mesh.
@@ -237,5 +237,31 @@ impl Mesh2d {
             p0: &self.vertices[self.elements.tris[i].v[0]].point ,
             p1: &self.vertices[self.elements.tris[i].v[1]].point ,
             p2: &self.vertices[self.elements.tris[i].v[2]].point }
+    }
+}
+
+impl Mesh3d {
+    /// Creating a new, empty mesh.
+    ///
+    /// # Examples
+    /// ```
+    /// use mersh::mesh::*;
+    ///
+    /// let mesh = Mesh3d::new();
+    ///
+    /// assert!(mesh.vertices.len() == 0);
+    ///
+    /// assert!(mesh.elements.line_elements.edges.len() == 0);
+    ///
+    /// assert!(mesh.elements.surface_elements.tris.len() == 0);
+    /// assert!(mesh.elements.surface_elements.quads.len() == 0);
+    ///
+    /// assert!(mesh.elements.tet.len() == 0);
+    /// assert!(mesh.elements.hexa.len() == 0);
+    /// assert!(mesh.elements.prism.len() == 0);
+    /// ```
+    pub fn new() -> Mesh3d
+    {
+        Mesh3d { vertices: Vec::new(), elements: Elements3d::new() }
     }
 }
