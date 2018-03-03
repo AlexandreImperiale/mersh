@@ -1,5 +1,11 @@
 use super::base::*;
 
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// 2D data structure.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 /// Structure for defining a 2d edge view.
 pub struct EdgeView2d<'a> {
     /// Reference to first point in the edge.
@@ -8,15 +14,21 @@ pub struct EdgeView2d<'a> {
     pub p1: &'a Pnt2d,
 }
 
-/// Structure for defining a 3d edge view.
-pub struct EdgeView3d<'a> {
-    /// Reference to first point in the edge.
-    pub p0: &'a Pnt3d,
-    /// Reference to second point in the edge.
-    pub p1: &'a Pnt3d,
-}
-
 /// Structure for defining a 2d tri view.
+///
+/// Local numbering order of triangle is :
+///
+/// ```text
+/// P2
+///   *
+///   |`\
+///   |  `\
+///   |    `\
+///   |      `\
+///   |        `\
+///   *----------*
+/// P0             P1
+/// ```
 pub struct TriView2d<'a> {
     /// Reference to first vertex of the triangle.
     pub p0: &'a Pnt2d,
@@ -26,19 +38,41 @@ pub struct TriView2d<'a> {
     pub p2: &'a Pnt2d,
 }
 
-/// Structure for defining a 3d tri view.
-pub struct TriView3d<'a> {
-    /// Reference to first vertex of the triangle.
-    pub p0: &'a Pnt3d,
-    /// Reference to second vertex of the triangle.
-    pub p1: &'a Pnt3d,
-    /// Reference to third vertex of the triangle.
-    pub p2: &'a Pnt3d,
+/// Structure for defining a 2d quad view.
+///
+/// Local numbering order of quadrangles is :
+///
+/// ```text
+/// P2                P3
+///    * ---------- *
+///    |            |
+///    |            |
+///    |            |
+///    |            |
+///    * ---------- *
+/// P0                P1
+/// ```
+pub struct QuadView2d<'a> {
+    /// Reference to first vertex of the quadrangle.
+    pub p0: &'a Pnt2d,
+    /// Reference to second vertex of the quadrangle.
+    pub p1: &'a Pnt2d,
+    /// Reference to third vertex of the quadrangle.
+    pub p2: &'a Pnt2d,
+    /// Reference to forth vertex of the quadrangle.
+    pub p3: &'a Pnt2d,
 }
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// 2D implementations.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 impl<'a> EdgeView2d<'a> {
     /// Computing length of a 2d view to an edge in a mesh.
-    /// # Examples
+    ///
+    /// # Example
     /// ```
     /// use mersh::mesh::*;
     ///
@@ -48,7 +82,7 @@ impl<'a> EdgeView2d<'a> {
     ///     .add_vertex(1., 0., vec![0])
     ///     .add_edge(0, 1, vec![0]);
     ///
-    /// let e = mesh.view_edge(0);
+    /// let e = mesh.get_edge_view(0);
     /// assert!((e.get_length() - 1.0) < 1e-10);
     /// ```
     pub fn get_length(&self) -> f64
@@ -60,7 +94,7 @@ impl<'a> EdgeView2d<'a> {
 impl<'a> TriView2d<'a> {
     /// Computing area of a 2d view of a triangle in a mesh.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::mesh::*;
     ///
@@ -71,7 +105,7 @@ impl<'a> TriView2d<'a> {
     ///     .add_vertex(0., 1., vec![0])
     ///     .add_tri(0, 1, 2, vec![0]);
     ///
-    /// let tri = mesh.view_tri(0);
+    /// let tri = mesh.get_tri_view(0);
     /// let area = tri.get_area();
     /// assert!((area - 0.5).abs() < 1e-10);
     /// ```
@@ -85,7 +119,7 @@ impl<'a> TriView2d<'a> {
 
     /// Computing barycenter of a triangle in a mesh.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::mesh::*;
     ///
@@ -95,7 +129,7 @@ impl<'a> TriView2d<'a> {
     ///     .add_vertex(0., 1., vec![0])
     ///     .add_tri(0, 1, 2, vec![0]);
     ///
-    /// let tri = mesh.view_tri(0);
+    /// let tri = mesh.get_tri_view(0);
     /// let bary = tri.get_barycenter();
     /// assert!((bary.coords.x - 0.5).abs() < 1e-10);
     /// assert!((bary.coords.y - 0.5).abs() < 1e-10);
@@ -110,4 +144,67 @@ impl<'a> TriView2d<'a> {
 
         Pnt2d{ coords: bary }
     }
+}
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// 3D data structure.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+/// Structure for defining a 3d edge view.
+pub struct EdgeView3d<'a> {
+    /// Reference to first point in the edge.
+    pub p0: &'a Pnt3d,
+    /// Reference to second point in the edge.
+    pub p1: &'a Pnt3d,
+}
+
+/// Structure for defining a 3d tri view.
+///
+/// Local numbering order of triangle is :
+///
+/// ```text
+/// P2
+///   *
+///   |`\
+///   |  `\
+///   |    `\
+///   |      `\
+///   |        `\
+///   *----------*
+/// P0             P1
+/// ```
+pub struct TriView3d<'a> {
+    /// Reference to first vertex of the triangle.
+    pub p0: &'a Pnt3d,
+    /// Reference to second vertex of the triangle.
+    pub p1: &'a Pnt3d,
+    /// Reference to third vertex of the triangle.
+    pub p2: &'a Pnt3d,
+}
+
+/// Structure for defining a 3d quad view.
+///
+/// Local numbering order of quadrangles is :
+///
+/// ```text
+/// P2                P3
+///    * ---------- *
+///    |            |
+///    |            |
+///    |            |
+///    |            |
+///    * ---------- *
+/// P0                P1
+/// ```
+pub struct QuadView3d<'a> {
+    /// Reference to first vertex of the quadrangle.
+    pub p0: &'a Pnt3d,
+    /// Reference to second vertex of the quadrangle.
+    pub p1: &'a Pnt3d,
+    /// Reference to third vertex of the quadrangle.
+    pub p2: &'a Pnt3d,
+    /// Reference to forth vertex of the quadrangle.
+    pub p3: &'a Pnt3d,
 }

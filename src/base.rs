@@ -86,7 +86,7 @@ impl Coord2d {
     ///
     /// * `a` - Scalar coefficient used for amplification.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -106,7 +106,7 @@ impl Coord2d {
     ///
     /// * `a` - Scalar coefficient used for amplification.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -127,7 +127,7 @@ impl Coord2d {
     /// * `a` - Coefficient applied on input coordinate.
     /// * `c` - Coordinate to add.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -148,7 +148,7 @@ impl Coord2d {
     /// * `a` - Coefficient applied on input coordinate.
     /// * `c` - Coordinate to add.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -170,7 +170,7 @@ impl Coord2d {
     /// * `b` - Second scalar coefficient in combination.
     /// * `c` - Second coordinate in combination.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -197,7 +197,7 @@ impl Coord2d {
     /// * `b` - Second scalar coefficient in combination.
     /// * `c` - Second coordinate in combination.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -224,7 +224,7 @@ impl Coord2d {
     /// * `c` - Coordinate to compare with.
     /// * `eps` - Thershold used for fixed-epsilon floating point comparison.
     ///
-    /// # Examples
+    /// # Example
     ///
     /// ```
     /// use mersh::base::*;
@@ -243,7 +243,7 @@ impl Coord2d {
 
     /// Computing square norm of a 2d coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -257,7 +257,7 @@ impl Coord2d {
 
     /// Computing norm of a 2d coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -276,7 +276,7 @@ impl Pnt2d {
     /// * `x` - First coordinate.
     /// * `y` - Second coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -292,7 +292,7 @@ impl Pnt2d {
     ///
     /// * `q` - Input 2d point to compute the distance from.
     ///
-    /// # Examples
+    /// # Example 0
     /// ```
     /// use mersh::base::*;
     ///
@@ -302,11 +302,12 @@ impl Pnt2d {
     /// assert!((p.distance_to(&q) - 1.0) < GEOMETRICAL_TOLERANCE);
     /// ```
     ///
+    /// # Example 1
     /// ```
     /// use mersh::base::*;
     /// let p = Pnt2d::default();
     /// assert!(p.distance_to(&p) < GEOMETRICAL_TOLERANCE);
-    ///```
+    /// ```
     pub fn distance_to(&self, q: &Pnt2d) -> f64
     {
         self.coords.add_out(-1.0, &q.coords).norm()
@@ -316,7 +317,7 @@ impl Pnt2d {
     ///
     /// * `v` - Input vector used to create point.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -336,7 +337,7 @@ impl Pnt2d {
     ///
     /// * `p` - The point to point to.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -361,7 +362,7 @@ impl Vec2d {
     /// * `x` - First coordinate.
     /// * `y` - Second coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -382,7 +383,7 @@ impl Dir2d {
     /// * `p` - First point.
     /// * `q` - Second point.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -413,7 +414,7 @@ impl Dir2d {
     /// Creating orthogonal direction so that the cross product between the directions belongs to
     /// positive half space.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     /// use std::f64;
@@ -451,7 +452,7 @@ impl Coord3d {
     ///
     /// * `a` - Scalar coefficient used for amplification.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -473,7 +474,7 @@ impl Coord3d {
     ///
     /// * `a` - Scalar coefficient used for amplification.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -496,7 +497,7 @@ impl Coord3d {
     /// * `a` - Coefficient applied on input coordinate.
     /// * `c` - Coordinate to add.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -519,7 +520,7 @@ impl Coord3d {
     /// * `a` - Coefficient applied on input coordinate.
     /// * `c` - Coordinate to add.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -543,7 +544,7 @@ impl Coord3d {
     /// * `b` - Second scalar coefficient in combination.
     /// * `c` - Second coordinate in combination.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -572,7 +573,7 @@ impl Coord3d {
     /// * `b` - Second scalar coefficient in combination.
     /// * `c` - Second coordinate in combination.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -601,7 +602,7 @@ impl Coord3d {
     /// * `c` - Coordinate to compare with.
     /// * `eps` - Thershold used for fixed-epsilon floating point comparison.
     ///
-    /// # Examples
+    /// # Example
     ///
     /// ```
     /// use mersh::base::*;
@@ -620,7 +621,7 @@ impl Coord3d {
 
     /// Computing square norm of a 3d coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -634,7 +635,7 @@ impl Coord3d {
 
     /// Computing norm of a 3d coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -654,7 +655,7 @@ impl Pnt3d {
     /// * `y` - Second coordinate.
     /// * `z` - Third coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -670,7 +671,7 @@ impl Pnt3d {
     ///
     /// * `q` - Input 3d point to compute the distance from.
     ///
-    /// # Examples
+    /// # Example 0
     /// ```
     /// use mersh::base::*;
     ///
@@ -680,11 +681,12 @@ impl Pnt3d {
     /// assert!((p.distance_to(&q) - 1.0) < GEOMETRICAL_TOLERANCE);
     /// ```
     ///
+    /// # Example 1
     /// ```
     /// use mersh::base::*;
     /// let p = Pnt3d::new(2.4, -1.9, 1.0);
     /// assert!(p.distance_to(&p) < GEOMETRICAL_TOLERANCE);
-    ///```
+    /// ```
     pub fn distance_to(&self, q: &Pnt3d) -> f64
     {
         self.coords.add_out(-1.0, &q.coords).norm()
@@ -694,7 +696,7 @@ impl Pnt3d {
     ///
     /// * `v` - Input vector used to create point.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -715,7 +717,7 @@ impl Pnt3d {
     ///
     /// * `p` - The point to point to.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -741,7 +743,7 @@ impl Vec3d {
     /// * `y` - Second coordinate.
     /// * `z` - Third coordinate.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///
@@ -762,7 +764,7 @@ impl Dir3d {
     /// * `p` - First point.
     /// * `q` - Second point.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::base::*;
     ///

@@ -25,13 +25,13 @@ fn square_view_triangles() {
     let mut mesh = make_square();
 
     // Computing area of first and second triangle.
-    assert!((mesh.view_tri(0).get_area() - 0.5).abs() < 1e-10);
-    assert!((mesh.view_tri(1).get_area() - 0.5).abs() < 1e-10);
+    assert!((mesh.get_tri_view(0).get_area() - 0.5).abs() < 1e-10);
+    assert!((mesh.get_tri_view(1).get_area() - 0.5).abs() < 1e-10);
 
     // Enlarging mesh points.
     for v in mesh.vertices.iter_mut() { v.point.coords.amplify_in(10.0); }
 
     // Recomputing area of first and second triangle.
-    assert!((mesh.view_tri(0).get_area() - 50.0).abs() < 1e-10);
-    assert!((mesh.view_tri(1).get_area() - 50.0).abs() < 1e-10);
+    assert!((mesh.get_tri_view(0).get_area() - 50.0).abs() < 1e-10);
+    assert!((mesh.get_tri_view(1).get_area() - 50.0).abs() < 1e-10);
 }

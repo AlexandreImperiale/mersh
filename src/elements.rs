@@ -2,6 +2,12 @@ extern crate std;
 
 use std::vec::*;
 
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// Element data structures.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 /// Edge as a mesh element.
 pub struct Edge {
     /// Associated index of vertices in mesh.
@@ -11,6 +17,20 @@ pub struct Edge {
 }
 
 /// Triangle as a mesh element.
+///
+/// Local numbering order of triangle is :
+///
+/// ```text
+/// P2
+///   *
+///   |`\
+///   |  `\
+///   |    `\
+///   |      `\
+///   |        `\
+///   *----------*
+/// P0             P1
+/// ```
 pub struct Tri {
     /// Associated index of vertices in mesh.
     pub v: [usize; 3],
@@ -19,6 +39,17 @@ pub struct Tri {
 }
 
 /// Quadrangle as a mesh element.
+///
+/// ```text
+/// P2                P3
+///    * ---------- *
+///    |            |
+///    |            |
+///    |            |
+///    |            |
+///    * ---------- *
+/// P0                P1
+/// ```
 pub struct Quad {
     /// Associated index of vertices in mesh.
     pub v: [usize; 4],
@@ -50,6 +81,12 @@ pub struct Prism {
     pub tags: Vec<usize>
 }
 
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// Mesh element data structures.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 /// Structure for regrouping 1d mesh elements.
 pub struct Elements1d {
     /// Set of edges.
@@ -58,7 +95,7 @@ pub struct Elements1d {
 
 /// Structure for regrouping 2d mesh elements.
 pub struct Elements2d {
-    // Set of 1d mesh elements.
+    /// Set of 1d mesh elements.
     pub line_elements: Elements1d,
     /// Set of triangles.
     pub tris: Vec<Tri>,
@@ -80,10 +117,16 @@ pub struct Elements3d {
     pub prism: Vec<Prism>
 }
 
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// Implementations.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
 impl Elements1d {
     // Creating a new set of mesh elements.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::elements::*;
     ///
@@ -100,7 +143,7 @@ impl Elements1d {
 impl Elements2d {
     // Creating a new set of mesh elements.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::elements::*;
     ///
@@ -119,7 +162,7 @@ impl Elements2d {
 impl Elements3d {
     // Creating a new set of mesh elements.
     ///
-    /// # Examples
+    /// # Example
     /// ```
     /// use mersh::elements::*;
     ///
