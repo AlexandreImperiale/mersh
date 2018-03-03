@@ -56,7 +56,7 @@ impl Vertex2d {
     /// ```
     pub fn new(x: f64, y: f64, tags: Vec<usize>) -> Vertex2d
     {
-        Vertex2d { point: Pnt2d::new(x, y), tags: tags }
+        Vertex2d { point: Pnt2d::new(x, y), tags }
     }
 }
 
@@ -80,7 +80,7 @@ impl Vertex3d {
     /// ```
     pub fn new(x: f64, y: f64, z: f64, tags: Vec<usize>) -> Vertex3d
     {
-        Vertex3d { point: Pnt3d::new(x, y, z), tags: tags }
+        Vertex3d { point: Pnt3d::new(x, y, z), tags }
     }
 }
 
@@ -151,7 +151,7 @@ impl Mesh2d {
     /// ```
     pub fn add_edge(&mut self, v0: usize, v1: usize, tags: Vec<usize>) -> &mut Self
     {
-        self.elements.line_elements.edges.push(Edge { v: [v0, v1], tags: tags });
+        self.elements.line_elements.edges.push(Edge { v: [v0, v1], tags });
         self
     }
 
@@ -181,7 +181,7 @@ impl Mesh2d {
     /// ```
     pub fn add_tri(&mut self, v0: usize, v1: usize, v2: usize, tags: Vec<usize>) -> &mut Self
     {
-        self.elements.tris.push(Tri {v: [v0, v1, v2], tags: tags } );
+        self.elements.tris.push(Tri {v: [v0, v1, v2], tags } );
         self
     }
 
