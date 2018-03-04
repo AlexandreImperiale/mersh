@@ -34,6 +34,11 @@ fn square_view_triangles() {
     assert!((mesh.get_tri_view(0).get_area() - 0.5).abs() < 1e-10);
     assert!((mesh.get_tri_view(1).get_area() - 0.5).abs() < 1e-10);
 
+    // Computing global area covered by the triangles.
+    let mut area = 0.;
+    for tri in mesh.triangles.iter() { area += mesh.make_tri_view(tri).get_area(); }
+    assert!((area - 1.0).abs() < 1e-10);
+
     // Enlarging mesh points.
     for v in mesh.vertices.iter_mut() { v.point.coords.amplify_in(10.0); }
 
