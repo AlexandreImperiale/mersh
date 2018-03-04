@@ -94,12 +94,12 @@ impl Mesh2d {
     /// mesh.edges.push(Edge::new_untagged([0, 1]));
     ///
     /// let e = mesh.make_edge_view(&mesh.edges[0]);
-    /// assert!((e.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((e.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn make_edge_view(&self, edge: &Edge) -> EdgeView2d
     {
-         EdgeView2d { p0: &self.vertices[edge.v[0]].point, p1: &self.vertices[edge.v[1]].point }
+         EdgeView2d { points: [&self.vertices[edge.v[0]].point, &self.vertices[edge.v[1]].point] }
     }
 
     /// Extracting a view to an edge in a mesh from an edge index.
@@ -120,8 +120,8 @@ impl Mesh2d {
     /// mesh.edges.push(Edge::new_untagged([0, 1]));
     ///
     /// let e = mesh.get_edge_view(0);
-    /// assert!((e.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((e.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn get_edge_view(&self, i: usize) -> EdgeView2d
     {
@@ -147,15 +147,16 @@ impl Mesh2d {
     /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
     ///
     /// let tri = mesh.make_tri_view(&mesh.triangles[0]);
-    /// assert!((tri.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((tri.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn make_tri_view(&self, tri: &Tri) -> TriView2d
     {
-        TriView2d {
-            p0: &self.vertices[tri.v[0]].point,
-            p1: &self.vertices[tri.v[1]].point,
-            p2: &self.vertices[tri.v[2]].point }
+        TriView2d { points: [
+            &self.vertices[tri.v[0]].point,
+            &self.vertices[tri.v[1]].point,
+            &self.vertices[tri.v[2]].point
+        ]}
     }
 
     /// Extracting a view to a triangle in a mesh from its index.
@@ -177,8 +178,8 @@ impl Mesh2d {
     /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
     ///
     /// let tri = mesh.get_tri_view(0);
-    /// assert!((tri.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((tri.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn get_tri_view(&self, i: usize) -> TriView2d
     {
@@ -205,16 +206,17 @@ impl Mesh2d {
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
     ///
     /// let quad = mesh.make_quad_view(&mesh.quadrangles[0]);
-    /// assert!((quad.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((quad.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn make_quad_view(&self, quad: &Quad) -> QuadView2d
     {
-        QuadView2d {
-            p0: &self.vertices[quad.v[0]].point,
-            p1: &self.vertices[quad.v[1]].point,
-            p2: &self.vertices[quad.v[2]].point,
-            p3: &self.vertices[quad.v[2]].point}
+        QuadView2d { points:[
+            &self.vertices[quad.v[0]].point,
+            &self.vertices[quad.v[1]].point,
+            &self.vertices[quad.v[2]].point,
+            &self.vertices[quad.v[2]].point
+        ]}
     }
 
     /// Making a view to a quadrangle in a mesh from the index of the quad.
@@ -237,8 +239,8 @@ impl Mesh2d {
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
     ///
     /// let quad = mesh.get_quad_view(0);
-    /// assert!((quad.p1.coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((quad.p1.coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn get_quad_view(&self, i: usize) -> QuadView2d
     {

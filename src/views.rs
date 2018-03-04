@@ -8,10 +8,8 @@ use super::base::*;
 
 /// Structure for defining a 2d edge view.
 pub struct EdgeView2d<'a> {
-    /// Reference to first point in the edge.
-    pub p0: &'a Pnt2d,
-    /// Reference to second point in the edge.
-    pub p1: &'a Pnt2d,
+    /// Reference to vertices of the edge.
+    pub points: [&'a Pnt2d; 2]
 }
 
 /// Structure for defining a 2d tri view.
@@ -30,12 +28,8 @@ pub struct EdgeView2d<'a> {
 /// P0             P1
 /// ```
 pub struct TriView2d<'a> {
-    /// Reference to first vertex of the triangle.
-    pub p0: &'a Pnt2d,
-    /// Reference to second vertex of the triangle.
-    pub p1: &'a Pnt2d,
-    /// Reference to third vertex of the triangle.
-    pub p2: &'a Pnt2d,
+    /// Reference to vertices of the triangle.
+    pub points: [&'a Pnt2d; 3]
 }
 
 /// Structure for defining a 2d quad view.
@@ -53,14 +47,8 @@ pub struct TriView2d<'a> {
 /// P0                P1
 /// ```
 pub struct QuadView2d<'a> {
-    /// Reference to first vertex of the quadrangle.
-    pub p0: &'a Pnt2d,
-    /// Reference to second vertex of the quadrangle.
-    pub p1: &'a Pnt2d,
-    /// Reference to third vertex of the quadrangle.
-    pub p2: &'a Pnt2d,
-    /// Reference to forth vertex of the quadrangle.
-    pub p3: &'a Pnt2d,
+    /// Reference to vertices of the quadrangle.
+    pub points: [&'a Pnt2d; 4]
 }
 
 //////////////////////////////////////////////////////////////
@@ -88,7 +76,7 @@ impl<'a> EdgeView2d<'a> {
     /// ```
     pub fn get_length(&self) -> f64
     {
-        self.p0.to(&self.p1).coords.norm()
+        self.points[0].to(&self.points[1]).coords.norm()
     }
 }
 
@@ -113,8 +101,8 @@ impl<'a> TriView2d<'a> {
     /// ```
     pub fn get_area(&self) -> f64
     {
-        let u01 = self.p0.to(&self.p1);
-        let u02 = self.p0.to(&self.p2);
+        let u01 = self.points[0].to(&self.points[1]);
+        let u02 = self.points[0].to(&self.points[2]);
 
         0.5 * (u01.coords.x * u02.coords.y - u01.coords.y * u02.coords.x).abs()
     }
@@ -140,10 +128,10 @@ impl<'a> TriView2d<'a> {
     /// ```
     pub fn get_barycenter(&self) -> Pnt2d
     {
-        let mut bary = self.p0.coords.clone();
+        let mut bary = self.points[0].coords.clone();
 
-        bary.add_in(1.0, &self.p1.coords)
-            .add_in(1.0, &self.p2.coords)
+        bary.add_in(1.0, &self.points[1].coords)
+            .add_in(1.0, &self.points[2].coords)
             .amplify_in(0.5);
 
         Pnt2d{ coords: bary }
@@ -158,10 +146,8 @@ impl<'a> TriView2d<'a> {
 
 /// Structure for defining a 3d edge view.
 pub struct EdgeView3d<'a> {
-    /// Reference to first point in the edge.
-    pub p0: &'a Pnt3d,
-    /// Reference to second point in the edge.
-    pub p1: &'a Pnt3d,
+    /// Reference to vertices of the edge.
+    pub points: [&'a Pnt3d; 2]
 }
 
 /// Structure for defining a 3d tri view.
@@ -180,12 +166,8 @@ pub struct EdgeView3d<'a> {
 /// P0             P1
 /// ```
 pub struct TriView3d<'a> {
-    /// Reference to first vertex of the triangle.
-    pub p0: &'a Pnt3d,
-    /// Reference to second vertex of the triangle.
-    pub p1: &'a Pnt3d,
-    /// Reference to third vertex of the triangle.
-    pub p2: &'a Pnt3d,
+    /// Reference to vertices of the triangle.
+    pub points: [&'a Pnt3d; 3]
 }
 
 /// Structure for defining a 3d quad view.
@@ -203,12 +185,24 @@ pub struct TriView3d<'a> {
 /// P0                P1
 /// ```
 pub struct QuadView3d<'a> {
-    /// Reference to first vertex of the quadrangle.
-    pub p0: &'a Pnt3d,
-    /// Reference to second vertex of the quadrangle.
-    pub p1: &'a Pnt3d,
-    /// Reference to third vertex of the quadrangle.
-    pub p2: &'a Pnt3d,
-    /// Reference to forth vertex of the quadrangle.
-    pub p3: &'a Pnt3d,
+    /// Reference to vertices of the quadrangle.
+    pub points: [&'a Pnt3d; 4]
 }
+
+/// Structure for defining a tetrahedron view.
+pub struct TetView3d<'a> {
+    /// Reference to vertices of the tetrahedron.
+    pub points: [&'a Pnt3d; 4]
+}
+
+/// Structure for defining a hexahedron view.
+pub struct HexaView3d<'a> {
+    /// Reference to vertices of the hexahedron.
+    pub points: [&'a Pnt3d; 8]
+}
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// 3D implementations.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////

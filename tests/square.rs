@@ -3,7 +3,7 @@ extern crate mersh;
 use mersh::mesh::*;
 use mersh::elements::*;
 
-// Helper function used to build triangular mesh of the unit square.
+// Helper function used to build a mesh of the unit square.
 fn make_square() -> mersh::mesh::Mesh2d
 {
     let mut mesh = mersh::mesh::Mesh2d::new();
