@@ -1,10 +1,10 @@
 /// Definition of basic fonctionalities on various geometrical obejcts.
 pub mod base;
 
-/// Data structures reprensenting mesh elements.
+/// Data structures representing mesh elements.
 pub mod elements;
 
-/// Defintion of meshes.
+/// Definition of meshes.
 pub mod mesh;
 
 /// Definition of view on mesh elements.

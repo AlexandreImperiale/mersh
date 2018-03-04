@@ -1,7 +1,5 @@
 extern crate std;
 
-use std::vec::*;
-
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 // Element data structures.
@@ -12,8 +10,6 @@ use std::vec::*;
 pub struct Edge {
     /// Associated index of vertices in mesh.
     pub v: [usize; 2],
-    /// Associated tags.
-    pub tags: Vec<usize>,
 }
 
 /// Triangle as a mesh element.
@@ -34,8 +30,6 @@ pub struct Edge {
 pub struct Tri {
     /// Associated index of vertices in mesh.
     pub v: [usize; 3],
-    /// Associated tag.
-    pub tags: Vec<usize>
 }
 
 /// Quadrangle as a mesh element.
@@ -53,68 +47,18 @@ pub struct Tri {
 pub struct Quad {
     /// Associated index of vertices in mesh.
     pub v: [usize; 4],
-    /// Associated tag.
-    pub tags: Vec<usize>
 }
 
 /// Tetrahedron as a mesh element.
 pub struct Tet {
     /// Associated index of vertices in mesh.
     pub v: [usize; 4],
-    /// Associated tag.
-    pub tags: Vec<usize>
 }
 
 /// Hexahedron as a mesh element.
 pub struct Hexa {
     /// Associated index of vertices in mesh.
     pub v: [usize; 8],
-    /// Associated tag.
-    pub tags: Vec<usize>
-}
-
-/// Prism as a mesh element.
-pub struct Prism {
-    /// Associated index of vertices in mesh.
-    pub v: [usize; 6],
-    /// Associated tag.
-    pub tags: Vec<usize>
-}
-
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-// Mesh element data structures.
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-
-/// Structure for regrouping 1d mesh elements.
-pub struct Elements1d {
-    /// Set of edges.
-    pub edges: Vec<Edge>
-}
-
-/// Structure for regrouping 2d mesh elements.
-pub struct Elements2d {
-    /// Set of 1d mesh elements.
-    pub line_elements: Elements1d,
-    /// Set of triangles.
-    pub tris: Vec<Tri>,
-    /// Set of quadrangles.
-    pub quads: Vec<Quad>,
-}
-
-/// Structure for regrouping 3d mesh elements.
-pub struct Elements3d {
-    /// Set 1d mesh elements.
-    pub line_elements: Elements1d,
-    /// Set 2d mesh elements.
-    pub surface_elements: Elements2d,
-    /// Set of tetrahedra.
-    pub tet: Vec<Tet>,
-    /// Set of hexahedra.
-    pub hexa: Vec<Hexa>,
-    /// Set of prisms.
-    pub prism: Vec<Prism>
 }
 
 //////////////////////////////////////////////////////////////
@@ -123,65 +67,77 @@ pub struct Elements3d {
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
-impl Elements1d {
-    // Creating a new set of mesh elements.
+impl Edge {
+    /// Creating a new untagged edge
     ///
     /// # Example
     /// ```
     /// use mersh::elements::*;
     ///
-    /// let elems = Elements1d::new();
+    /// let idx = [0, 13];
+    /// let edge = Edge::new_untagged(idx);
     ///
-    /// assert!(elems.edges.len() == 0);
+    /// assert!(edge.v == idx);
     /// ```
-    pub fn new() -> Elements1d
-    {
-        Elements1d { edges: Vec::new() }
-    }
+    pub fn new_untagged(v: [usize; 2]) -> Edge { Edge { v } }
 }
 
-impl Elements2d {
-    // Creating a new set of mesh elements.
+impl Tri {
+    /// Creating a new untagged tri
     ///
     /// # Example
     /// ```
     /// use mersh::elements::*;
     ///
-    /// let elems = Elements2d::new();
+    /// let idx = [0, 13, 24];
+    /// let tri = Tri::new_untagged(idx);
     ///
-    /// assert!(elems.line_elements.edges.len() == 0);
-    /// assert!(elems.tris.len() == 0);
-    /// assert!(elems.quads.len() == 0);
+    /// assert!(tri.v == idx);
     /// ```
-    pub fn new() -> Elements2d
-    {
-        Elements2d { line_elements: Elements1d::new(), tris: Vec::new(), quads: Vec::new() }
-    }
+    pub fn new_untagged(v: [usize; 3]) -> Tri { Tri { v } }
 }
 
-impl Elements3d {
-    // Creating a new set of mesh elements.
+impl Quad {
+    /// Creating a new untagged quad
     ///
     /// # Example
     /// ```
     /// use mersh::elements::*;
     ///
-    /// let elems = Elements3d::new();
+    /// let idx = [0, 13, 53, 21];
+    /// let quad = Quad::new_untagged(idx);
     ///
-    /// assert!(elems.line_elements.edges.len() == 0);
-    ///
-    /// assert!(elems.surface_elements.tris.len() == 0);
-    /// assert!(elems.surface_elements.quads.len() == 0);
-    ///
-    /// assert!(elems.tet.len() == 0);
-    /// assert!(elems.hexa.len() == 0);
-    /// assert!(elems.prism.len() == 0);
+    /// assert!(quad.v == idx);
     /// ```
-    pub fn new() -> Elements3d
-    {
-        Elements3d {
-             line_elements: Elements1d::new(),
-             surface_elements: Elements2d::new(),
-             tet: Vec::new(), hexa: Vec::new(), prism: Vec::new() }
-    }
+    pub fn new_untagged(v: [usize; 4]) -> Quad { Quad { v } }
+}
+
+impl Tet {
+    /// Creating a new untagged tetrahedra
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    ///
+    /// let idx = [0, 13, 34, 98];
+    /// let tet = Tet::new_untagged(idx);
+    ///
+    /// assert!(tet.v == idx);
+    /// ```
+    pub fn new_untagged(v: [usize; 4]) -> Tet { Tet { v } }
+}
+
+impl Hexa {
+    /// Creating a new untagged hexa
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    ///
+    /// let idx = [0, 13, 34, 98, 35, 69, 90, 43];
+    /// let hexa = Hexa::new_untagged(idx);
+    ///
+    /// assert!(hexa.v == idx);
+    /// ```
+    pub fn new_untagged(v: [usize; 8]) -> Hexa { Hexa { v } }
 }

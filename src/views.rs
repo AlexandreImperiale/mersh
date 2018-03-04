@@ -74,13 +74,14 @@ impl<'a> EdgeView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::new();
     ///
-    /// mesh.add_vertex(0., 0., vec![0])
-    ///     .add_vertex(1., 0., vec![0])
-    ///     .add_edge(0, 1, vec![0]);
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    /// mesh.edges.push(Edge::new_untagged([0, 1]));
     ///
     /// let e = mesh.get_edge_view(0);
     /// assert!((e.get_length() - 1.0) < 1e-10);
@@ -96,14 +97,15 @@ impl<'a> TriView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::new();
     ///
-    /// mesh.add_vertex(0., 0., vec![0])
-    ///     .add_vertex(1., 0., vec![0])
-    ///     .add_vertex(0., 1., vec![0])
-    ///     .add_tri(0, 1, 2, vec![0]);
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
     ///
     /// let tri = mesh.get_tri_view(0);
     /// let area = tri.get_area();
@@ -121,13 +123,15 @@ impl<'a> TriView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::new();
-    /// mesh.add_vertex(0., 0., vec![0])
-    ///     .add_vertex(1., 0., vec![0])
-    ///     .add_vertex(0., 1., vec![0])
-    ///     .add_tri(0, 1, 2, vec![0]);
+    ///
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
     ///
     /// let tri = mesh.get_tri_view(0);
     /// let bary = tri.get_barycenter();

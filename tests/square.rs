@@ -1,19 +1,25 @@
 extern crate mersh;
 
+use mersh::mesh::*;
+use mersh::elements::*;
+
 // Helper function used to build triangular mesh of the unit square.
 fn make_square() -> mersh::mesh::Mesh2d
 {
     let mut mesh = mersh::mesh::Mesh2d::new();
 
     // Adding points.
-    mesh.add_vertex(0., 0., vec![0])
-        .add_vertex(1., 0., vec![0])
-        .add_vertex(1., 1., vec![0])
-        .add_vertex(0., 1., vec![0]);
+    mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
+    mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    mesh.vertices.push(Vertex2d::new_untagged([1., 1.]));
+    mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
 
     // Adding triangles.
-    mesh.add_tri(0, 1, 2, vec![0])
-        .add_tri(2, 3, 0, vec![0]);
+    mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    mesh.triangles.push(Tri::new_untagged([2, 3, 0]));
+
+    // Adding quadrangle.
+    mesh.quadrangles.push(Quad::new_untagged([0, 1, 3, 2]));
 
     return mesh;
 }
