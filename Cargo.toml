@@ -1,6 +1,6 @@
 [package]
 name = "mersh"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["AlexandreImperiale <https://github.com/AlexandreImperiale>"]
 description = "A rust crate for manipulating meshes."
 documentation = "https://alexandreimperiale.github.io/mersh-doc/"

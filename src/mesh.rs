@@ -99,12 +99,15 @@ impl Mesh2d {
     /// ```
     pub fn make_edge_view(&self, edge: &Edge) -> EdgeView2d
     {
-         EdgeView2d { points: [&self.vertices[edge.v[0]].point, &self.vertices[edge.v[1]].point] }
+         EdgeView2d { points: [
+             &self.vertices[edge.v[0]].point,
+             &self.vertices[edge.v[1]].point
+         ]}
     }
 
-    /// Extracting a view to an edge in a mesh from an edge index.
+    /// Extracting a view to an edge in a mesh from its index.
     ///
-    /// * `i` - Index of the edge in the mesh.
+    /// * `idx` - Index of the edge in the mesh.
     ///
     /// # Example
     /// ```
@@ -123,9 +126,9 @@ impl Mesh2d {
     /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_edge_view(&self, i: usize) -> EdgeView2d
+    pub fn get_edge_view(&self, idx: usize) -> EdgeView2d
     {
-        self.make_edge_view(&self.edges[i])
+        self.make_edge_view(&self.edges[idx])
     }
 
     /// Making a view to a triangle in a mesh from the element itself.
@@ -161,7 +164,7 @@ impl Mesh2d {
 
     /// Extracting a view to a triangle in a mesh from its index.
     ///
-    /// * `i` - Index of the triangle in the mesh.
+    /// * `idx` - Index of the triangle in the mesh.
     ///
     /// # Example
     /// ```
@@ -181,9 +184,9 @@ impl Mesh2d {
     /// assert!((tri.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tri.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_tri_view(&self, i: usize) -> TriView2d
+    pub fn get_tri_view(&self, idx: usize) -> TriView2d
     {
-       self.make_tri_view(&self.triangles[i])
+       self.make_tri_view(&self.triangles[idx])
     }
 
     /// Making a view to a quadrangle in a mesh from the element itself.
@@ -206,8 +209,8 @@ impl Mesh2d {
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
     ///
     /// let quad = mesh.make_quad_view(&mesh.quadrangles[0]);
-    /// assert!((quad.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((quad.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[3].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[3].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn make_quad_view(&self, quad: &Quad) -> QuadView2d
     {
@@ -215,7 +218,7 @@ impl Mesh2d {
             &self.vertices[quad.v[0]].point,
             &self.vertices[quad.v[1]].point,
             &self.vertices[quad.v[2]].point,
-            &self.vertices[quad.v[2]].point
+            &self.vertices[quad.v[3]].point
         ]}
     }
 
@@ -242,9 +245,9 @@ impl Mesh2d {
     /// assert!((quad.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_quad_view(&self, i: usize) -> QuadView2d
+    pub fn get_quad_view(&self, idx: usize) -> QuadView2d
     {
-        self.make_quad_view(&self.quadrangles[i])
+        self.make_quad_view(&self.quadrangles[idx])
     }
 }
 
@@ -327,5 +330,315 @@ impl Mesh3d {
             vertices: Vec::new(),
             edges: Vec::new(), triangles: Vec::new(), quadrangles: Vec::new(),
             tetrahedra: Vec::new(), hexahedra: Vec::new() }
+    }
+
+    /// Creating a view to an edge in a mesh from the input edge itself.
+    ///
+    /// * `edge` - Edge in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
+    ///
+    /// mesh.edges.push(Edge::new_untagged([0, 1]));
+    ///
+    /// let e = mesh.make_edge_view(&mesh.edges[0]);
+    /// assert!((e.points[1].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn make_edge_view(&self, edge: &Edge) -> EdgeView3d
+    {
+         EdgeView3d { points: [
+             &self.vertices[edge.v[0]].point,
+             &self.vertices[edge.v[1]].point
+         ]}
+    }
+
+    /// Creating a view to an edge in a mesh from its index.
+    ///
+    /// * `idx` - Index of the edge in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
+    ///
+    /// mesh.edges.push(Edge::new_untagged([0, 1]));
+    ///
+    /// let e = mesh.get_edge_view(0);
+    /// assert!((e.points[1].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn get_edge_view(&self, idx: usize) -> EdgeView3d
+    {
+         self.make_edge_view(&self.edges[idx])
+    }
+
+    /// Making a view to a triangle in a mesh from the element itself.
+    ///
+    /// * `tri` - Triangle in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 2.]));
+    ///
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    ///
+    /// let tri = mesh.make_tri_view(&mesh.triangles[0]);
+    /// assert!((tri.points[2].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[2].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[2].coords.z - 2.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn make_tri_view(&self, tri: &Tri) -> TriView3d
+    {
+        TriView3d { points: [
+            &self.vertices[tri.v[0]].point,
+            &self.vertices[tri.v[1]].point,
+            &self.vertices[tri.v[2]].point
+        ]}
+    }
+
+    /// Making a view to a triangle in a mesh from its index.
+    ///
+    /// * `idx` - Index of the triangle in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 2.]));
+    ///
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    ///
+    /// let tri = mesh.get_tri_view(0);
+    /// assert!((tri.points[2].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[2].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tri.points[2].coords.z - 2.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn get_tri_view(&self, idx: usize) -> TriView3d
+    {
+        self.make_tri_view(&self.triangles[idx])
+    }
+
+    /// Making a view to a quadrangle in a mesh from the element itself.
+    ///
+    /// * `quad` - Quadrangle in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    ///
+    /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
+    ///
+    /// let quad = mesh.make_quad_view(&mesh.quadrangles[0]);
+    /// assert!((quad.points[3].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[3].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn make_quad_view(&self, quad: &Quad) -> QuadView3d
+    {
+        QuadView3d { points:[
+            &self.vertices[quad.v[0]].point,
+            &self.vertices[quad.v[1]].point,
+            &self.vertices[quad.v[2]].point,
+            &self.vertices[quad.v[3]].point
+        ]}
+    }
+
+    /// Making a view to a quadrangle in a mesh from its index.
+    ///
+    /// * `idx` - Index of the quadrangle in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    ///
+    /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
+    ///
+    /// let quad = mesh.get_quad_view(0);
+    /// assert!((quad.points[3].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[3].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn get_quad_view(&self, idx: usize) -> QuadView3d
+    {
+        self.make_quad_view(&self.quadrangles[idx])
+    }
+
+    /// Making a view to a tetrahedron in a mesh from the element itself.
+    ///
+    /// * `tet` - Tetrahedron in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    ///
+    /// mesh.tetrahedra.push(Tet::new_untagged([0, 1, 2, 3]));
+    ///
+    /// let tet = mesh.make_tet_view(&mesh.tetrahedra[0]);
+    /// assert!((tet.points[3].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tet.points[3].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tet.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn make_tet_view(&self, tet: &Tet) -> TetView3d
+    {
+        TetView3d { points:[
+            &self.vertices[tet.v[0]].point,
+            &self.vertices[tet.v[1]].point,
+            &self.vertices[tet.v[2]].point,
+            &self.vertices[tet.v[3]].point
+        ]}
+    }
+
+    /// Making a view to a tetrahedron in a mesh from its index.
+    ///
+    /// * `idx` - Index of the tetrahedron in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    ///
+    /// mesh.tetrahedra.push(Tet::new_untagged([0, 1, 2, 3]));
+    ///
+    /// let tet = mesh.get_tet_view(0);
+    /// assert!((tet.points[3].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tet.points[3].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((tet.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn get_tet_view(&self, idx: usize) -> TetView3d
+    {
+        self.make_tet_view(&self.tetrahedra[idx])
+    }
+
+    /// Making a view to a hexahedron in a mesh from the element itself.
+    ///
+    /// * `hexa` - Hexahedron in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 1.]));
+    ///
+    /// mesh.hexahedra.push(Hexa::new_untagged([0, 1, 2, 3, 4, 5, 6, 7]));
+    ///
+    /// let quad = mesh.make_hexa_view(&mesh.hexahedra[0]);
+    /// assert!((quad.points[7].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[7].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[7].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn make_hexa_view(&self, hexa: &Hexa) -> HexaView3d
+    {
+        let mut points: [&Pnt3d; 8] = unsafe { std::mem::uninitialized() };
+        for i in 0..8 { points[i] = &self.vertices[hexa.v[i]].point; }
+        HexaView3d { points }
+    }
+
+    /// Making a view to a hexahedron in a mesh from its index.
+    ///
+    /// * `idx` - Index of the hexahedron in the mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 1.]));
+    ///
+    /// mesh.hexahedra.push(Hexa::new_untagged([0, 1, 2, 3, 4, 5, 6, 7]));
+    ///
+    /// let quad = mesh.get_hexa_view(0);
+    /// assert!((quad.points[7].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[7].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[7].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn get_hexa_view(&self, idx: usize) -> HexaView3d
+    {
+        self.make_hexa_view(&self.hexahedra[idx])
     }
 }
