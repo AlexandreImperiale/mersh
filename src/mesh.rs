@@ -97,7 +97,7 @@ impl Mesh2d {
     /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_edge_view(&self, edge: &Edge) -> EdgeView2d
+    pub fn make_edge_view<'a>(&'a self, edge: &Edge) -> EdgeView2d<'a>
     {
          EdgeView2d { points: [
              &self.vertices[edge.v[0]].point,
@@ -126,7 +126,7 @@ impl Mesh2d {
     /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_edge_view(&self, idx: usize) -> EdgeView2d
+    pub fn get_edge_view<'a>(&'a self, idx: usize) -> EdgeView2d<'a>
     {
         self.make_edge_view(&self.edges[idx])
     }
@@ -153,7 +153,7 @@ impl Mesh2d {
     /// assert!((tri.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tri.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_tri_view(&self, tri: &Tri) -> TriView2d
+    pub fn make_tri_view<'a>(&'a self, tri: &Tri) -> TriView2d<'a>
     {
         TriView2d { points: [
             &self.vertices[tri.v[0]].point,
@@ -184,7 +184,7 @@ impl Mesh2d {
     /// assert!((tri.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tri.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_tri_view(&self, idx: usize) -> TriView2d
+    pub fn get_tri_view<'a>(&'a self, idx: usize) -> TriView2d<'a>
     {
        self.make_tri_view(&self.triangles[idx])
     }
@@ -212,7 +212,7 @@ impl Mesh2d {
     /// assert!((quad.points[3].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[3].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_quad_view(&self, quad: &Quad) -> QuadView2d
+    pub fn make_quad_view<'a>(&'a self, quad: &Quad) -> QuadView2d<'a>
     {
         QuadView2d { points:[
             &self.vertices[quad.v[0]].point,
@@ -245,7 +245,7 @@ impl Mesh2d {
     /// assert!((quad.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_quad_view(&self, idx: usize) -> QuadView2d
+    pub fn get_quad_view<'a>(&'a self, idx: usize) -> QuadView2d<'a>
     {
         self.make_quad_view(&self.quadrangles[idx])
     }
@@ -353,7 +353,7 @@ impl Mesh3d {
     /// assert!((e.points[1].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_edge_view(&self, edge: &Edge) -> EdgeView3d
+    pub fn make_edge_view<'a>(&'a self, edge: &Edge) -> EdgeView3d<'a>
     {
          EdgeView3d { points: [
              &self.vertices[edge.v[0]].point,
@@ -383,7 +383,7 @@ impl Mesh3d {
     /// assert!((e.points[1].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((e.points[1].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_edge_view(&self, idx: usize) -> EdgeView3d
+    pub fn get_edge_view<'a>(&'a self, idx: usize) -> EdgeView3d<'a>
     {
          self.make_edge_view(&self.edges[idx])
     }
@@ -411,7 +411,7 @@ impl Mesh3d {
     /// assert!((tri.points[2].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tri.points[2].coords.z - 2.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_tri_view(&self, tri: &Tri) -> TriView3d
+    pub fn make_tri_view<'a>(&'a self, tri: &Tri) -> TriView3d<'a>
     {
         TriView3d { points: [
             &self.vertices[tri.v[0]].point,
@@ -443,7 +443,7 @@ impl Mesh3d {
     /// assert!((tri.points[2].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tri.points[2].coords.z - 2.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_tri_view(&self, idx: usize) -> TriView3d
+    pub fn get_tri_view<'a>(&'a self, idx: usize) -> TriView3d<'a>
     {
         self.make_tri_view(&self.triangles[idx])
     }
@@ -472,7 +472,7 @@ impl Mesh3d {
     /// assert!((quad.points[3].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_quad_view(&self, quad: &Quad) -> QuadView3d
+    pub fn make_quad_view<'a>(&'a self, quad: &Quad) -> QuadView3d<'a>
     {
         QuadView3d { points:[
             &self.vertices[quad.v[0]].point,
@@ -506,7 +506,7 @@ impl Mesh3d {
     /// assert!((quad.points[3].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_quad_view(&self, idx: usize) -> QuadView3d
+    pub fn get_quad_view<'a>(&'a self, idx: usize) -> QuadView3d<'a>
     {
         self.make_quad_view(&self.quadrangles[idx])
     }
@@ -535,7 +535,7 @@ impl Mesh3d {
     /// assert!((tet.points[3].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tet.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_tet_view(&self, tet: &Tet) -> TetView3d
+    pub fn make_tet_view<'a>(&'a self, tet: &Tet) -> TetView3d<'a>
     {
         TetView3d { points:[
             &self.vertices[tet.v[0]].point,
@@ -569,7 +569,7 @@ impl Mesh3d {
     /// assert!((tet.points[3].coords.y - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((tet.points[3].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_tet_view(&self, idx: usize) -> TetView3d
+    pub fn get_tet_view<'a>(&'a self, idx: usize) -> TetView3d<'a>
     {
         self.make_tet_view(&self.tetrahedra[idx])
     }
@@ -602,7 +602,7 @@ impl Mesh3d {
     /// assert!((quad.points[7].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[7].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn make_hexa_view(&self, hexa: &Hexa) -> HexaView3d
+    pub fn make_hexa_view<'a>(&'a self, hexa: &Hexa) -> HexaView3d<'a>
     {
         let mut points: [&Pnt3d; 8] = unsafe { std::mem::uninitialized() };
         for i in 0..8 { points[i] = &self.vertices[hexa.v[i]].point; }
@@ -637,7 +637,7 @@ impl Mesh3d {
     /// assert!((quad.points[7].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[7].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn get_hexa_view(&self, idx: usize) -> HexaView3d
+    pub fn get_hexa_view<'a>(&'a self, idx: usize) -> HexaView3d<'a>
     {
         self.make_hexa_view(&self.hexahedra[idx])
     }

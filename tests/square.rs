@@ -46,3 +46,4 @@ fn square_view_triangles() {
     assert!((mesh.get_tri_view(0).get_area() - 50.0).abs() < 1e-10);
     assert!((mesh.get_tri_view(1).get_area() - 50.0).abs() < 1e-10);
 }
+
