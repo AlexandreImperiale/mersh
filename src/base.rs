@@ -247,7 +247,7 @@ impl Pnt2d {
     /// ```
     pub fn new(x: f64, y: f64) -> Self
     {
-        Pnt2d{ coords: Coord2d { x, y} }
+        Pnt2d{ coords: Coord2d { x, y } }
     }
 
     /// Computing distance to another 2d points.
@@ -333,7 +333,7 @@ impl Vec2d {
     /// ```
     pub fn new(x: f64, y: f64) -> Self
     {
-        Vec2d{ coords: Coord2d { x, y} }
+        Vec2d{ coords: Coord2d { x, y } }
     }
 }
 
@@ -618,7 +618,7 @@ impl Pnt3d {
     /// ```
     pub fn new(x: f64, y: f64, z: f64) -> Self
     {
-        Pnt3d{ coords: Coord3d { x, y, z} }
+        Pnt3d{ coords: Coord3d { x, y, z } }
     }
 
     /// Computing distance to another 3d points.
@@ -706,7 +706,7 @@ impl Vec3d {
     /// ```
     pub fn new(x: f64, y: f64, z: f64) -> Self
     {
-        Vec3d{ coords: Coord3d { x, y, z} }
+        Vec3d{ coords: Coord3d { x, y, z } }
     }
 
     /// Creating a vector by applying cross product. Out-of-place function.

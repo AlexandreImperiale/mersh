@@ -311,6 +311,29 @@ pub struct HexaView3d<'a> {
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
+impl<'a> EdgeView3d<'a> {
+    /// Computing length of a 3d view to an edge in a mesh.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
+    /// mesh.edges.push(Edge::new_untagged([0, 1]));
+    ///
+    /// let e = mesh.get_edge_view(0);
+    /// assert!((e.get_length() - 1.0) < 1e-10);
+    /// ```
+    pub fn get_length(&self) -> f64
+    {
+        self.points[0].to(self.points[1]).coords.norm()
+    }
+}
+
 impl<'a> TriView3d<'a> {
     /// Computing normal vector associated to a triangle.
     ///
@@ -339,6 +362,35 @@ impl<'a> TriView3d<'a> {
         let u : Vec3d = self.points[0].to(self.points[1]);
         let v : Vec3d = self.points[0].to(self.points[2]);
         u.cross_out(&v).normalize_out()
+    }
+
+    /// Accessing view to a local edge in a triangle
+    ///
+    /// * `edge_name` - Local name of the edge in the triangle.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 0.0, 0.0]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 1.0, 0.0]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([2.0, 0.0, 0.0]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    ///
+    /// let e = mesh.get_tri_view(0).get_edge_view(EdgeInTri::Edge20);
+    ///
+    /// assert!((e.get_length() - 2.0).abs() < 1e-10);
+    /// ```
+    pub fn get_edge_view<'b>(&'b self, edge_name: EdgeInTri) -> EdgeView3d<'a>
+    {
+        match edge_name {
+            EdgeInTri::Edge01 => EdgeView3d{ points: [self.points[0], self.points[1]] },
+            EdgeInTri::Edge12 => EdgeView3d{ points: [self.points[1], self.points[2]] },
+            EdgeInTri::Edge20 => EdgeView3d{ points: [self.points[2], self.points[0]] },
+        }
     }
 }
 
