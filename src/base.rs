@@ -39,44 +39,6 @@ pub struct Dir2d {
 
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-// 3D data structure.
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-
-/// Structure for defining 3d coordinates.
-#[derive(Clone, Default, Debug)]
-pub struct Coord3d {
-    /// First coordinate.
-    pub x: f64,
-    /// Second coordinate.
-    pub y: f64,
-    /// Third coordinate.
-    pub z: f64,
-}
-
-/// Structure for defining 3d points.
-#[derive(Clone, Default, Debug)]
-pub struct Pnt3d {
-    /// Coordinates associated to the point.
-    pub coords: Coord3d,
-}
-
-/// Structure for defining 3d vectors.
-#[derive(Clone, Default, Debug)]
-pub struct Vec3d {
-    /// Coordinates associated to the vector.
-    pub coords: Coord3d,
-}
-
-/// Structure for defining 3d directions (i.e. unit vectors).
-#[derive(Clone, Default, Debug)]
-pub struct Dir3d {
-    /// Coordinates associated to the direction.
-    pub coords: Coord3d,
-}
-
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
 // 2D implementations.
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -313,7 +275,7 @@ impl Pnt2d {
         self.coords.add_out(-1.0, &q.coords).norm()
     }
 
-    /// Creating new point by adding an input vector.
+    /// Creating new point by applying translation defined from an input vector.
     ///
     /// * `v` - Input vector used to create point.
     ///
@@ -323,12 +285,12 @@ impl Pnt2d {
     ///
     /// let p = Pnt2d::new(1.45, 3.0);
     /// let v = Vec2d::new(-0.1, 4.09);
-    /// let q = p.add(&v);
+    /// let q = p.translate_by(&v);
     ///
     /// assert!((q.coords.x - p.coords.x - v.coords.x).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((q.coords.y - p.coords.y - v.coords.y).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn add(&self, v: &Vec2d) -> Self
+    pub fn translate_by(&self, v: &Vec2d) -> Self
     {
         Pnt2d { coords: self.coords.add_out(1.0, &v.coords) }
     }
@@ -376,69 +338,61 @@ impl Vec2d {
 }
 
 impl Dir2d {
-    /// Creating new direction a point to another. Direction coordinates are computed by normalizing
-    /// the vector linking input points. If the distence between input points are close to zero,
-    /// the direction provided by default is Ex = (1, 0).
-    ///
-    /// * `p` - First point.
-    /// * `q` - Second point.
-    ///
-    /// # Example
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let p = Pnt2d::default();
-    /// let q = Pnt2d::new(3.0, 0.0);
-    /// let d = Dir2d::new(&p, &q);
-    /// assert!(d.coords.equals(&Coord2d { x: 1.0, y: 0.0}, GEOMETRICAL_TOLERANCE));
-    /// ```
-    ///
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let p = Pnt2d::default();
-    /// let d = Dir2d::new(&p, &p);
-    /// assert!(d.coords.equals(&Coord2d { x: 1.0, y: 0.0}, GEOMETRICAL_TOLERANCE));
-    /// ```
-    pub fn new(p: &Pnt2d, q: &Pnt2d) -> Self
-    {
-        let v = p.to(q);
-        let norm = v.coords.norm();
-        if norm < GEOMETRICAL_TOLERANCE {
-            Dir2d{ coords: Coord2d { x: 1.0, y: 0.0} }
-        } else {
-            Dir2d{ coords: v.coords.amplify_out(1.0 / norm) }
-        }
-    }
-
     /// Creating orthogonal direction so that the cross product between the directions belongs to
-    /// positive half space.
+    /// positive half space. Out-of-place function.
     ///
     /// # Example
     /// ```
     /// use mersh::base::*;
     /// use std::f64;
     ///
-    /// let p = Pnt2d::default();
-    /// let q = Pnt2d::new(1.0, 1.0);
-    /// let d0 = Dir2d::new(&p, &q); // => Direction is (1 / sqrt(2), 1 / sqrt(2))
-    /// let d1 = d0.ortho(); // => Direction is (-1 / sqrt(2), 1 / sqrt(2))
+    /// let d0 = Dir2d { coords: Coord2d { x: (0.5 as f64).sqrt(), y: (0.5 as f64).sqrt() } };
+    /// let d1 = d0.orthogonal_out();
     ///
     /// assert!(d1.coords.equals(&Coord2d { x: -(0.5 as f64).sqrt(), y: (0.5 as f64).sqrt()}, GEOMETRICAL_TOLERANCE));
     /// ```
-    ///
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let p = Pnt2d::default();
-    /// let ex = Dir2d::new(&p, &p); // => Direction is by default Ex = (1, 0).
-    /// let ey = ex.ortho(); // Direction is Ey = (0, 1).
-    /// assert!(ey.coords.equals(&Coord2d { x: 0.0, y: 1.0}, GEOMETRICAL_TOLERANCE));
-    /// ```
-    pub fn ortho(&self) -> Self
+    pub fn orthogonal_out(&self) -> Self
     {
         Dir2d { coords: Coord2d { x: -self.coords.y, y: self.coords.x } }
     }
+}
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// 3D data structure.
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+/// Structure for defining 3d coordinates.
+#[derive(Clone, Default, Debug)]
+pub struct Coord3d {
+    /// First coordinate.
+    pub x: f64,
+    /// Second coordinate.
+    pub y: f64,
+    /// Third coordinate.
+    pub z: f64,
+}
+
+/// Structure for defining 3d points.
+#[derive(Clone, Default, Debug)]
+pub struct Pnt3d {
+    /// Coordinates associated to the point.
+    pub coords: Coord3d,
+}
+
+/// Structure for defining 3d vectors.
+#[derive(Clone, Default, Debug)]
+pub struct Vec3d {
+    /// Coordinates associated to the vector.
+    pub coords: Coord3d,
+}
+
+/// Structure for defining 3d directions (i.e. unit vectors).
+#[derive(Clone, Default, Debug)]
+pub struct Dir3d {
+    /// Coordinates associated to the direction.
+    pub coords: Coord3d,
 }
 
 //////////////////////////////////////////////////////////////
@@ -692,7 +646,7 @@ impl Pnt3d {
         self.coords.add_out(-1.0, &q.coords).norm()
     }
 
-    /// Creating new point by adding an input vector.
+    /// Creating new point by applying translation defined from an input vector.
     ///
     /// * `v` - Input vector used to create point.
     ///
@@ -702,13 +656,13 @@ impl Pnt3d {
     ///
     /// let p = Pnt3d::new(1.45, 3.0, 2.0);
     /// let v = Vec3d::new(-0.1, 4.09, 0.98);
-    /// let q = p.add(&v);
+    /// let q = p.translate_by(&v);
     ///
     /// assert!((q.coords.x - p.coords.x - v.coords.x).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((q.coords.y - p.coords.y - v.coords.y).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((q.coords.z - p.coords.z - v.coords.z).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
-    pub fn add(&self, v: &Vec3d) -> Self
+    pub fn translate_by(&self, v: &Vec3d) -> Self
     {
         Pnt3d { coords: self.coords.add_out(1.0, &v.coords) }
     }
@@ -754,15 +708,42 @@ impl Vec3d {
     {
         Vec3d{ coords: Coord3d { x, y, z} }
     }
-}
 
-impl Dir3d {
-    /// Creating new direction a point to another. Direction coordinates are computed by normalizing
-    /// the vector linking input points. If the distence between input points are close to zero,
-    /// the direction provided by default is Ex = (1, 0, 0).
+    /// Creating a vector by applying cross product. Out-of-place function.
     ///
-    /// * `p` - First point.
-    /// * `q` - Second point.
+    /// * `v` - Second vector used for cross product.
+    ///
+    /// # Example 0
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let u = Vec3d::new(1.0, 0.0, 0.0);
+    /// let v = Vec3d::new(1.0, 2.0, 0.0);
+    /// let w = u.cross_out(&v);
+    ///
+    /// assert!(w.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z: 2.0 }, GEOMETRICAL_TOLERANCE));
+    /// ```
+    ///
+    /// # Example 1
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let u = Vec3d::new(1.0, 0.0, 0.0);
+    /// let v = Vec3d::new(1.0, 2.0, 0.0);
+    /// let w = v.cross_out(&u);
+    ///
+    /// assert!(w.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z: -2.0 }, GEOMETRICAL_TOLERANCE));
+    /// ```
+    pub fn cross_out(&self, v: &Vec3d) -> Vec3d
+    {
+        Vec3d::new(
+            self.coords.y * v.coords.z - self.coords.z * v.coords.y,
+            self.coords.z * v.coords.x - self.coords.x * v.coords.z,
+            self.coords.x * v.coords.y - self.coords.y * v.coords.x,
+        )
+    }
+
+    /// Creating new direction by normalizing the vector. Out-of-place function.
     ///
     /// # Example
     /// ```
@@ -770,25 +751,19 @@ impl Dir3d {
     ///
     /// let p = Pnt3d::default();
     /// let q = Pnt3d::new(0.0, 3.0, 0.0);
-    /// let d = Dir3d::new(&p, &q);
+    ///
+    /// let u = p.to(&q);
+    /// let v = q.to(&p);
+    ///
+    /// let d = u.normalize_out();
+    /// let l = v.normalize_out();
+    ///
     /// assert!(d.coords.equals(&Coord3d { x: 0.0, y: 1.0, z: 0.0}, GEOMETRICAL_TOLERANCE));
+    /// assert!(l.coords.equals(&Coord3d { x: 0.0, y:-1.0, z: 0.0}, GEOMETRICAL_TOLERANCE));
     /// ```
-    ///
-    /// ```
-    /// use mersh::base::*;
-    ///
-    /// let p = Pnt3d::new(1.0, 2.0, 3.0);
-    /// let d = Dir3d::new(&p, &p);
-    /// assert!(d.coords.equals(&Coord3d { x: 1.0, y: 0.0, z: 0.0 }, GEOMETRICAL_TOLERANCE));
-    /// ```
-    pub fn new(p: &Pnt3d, q: &Pnt3d) -> Self
+    pub fn normalize_out(&self) -> Dir3d
     {
-        let v = p.to(q);
-        let norm = v.coords.norm();
-        if norm < GEOMETRICAL_TOLERANCE {
-            Dir3d{ coords: Coord3d { x: 1.0, y: 0.0, z: 0.0 } }
-        } else {
-            Dir3d{ coords: v.coords.amplify_out(1.0 / norm) }
-        }
+        let norm = self.coords.norm();
+        Dir3d{ coords: self.coords.amplify_out(1.0 / norm) }
     }
 }
