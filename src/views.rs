@@ -38,7 +38,7 @@ pub struct TriView2d<'a> {
 /// Local numbering order of quadrangles is :
 ///
 /// ```text
-/// P2                P3
+/// P3                P2
 ///    * ---------- *
 ///    |            |
 ///    |            |
@@ -77,11 +77,45 @@ impl<'a> EdgeView2d<'a> {
     /// ```
     pub fn get_length(&self) -> f64
     {
-        self.points[0].to(&self.points[1]).coords.norm()
+        self.points[0].to(self.points[1]).coords.norm()
     }
 }
 
 impl<'a> TriView2d<'a> {
+    /// Accessing view to a local edge in a triangle
+    ///
+    /// * `edge_name` - Local name of the edge in the triangle.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh2d::new();
+    ///
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    ///
+    /// let e01 = mesh
+    ///     .get_tri_view(0)
+    ///     .get_edge_view(EdgeInTri::Edge01);
+    ///
+    /// assert!((e01.points[0].coords.x).abs() < 1e-10);
+    /// assert!((e01.points[0].coords.y).abs() < 1e-10);
+    /// assert!((e01.points[1].coords.x - 1.).abs() < 1e-10);
+    /// assert!((e01.points[1].coords.y).abs() < 1e-10);
+    /// ```
+    pub fn get_edge_view<'b>(&'b self, edge_name: EdgeInTri) -> EdgeView2d<'a>
+    {
+         match edge_name {
+             EdgeInTri::Edge01 => EdgeView2d{ points:[self.points[0], self.points[1]] },
+             EdgeInTri::Edge12 => EdgeView2d{ points:[self.points[1], self.points[2]] },
+             EdgeInTri::Edge20 => EdgeView2d{ points:[self.points[2], self.points[0]] },
+         }
+    }
+
     /// Computing area of a 2d view of a triangle in a mesh.
     ///
     /// # Example
@@ -102,8 +136,8 @@ impl<'a> TriView2d<'a> {
     /// ```
     pub fn get_area(&self) -> f64
     {
-        let u01 = self.points[0].to(&self.points[1]);
-        let u02 = self.points[0].to(&self.points[2]);
+        let u01 = self.points[0].to(self.points[1]);
+        let u02 = self.points[0].to(self.points[2]);
 
         0.5 * (u01.coords.x * u02.coords.y - u01.coords.y * u02.coords.x).abs()
     }
@@ -137,8 +171,12 @@ impl<'a> TriView2d<'a> {
 
         Pnt2d{ coords: bary }
     }
+}
 
-    /// Accessing view to a local edge in a triangle
+impl<'a> QuadView2d<'a> {
+    /// Accessing view to a local edge in a quadrangle
+    ///
+    /// * `edge_name` - Local name of the edge in the quadrangle.
     ///
     /// # Example
     /// ```
@@ -149,25 +187,58 @@ impl<'a> TriView2d<'a> {
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 1.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
     ///
-    /// let e01 = mesh
-    ///     .get_tri_view(0)
-    ///     .get_edge_view(EdgeInTri::Edge01);
+    /// let e23 = mesh
+    ///     .get_quad_view(0)
+    ///     .get_edge_view(EdgeInQuad::Edge23);
     ///
-    /// assert!((e01.points[0].coords.x).abs() < 1e-10);
-    /// assert!((e01.points[0].coords.y).abs() < 1e-10);
-    /// assert!((e01.points[1].coords.x - 1.).abs() < 1e-10);
-    /// assert!((e01.points[1].coords.y).abs() < 1e-10);
+    /// assert!((e23.points[0].coords.x - 1.).abs() < 1e-10);
+    /// assert!((e23.points[0].coords.y - 1.).abs() < 1e-10);
+    /// assert!((e23.points[1].coords.x).abs() < 1e-10);
+    /// assert!((e23.points[1].coords.y - 1.).abs() < 1e-10);
     /// ```
-    pub fn get_edge_view<'b>(&'b self, edge_name: EdgeInTri) -> EdgeView2d<'a>
+    pub fn get_edge_view<'b>(&'b self, edge_name: EdgeInQuad) -> EdgeView2d<'a>
     {
          match edge_name {
-             EdgeInTri::Edge01 => EdgeView2d{ points:[self.points[0], self.points[1]] },
-             EdgeInTri::Edge12 => EdgeView2d{ points:[self.points[1], self.points[2]] },
-             EdgeInTri::Edge20 => EdgeView2d{ points:[self.points[2], self.points[0]] },
+             EdgeInQuad::Edge01 => EdgeView2d{ points:[self.points[0], self.points[1]] },
+             EdgeInQuad::Edge12 => EdgeView2d{ points:[self.points[1], self.points[2]] },
+             EdgeInQuad::Edge23 => EdgeView2d{ points:[self.points[2], self.points[3]] },
+             EdgeInQuad::Edge30 => EdgeView2d{ points:[self.points[3], self.points[0]] },
          }
+    }
+
+    /// Accessing view to a local triangle in a quadrangle
+    ///
+    /// * `tri_name` - Local name of the triangle in the quadrangle.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh2d::new();
+    ///
+    /// mesh.vertices.push(Vertex2d::new_untagged([0.0, 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([2.5, 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([2.5, 1.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([0.0, 1.]));
+    /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
+    ///
+    /// let t013 = mesh.get_quad_view(0).get_tri_view(TriInQuad::Tri013);
+    /// let t123 = mesh.get_quad_view(0).get_tri_view(TriInQuad::Tri123);
+    /// let area = t013.get_area() + t123.get_area();
+    ///
+    /// assert!((area - 2.5).abs() < 1e-10);
+    /// ```
+    pub fn get_tri_view<'b>(&'b self, tri_name: TriInQuad) -> TriView2d<'a>
+    {
+        match tri_name {
+            TriInQuad::Tri013 => TriView2d{ points: [self.points[0], self.points[1], self.points[3]] },
+            TriInQuad::Tri123 => TriView2d{ points: [self.points[1], self.points[2], self.points[3]] },
+        }
     }
 }
 
@@ -239,3 +310,35 @@ pub struct HexaView3d<'a> {
 // 3D implementations.
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
+impl<'a> TriView3d<'a> {
+    /// Computing normal vector associated to a triangle.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh3d::new();
+    ///
+    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 0.0, 0.0]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 1.0, 0.0]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1.0, 0.0, 0.0]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 2, 1]));
+    ///
+    /// let n = mesh.get_tri_view(0).get_normal();
+    /// let m = mesh.get_tri_view(1).get_normal();
+    ///
+    /// assert!(n.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z:-1.0 }, GEOMETRICAL_TOLERANCE));
+    /// assert!(m.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z: 1.0 }, GEOMETRICAL_TOLERANCE));
+    /// ```
+    pub fn get_normal(&self) -> Dir3d
+    {
+        let u : Vec3d = self.points[0].to(self.points[1]);
+        let v : Vec3d = self.points[0].to(self.points[2]);
+        u.cross_out(&v).normalize_out()
+    }
+}
+

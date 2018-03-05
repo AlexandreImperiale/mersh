@@ -22,8 +22,8 @@ fn area_triangle() {
     let u = mersh::base::Vec2d::new(3.4, -9.6);
 
     // Recomputing area.
-    let q0 = p0.add(&u);
-    let q1 = p1.add(&u);
-    let q2 = p2.add(&u);
+    let q0 = p0.translate_by(&u);
+    let q1 = p1.translate_by(&u);
+    let q2 = p2.translate_by(&u);
     assert!((compute_triangle_area(&q0, &q1, &q2) - 0.5).abs() < 1e-10);
 }
