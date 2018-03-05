@@ -1,4 +1,5 @@
 use super::base::*;
+use super::elements::*;
 
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -136,6 +137,38 @@ impl<'a> TriView2d<'a> {
 
         Pnt2d{ coords: bary }
     }
+
+    /// Accessing view to a local edge in a triangle
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::elements::*;
+    /// use mersh::mesh::*;
+    ///
+    /// let mut mesh = Mesh2d::new();
+    ///
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
+    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    ///
+    /// let e01 = mesh
+    ///     .get_tri_view(0)
+    ///     .get_edge_view(EdgeInTri::Edge01);
+    ///
+    /// assert!((e01.points[0].coords.x).abs() < 1e-10);
+    /// assert!((e01.points[0].coords.y).abs() < 1e-10);
+    /// assert!((e01.points[1].coords.x - 1.).abs() < 1e-10);
+    /// assert!((e01.points[1].coords.y).abs() < 1e-10);
+    /// ```
+    pub fn get_edge_view<'b>(&'b self, edge_name: EdgeInTri) -> EdgeView2d<'a>
+    {
+         match edge_name {
+             EdgeInTri::Edge01 => EdgeView2d{ points:[self.points[0], self.points[1]] },
+             EdgeInTri::Edge12 => EdgeView2d{ points:[self.points[1], self.points[2]] },
+             EdgeInTri::Edge20 => EdgeView2d{ points:[self.points[2], self.points[0]] },
+         }
+    }
 }
 
 //////////////////////////////////////////////////////////////
@@ -175,7 +208,7 @@ pub struct TriView3d<'a> {
 /// Local numbering order of quadrangles is :
 ///
 /// ```text
-/// P2                P3
+/// P3                P2
 ///    * ---------- *
 ///    |            |
 ///    |            |

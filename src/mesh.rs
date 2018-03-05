@@ -203,7 +203,7 @@ impl Mesh2d {
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 1.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
     ///
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
@@ -236,7 +236,7 @@ impl Mesh2d {
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
+    /// mesh.vertices.push(Vertex2d::new_untagged([1., 1.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
     ///
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
@@ -462,7 +462,7 @@ impl Mesh3d {
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
     ///
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
@@ -496,7 +496,7 @@ impl Mesh3d {
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
     ///
     /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
@@ -588,17 +588,17 @@ impl Mesh3d {
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
     ///
     /// mesh.hexahedra.push(Hexa::new_untagged([0, 1, 2, 3, 4, 5, 6, 7]));
     ///
     /// let quad = mesh.make_hexa_view(&mesh.hexahedra[0]);
-    /// assert!((quad.points[7].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[7].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[7].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[7].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
@@ -623,17 +623,17 @@ impl Mesh3d {
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 0.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 1., 1.]));
+    /// mesh.vertices.push(Vertex3d::new_untagged([0., 1., 1.]));
     ///
     /// mesh.hexahedra.push(Hexa::new_untagged([0, 1, 2, 3, 4, 5, 6, 7]));
     ///
     /// let quad = mesh.get_hexa_view(0);
-    /// assert!((quad.points[7].coords.x - 1.).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((quad.points[7].coords.x - 0.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[7].coords.y - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((quad.points[7].coords.z - 1.).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
