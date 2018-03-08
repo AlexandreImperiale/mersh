@@ -217,7 +217,7 @@ impl Coord2d {
     /// ```
     pub fn equals(&self, c: &Coord2d, eps: f64) -> bool
     {
-        self.add_out(-1.0, &c).sq_norm() < eps
+        self.add_out(-1.0, c).sq_norm() < eps
     }
 
     /// Computing square norm of a 2d coordinate.
@@ -603,7 +603,7 @@ impl Coord3d {
     /// ```
     pub fn equals(&self, c: &Coord3d, eps: f64) -> bool
     {
-        self.add_out(-1.0, &c).sq_norm() < eps
+        self.add_out(-1.0, c).sq_norm() < eps
     }
 
     /// Computing square norm of a 3d coordinate.

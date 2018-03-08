@@ -56,9 +56,9 @@ impl Mesh2d {
     /// }
     ///
     /// ```
-    pub fn push_tagged_vertex(&mut self, point: Pnt2d, name: &String)
+    pub fn push_tagged_vertex(&mut self, point: Pnt2d, name: &str)
     {
-       push_tagged_element(&mut self.vertices, &mut self.vertices_tags, point, &name);
+       push_tagged_element(&mut self.vertices, &mut self.vertices_tags, point, name);
     }
 
     /// Creating an tagged edge in the mesh.
@@ -84,9 +84,9 @@ impl Mesh2d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_edge(&mut self, edge: Edge, name: &String)
+    pub fn push_tagged_edge(&mut self, edge: Edge, name: &str)
     {
-       push_tagged_element(&mut self.edges, &mut self.edges_tags, edge, &name);
+       push_tagged_element(&mut self.edges, &mut self.edges_tags, edge, name);
     }
 
     /// Creating a view to an edge in a mesh from the input edge itself.
@@ -138,9 +138,9 @@ impl Mesh2d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_triangle(&mut self, tri: Tri, name: &String)
+    pub fn push_tagged_triangle(&mut self, tri: Tri, name: &str)
     {
-       push_tagged_element(&mut self.triangles, &mut self.triangles_tags, tri, &name);
+       push_tagged_element(&mut self.triangles, &mut self.triangles_tags, tri, name);
     }
 
     /// Making a view to a triangle in a mesh from the element itself.
@@ -194,9 +194,9 @@ impl Mesh2d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_quadrangle(&mut self, quad: Quad, name: &String)
+    pub fn push_tagged_quadrangle(&mut self, quad: Quad, name: &str)
     {
-       push_tagged_element(&mut self.quadrangles, &mut self.quadrangles_tags, quad, &name);
+       push_tagged_element(&mut self.quadrangles, &mut self.quadrangles_tags, quad, name);
     }
 
     /// Making a view to a quadrangle in a mesh from the element itself.
@@ -250,7 +250,6 @@ pub struct Mesh3d {
     pub hexahedra_tags: TagSet,
 }
 
-
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 // 3D implementations.
@@ -283,9 +282,9 @@ impl Mesh3d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_vertex(&mut self, point: Pnt3d, name: &String)
+    pub fn push_tagged_vertex(&mut self, point: Pnt3d, name: &str)
     {
-        push_tagged_element(&mut self.vertices, &mut self.vertices_tags, point, &name);
+        push_tagged_element(&mut self.vertices, &mut self.vertices_tags, point, name);
     }
 
     /// Creating an tagged edge in the mesh.
@@ -311,9 +310,9 @@ impl Mesh3d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_edge(&mut self, edge: Edge, name: &String)
+    pub fn push_tagged_edge(&mut self, edge: Edge, name: &str)
     {
-       push_tagged_element(&mut self.edges, &mut self.edges_tags, edge, &name);
+       push_tagged_element(&mut self.edges, &mut self.edges_tags, edge, name);
     }
 
     /// Creating a view to an edge in a mesh from the input edge itself.
@@ -366,9 +365,9 @@ impl Mesh3d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_triangle(&mut self, tri: Tri, name: &String)
+    pub fn push_tagged_triangle(&mut self, tri: Tri, name: &str)
     {
-       push_tagged_element(&mut self.triangles, &mut self.triangles_tags, tri, &name);
+       push_tagged_element(&mut self.triangles, &mut self.triangles_tags, tri, name);
     }
 
     /// Making a view to a triangle in a mesh from the element itself.
@@ -423,9 +422,9 @@ impl Mesh3d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_quadrangle(&mut self, quad: Quad, name: &String)
+    pub fn push_tagged_quadrangle(&mut self, quad: Quad, name: &str)
     {
-       push_tagged_element(&mut self.quadrangles, &mut self.quadrangles_tags, quad, &name);
+       push_tagged_element(&mut self.quadrangles, &mut self.quadrangles_tags, quad, name);
     }
 
     /// Making a view to a quadrangle in a mesh from the element itself.
@@ -481,9 +480,9 @@ impl Mesh3d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_tetrahedron(&mut self, tet: Tet, name: &String)
+    pub fn push_tagged_tetrahedron(&mut self, tet: Tet, name: &str)
     {
-       push_tagged_element(&mut self.tetrahedra, &mut self.tetrahedra_tags, tet, &name);
+       push_tagged_element(&mut self.tetrahedra, &mut self.tetrahedra_tags, tet, name);
     }
 
     /// Making a view to a tetrahedron in a mesh the element itself.
@@ -543,9 +542,9 @@ impl Mesh3d {
     ///     None => { assert!(false); }
     /// }
     /// ```
-    pub fn push_tagged_hexahedron(&mut self, hexa: Hexa, name: &String)
+    pub fn push_tagged_hexahedron(&mut self, hexa: Hexa, name: &str)
     {
-       push_tagged_element(&mut self.hexahedra, &mut self.hexahedra_tags, hexa, &name);
+       push_tagged_element(&mut self.hexahedra, &mut self.hexahedra_tags, hexa, name);
     }
 
     /// Making a view to a hexahedron in a mesh from the element itself.
@@ -588,7 +587,7 @@ impl Mesh3d {
 //////////////////////////////////////////////////////////////
 
 // Pushing an element into a vector of elements and registering its associated tag.
-fn push_tagged_element<T>(elements: &mut Vec<T>, tags: &mut TagSet, element: T, name: &String)
+fn push_tagged_element<T>(elements: &mut Vec<T>, tags: &mut TagSet, element: T, name: &str)
 {
     let idx = elements.len();
     elements.push(element);
@@ -596,7 +595,7 @@ fn push_tagged_element<T>(elements: &mut Vec<T>, tags: &mut TagSet, element: T, 
 }
 
 // Extracting reference to vertices of a two vertices element.
-fn get_two_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 2]) -> [&'a T; 2]
+fn get_two_vertices_view<'a, T>(vertices: &'a [T], indexes: &[usize; 2]) -> [&'a T; 2]
 {
     [
         &vertices[indexes[0]], &vertices[indexes[1]]
@@ -604,7 +603,7 @@ fn get_two_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 2]) -> [
 }
 
 // Extracting reference to vertices of a two vertices element.
-fn get_three_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 3]) -> [&'a T; 3]
+fn get_three_vertices_view<'a, T>(vertices: &'a [T], indexes: &[usize; 3]) -> [&'a T; 3]
 {
     [
         &vertices[indexes[0]], &vertices[indexes[1]], &vertices[indexes[2]]
@@ -612,7 +611,7 @@ fn get_three_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 3]) ->
 }
 
 // Extracting reference to vertices of a two vertices element.
-fn get_four_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 4]) -> [&'a T; 4]
+fn get_four_vertices_view<'a, T>(vertices: &'a [T], indexes: &[usize; 4]) -> [&'a T; 4]
 {
     [
         &vertices[indexes[0]],&vertices[indexes[1]],
@@ -621,7 +620,7 @@ fn get_four_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 4]) -> 
 }
 
 // Extracting reference to vertices of a two vertices element.
-fn get_eight_vertices_view<'a, T>(vertices: &'a Vec<T>, indexes: &[usize; 8]) -> [&'a T; 8]
+fn get_eight_vertices_view<'a, T>(vertices: &'a [T], indexes: &[usize; 8]) -> [&'a T; 8]
 {
     [
         &vertices[indexes[0]], &vertices[indexes[1]], &vertices[indexes[2]], &vertices[indexes[3]],

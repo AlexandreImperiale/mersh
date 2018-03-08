@@ -1,4 +1,7 @@
-/// Definition of basic fonctionalities on various geometrical obejcts.
+#![cfg_attr(feature="clippy", feature(plugin))]
+#![cfg_attr(feature="clippy", plugin(clippy))]
+
+/// Definition of basic geometrical utilities.
 pub mod base;
 
 /// Data structures for tagging utilities.

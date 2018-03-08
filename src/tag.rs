@@ -36,7 +36,7 @@ impl TagSet {
     /// let indexes = tag_set.get_registered_indexes(&"tag_name_0".to_string());
     /// assert!(indexes == None);
     /// ```
-    pub fn get_registered_indexes(&self, name: &String) -> Option<&Vec<usize>>
+    pub fn get_registered_indexes(&self, name: &str) -> Option<&Vec<usize>>
     {
         self.tag_map.get(name)
     }
@@ -74,12 +74,12 @@ impl TagSet {
     ///     assert!(false);
     /// }
     /// ```
-    pub fn register(&mut self, name: &String, idx: usize)
+    pub fn register(&mut self, name: &str, idx: usize)
     {
         if let Some(indexes) = self.tag_map.get_mut(name) {
             indexes.push(idx);
             return;
         }
-        self.tag_map.insert(name.clone(), vec![idx]);
+        self.tag_map.insert(String::from(name), vec![idx]);
     }
 }

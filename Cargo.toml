@@ -8,3 +8,4 @@ homepage = "https://alexandreimperiale.github.io/mersh/"
 repository = "https://github.com/AlexandreImperiale/mersh"
 
 [dependencies]
+clippy = { version = "*", optional = true }

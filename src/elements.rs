@@ -68,6 +68,7 @@ pub struct Hexa {
 //////////////////////////////////////////////////////////////
 
 /// Definition of local ordering and naming of edges in a triangle.
+#[derive(Clone, Copy)]
 pub enum EdgeInTri {
     /// Edge connecting point P0 to P1
     Edge01,
@@ -78,6 +79,7 @@ pub enum EdgeInTri {
 }
 
 /// Definition of local ordering and naming of edges in a quadrangle.
+#[derive(Clone, Copy)]
 pub enum EdgeInQuad {
     /// Edge connecting point P0 to P1
     Edge01,
@@ -90,6 +92,7 @@ pub enum EdgeInQuad {
 }
 
 /// Definition of local ordering and naming of triangles in a quadrangle.
+#[derive(Clone, Copy)]
 pub enum TriInQuad {
     /// Tri connecting points (P0, P1, P3)
     Tri013,
