@@ -19,6 +19,7 @@ pub struct Vertex2d {
 }
 
 /// Structure defining a 2d mesh.
+#[derive(Default)]
 pub struct Mesh2d {
     /// Associated set of vertices.
     pub vertices: Vec<Vertex2d>,
@@ -58,24 +59,6 @@ impl Vertex2d {
 }
 
 impl Mesh2d {
-    /// Creating a new, empty mesh.
-    ///
-    /// # Example
-    /// ```
-    /// use mersh::mesh::*;
-    ///
-    /// let mesh = Mesh2d::new();
-    ///
-    /// assert!(mesh.vertices.len() == 0);
-    /// assert!(mesh.edges.len() == 0);
-    /// assert!(mesh.triangles.len() == 0);
-    /// assert!(mesh.quadrangles.len() == 0);
-    /// ```
-    pub fn new() -> Mesh2d
-    {
-        Mesh2d { vertices: Vec::new(), edges: Vec::new(), triangles: Vec::new(), quadrangles: Vec::new() }
-    }
-
     /// Creating a view to an edge in a mesh from the input edge itself.
     ///
     /// * `edge` - Edge in the mesh.
@@ -86,7 +69,7 @@ impl Mesh2d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -115,7 +98,7 @@ impl Mesh2d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -141,7 +124,7 @@ impl Mesh2d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -172,7 +155,7 @@ impl Mesh2d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -199,7 +182,7 @@ impl Mesh2d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -232,7 +215,7 @@ impl Mesh2d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -264,6 +247,7 @@ pub struct Vertex3d {
 }
 
 /// Structure defining a 3d mesh.
+#[derive(Default)]
 pub struct Mesh3d {
     /// Associated set of vertices.
     pub vertices: Vec<Vertex3d>,
@@ -309,29 +293,6 @@ impl Vertex3d {
 }
 
 impl Mesh3d {
-    /// Creating a new, empty mesh.
-    ///
-    /// # Example
-    /// ```
-    /// use mersh::mesh::*;
-    ///
-    /// let mesh = Mesh3d::new();
-    ///
-    /// assert!(mesh.vertices.len() == 0);
-    /// assert!(mesh.edges.len() == 0);
-    /// assert!(mesh.triangles.len() == 0);
-    /// assert!(mesh.quadrangles.len() == 0);
-    /// assert!(mesh.tetrahedra.len() == 0);
-    /// assert!(mesh.hexahedra.len() == 0);
-    /// ```
-    pub fn new() -> Mesh3d
-    {
-        Mesh3d {
-            vertices: Vec::new(),
-            edges: Vec::new(), triangles: Vec::new(), quadrangles: Vec::new(),
-            tetrahedra: Vec::new(), hexahedra: Vec::new() }
-    }
-
     /// Creating a view to an edge in a mesh from the input edge itself.
     ///
     /// * `edge` - Edge in the mesh.
@@ -342,7 +303,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
@@ -371,7 +332,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
@@ -398,7 +359,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
@@ -430,7 +391,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
@@ -458,7 +419,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
@@ -492,7 +453,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 1.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 1.]));
@@ -521,7 +482,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
@@ -555,7 +516,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
@@ -584,7 +545,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
@@ -619,7 +580,7 @@ impl Mesh3d {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));

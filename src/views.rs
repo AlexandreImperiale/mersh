@@ -66,7 +66,7 @@ impl<'a> EdgeView2d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -91,7 +91,7 @@ impl<'a> TriView2d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -123,7 +123,7 @@ impl<'a> TriView2d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -149,7 +149,7 @@ impl<'a> TriView2d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -183,7 +183,7 @@ impl<'a> QuadView2d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
@@ -219,7 +219,7 @@ impl<'a> QuadView2d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh2d::new();
+    /// let mut mesh = Mesh2d::default();
     ///
     /// mesh.vertices.push(Vertex2d::new_untagged([0.0, 0.]));
     /// mesh.vertices.push(Vertex2d::new_untagged([2.5, 0.]));
@@ -319,7 +319,7 @@ impl<'a> EdgeView3d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
     /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
@@ -343,7 +343,7 @@ impl<'a> TriView3d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 0.0, 0.0]));
     /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 1.0, 0.0]));
@@ -373,7 +373,7 @@ impl<'a> TriView3d<'a> {
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
-    /// let mut mesh = Mesh3d::new();
+    /// let mut mesh = Mesh3d::default();
     ///
     /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 0.0, 0.0]));
     /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 1.0, 0.0]));
@@ -393,4 +393,3 @@ impl<'a> TriView3d<'a> {
         }
     }
 }
-

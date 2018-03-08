@@ -24,43 +24,61 @@ pub struct TagSet {
 //////////////////////////////////////////////////////////////
 
 impl TagSet {
-    /// Registering a new index associated to a tag name.
-    /// If the tag name was not used before, the tag name is added in the set.
-    /// Return a reference to the set of indexes associated to the tag name.
+    /// Accessing potential indexes associated to a tag name.
+    /// * `name` - Name of the tag,
     ///
     /// # Example
     /// ```
     /// use mersh::tag::*;
     ///
     /// let mut tag_set = TagSet::default();
+    /// let indexes = tag_set.get_registered_indexes(&"tag_name_0".to_string());
+    /// assert!(indexes == None);
+    /// ```
+    pub fn get_registered_indexes(&self, name: &String) -> Option<&Vec<usize>>
+    {
+        self.tag_map.get(name)
+    }
+
+    /// Registering a new index associated to a tag name.
+    /// If the tag name was not used before, the tag name is added in the set.
     ///
-    /// {
-    ///     let indexes = tag_set.register(&"tag_name_0".to_string(), 0);
-    ///     assert!(indexes.len() == 1);
-    ///     assert!(indexes[0] == 0);
+    /// * `name` - Name of the tag,
+    /// * `idx` - index to associate with tag.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::tag::*;
+    ///
+    /// let mut tag_set = TagSet::default();
+    /// let name0 = String::from("tag_name_0");
+    /// let name1 = String::from("tag_name_1");
+    /// let name2 = String::from("tag_name_2");
+    ///
+    /// tag_set.register(&name0, 0);
+    /// tag_set.register(&name0, 85);
+    /// tag_set.register(&name1, 2);
+    ///
+    /// match tag_set.get_registered_indexes(&name0) {
+    ///     Some(indexes) => { assert_eq!(indexes[0], 0); assert_eq!(indexes[1], 85);},
+    ///     None => { assert!(false); }
     /// }
     ///
-    /// {
-    ///     let indexes = tag_set.register(&"tag_name_0".to_string(), 85);
-    ///     assert!(indexes.len() == 2);
-    ///     assert!(indexes[1] == 85);
+    /// match tag_set.get_registered_indexes(&name1) {
+    ///     Some(indexes) => { assert_eq!(indexes[0], 2);},
+    ///     None => { assert!(false); }
     /// }
     ///
-    /// {
-    ///     let indexes = tag_set.register(&"tag_name_1".to_string(), 62);
-    ///     assert!(indexes.len() == 1);
-    ///     assert!(indexes[0] == 62);
+    /// if let Some(indexes) = tag_set.get_registered_indexes(&name2) {
+    ///     assert!(false);
     /// }
     /// ```
-    pub fn register(&mut self, name: &String, idx: usize) -> &Vec<usize>
+    pub fn register(&mut self, name: &String, idx: usize)
     {
-        if self.tag_map.contains_key(name) {
-            self.tag_map.get_mut(name).unwrap().push(idx);
+        if let Some(indexes) = self.tag_map.get_mut(name) {
+            indexes.push(idx);
+            return;
         }
-        else {
-            self.tag_map.insert(name.clone(), vec![idx]);
-        }
-
-        self.tag_map.get(name).unwrap()
+        self.tag_map.insert(name.clone(), vec![idx]);
     }
 }
