@@ -12,14 +12,14 @@ fn area_triangle() {
 
     // Defining points of triangle
     let p0 = mersh::base::Pnt2d::default();
-    let p1 = mersh::base::Pnt2d::new(1., 0.);
-    let p2 = mersh::base::Pnt2d::new(0., 1.);
+    let p1 = mersh::base::Pnt2d::new([1., 0.]);
+    let p2 = mersh::base::Pnt2d::new([0., 1.]);
 
     // Computing triangle area.
     assert!((compute_triangle_area(&p0, &p1, &p2) - 0.5).abs() < 1e-10);
 
     // Translating points using random vector.
-    let u = mersh::base::Vec2d::new(3.4, -9.6);
+    let u = mersh::base::Vec2d::new([3.4, -9.6]);
 
     // Recomputing area.
     let q0 = p0.translate_by(&u);

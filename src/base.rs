@@ -44,6 +44,23 @@ pub struct Dir2d {
 //////////////////////////////////////////////////////////////
 
 impl Coord2d {
+    /// Creating new coordinates.
+    ///
+    /// * `xy` - associated coordinates values.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let coords = Coord2d::new([1.0, 0.0]);
+    /// assert!((coords.x - 1.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((coords.y - 0.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn new(xy: [f64; 2]) -> Self
+    {
+        Coord2d { x: xy[0], y: xy[1] }
+    }
+
     /// Amplifying coordinates by a scalar coefficient. In-place function.
     ///
     /// * `a` - Scalar coefficient used for amplification.
@@ -52,7 +69,7 @@ impl Coord2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let mut c = Coord2d{x: 1.0, y: 1.0};
+    /// let mut c = Coord2d::new([1.0, 1.0]);
     /// c.amplify_in(3.0);
     /// assert!((c.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 3.0).abs() < GEOMETRICAL_TOLERANCE);
@@ -72,7 +89,7 @@ impl Coord2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord2d{x: 1.0, y: 1.0};
+    /// let c0 = Coord2d::new([1.0, 1.0]);
     /// let c1 = c0.amplify_out(3.0);
     /// assert!((c1.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c1.y - 3.0).abs() < GEOMETRICAL_TOLERANCE);
@@ -93,7 +110,7 @@ impl Coord2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let mut c = Coord2d{x: 1.0, y: 1.0};
+    /// let mut c = Coord2d::new([1.0, 1.0]);
     /// c.add_in(1.0, &Coord2d{x: 10.0, y: 10.0});
     /// assert!((c.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
@@ -114,7 +131,7 @@ impl Coord2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord2d{x: 1.0, y: 1.0};
+    /// let c0 = Coord2d::new([1.0, 1.0]);
     /// let c1 = c0.add_out(1.0, &Coord2d{x: 10.0, y: 10.0});
     /// assert!((c1.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c1.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
@@ -137,9 +154,9 @@ impl Coord2d {
     /// use mersh::base::*;
     ///
     /// let a = 4.;
-    /// let mut c0 = Coord2d { x: 1.0, y: 3.0 };
+    /// let mut c0 = Coord2d::new([1.0, 3.0]);
     /// let b = -2.;
-    /// let c1 = Coord2d { x: 10., y: 10. };
+    /// let c1 = Coord2d::new([10., 10.]);
     ///
     /// c0.mlt_add_in(a, b, &c1);
     ///
@@ -164,9 +181,9 @@ impl Coord2d {
     /// use mersh::base::*;
     ///
     /// let a = 4.;
-    /// let c0 = Coord2d { x: 1.0, y: 3.0 };
+    /// let c0 = Coord2d::new([1.0, 3.0]);
     /// let b = -2.;
-    /// let c1 = Coord2d { x: 10., y: 10. };
+    /// let c1 = Coord2d::new([10., 10.]);
     ///
     /// let c2 = c0.mlt_add_out(a, b, &c1);
     ///
@@ -184,15 +201,15 @@ impl Coord2d {
     /// computing the square norme of the difference between the two coordinate.
     ///
     /// * `c` - Coordinate to compare with.
-    /// * `eps` - Thershold used for fixed-epsilon floating point comparison.
+    /// * `eps` - Threshold used for fixed-epsilon floating point comparison.
     ///
     /// # Example
     ///
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord2d { x: 1.0, y: 3.4 };
-    /// let c1 = Coord2d { x: 6.0, y: -13.0 };
+    /// let c0 = Coord2d::new([1.0, 3.4]);
+    /// let c1 = Coord2d::new([6.0, -13.0]);
     /// let c2 = c0.clone();
     ///
     /// assert!(!c0.equals(&c1, GEOMETRICAL_TOLERANCE));
@@ -209,7 +226,7 @@ impl Coord2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord2d { x: 2.0, y: 2.0 };
+    /// let c0 = Coord2d::new([2.0, 2.0]);
     /// assert!((c0.sq_norm() - 8.0) < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn sq_norm(&self) -> f64
@@ -223,7 +240,7 @@ impl Coord2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord2d { x: 2.0, y: 2.0 };
+    /// let c0 = Coord2d::new([2.0, 2.0]);
     /// assert!((c0.norm() - c0.sq_norm().sqrt()) < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn norm(&self) -> f64
@@ -235,19 +252,18 @@ impl Coord2d {
 impl Pnt2d {
     /// Creating new point from coordinates.
     ///
-    /// * `x` - First coordinate.
-    /// * `y` - Second coordinate.
+    /// * `coords` - associated coordinates.
     ///
     /// # Example
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(1.0, 0.0);
-    /// assert!(p.coords.equals(&Coord2d { x: 1.0, y: 0.0}, GEOMETRICAL_TOLERANCE));
+    /// let p = Pnt2d::new([1.0, 0.0]);
+    /// assert!(p.coords.equals(&Coord2d::new([1.0, 0.0]), GEOMETRICAL_TOLERANCE));
     /// ```
-    pub fn new(x: f64, y: f64) -> Self
+    pub fn new(coords: [f64; 2]) -> Self
     {
-        Pnt2d{ coords: Coord2d { x, y } }
+        Pnt2d{ coords: Coord2d::new(coords) }
     }
 
     /// Computing distance to another 2d points.
@@ -259,7 +275,7 @@ impl Pnt2d {
     /// use mersh::base::*;
     ///
     /// let p = Pnt2d::default();
-    /// let q = Pnt2d::new(0.0, 1.0);
+    /// let q = Pnt2d::new([0.0, 1.0]);
     ///
     /// assert!((p.distance_to(&q) - 1.0) < GEOMETRICAL_TOLERANCE);
     /// ```
@@ -283,8 +299,8 @@ impl Pnt2d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt2d::new(1.45, 3.0);
-    /// let v = Vec2d::new(-0.1, 4.09);
+    /// let p = Pnt2d::new([1.45, 3.0]);
+    /// let v = Vec2d::new([-0.1, 4.09]);
     /// let q = p.translate_by(&v);
     ///
     /// assert!((q.coords.x - p.coords.x - v.coords.x).abs() < GEOMETRICAL_TOLERANCE);
@@ -304,7 +320,7 @@ impl Pnt2d {
     /// use mersh::base::*;
     ///
     /// let p = Pnt2d::default();
-    /// let q = Pnt2d::new(1.0, 0.0);
+    /// let q = Pnt2d::new([1.0, 0.0]);
     ///
     /// let v0 = p.to(&q);
     /// let v1 = q.to(&p);
@@ -321,19 +337,18 @@ impl Pnt2d {
 impl Vec2d {
     /// Creating new vector from coordinates.
     ///
-    /// * `x` - First coordinate.
-    /// * `y` - Second coordinate.
+    /// * `coords` - associated coordinates.
     ///
     /// # Example
     /// ```
     /// use mersh::base::*;
     ///
-    /// let v = Vec2d::new(1.0, 0.0);
+    /// let v = Vec2d::new([1.0, 0.0]);
     /// assert!(v.coords.equals(&Coord2d { x: 1.0, y: 0.0}, GEOMETRICAL_TOLERANCE));
     /// ```
-    pub fn new(x: f64, y: f64) -> Self
+    pub fn new(coords: [f64; 2]) -> Self
     {
-        Vec2d{ coords: Coord2d { x, y } }
+        Vec2d{ coords: Coord2d::new(coords) }
     }
 }
 
@@ -402,6 +417,24 @@ pub struct Dir3d {
 //////////////////////////////////////////////////////////////
 
 impl Coord3d {
+    /// Creating new coordinates.
+    ///
+    /// * `xyz` - associated coordinates values.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    ///
+    /// let coords = Coord3d::new([1.0, 0.0, 3.0]);
+    /// assert!((coords.x - 1.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((coords.y - 0.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((coords.z - 3.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// ```
+    pub fn new(xyz: [f64; 3]) -> Self
+    {
+        Coord3d { x: xyz[0], y: xyz[1], z: xyz[2] }
+    }
+
     /// Amplifying coordinates by a scalar coefficient. In-place function.
     ///
     /// * `a` - Scalar coefficient used for amplification.
@@ -410,7 +443,7 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let mut c = Coord3d{ x: 1.0, y: 2.0, z: 3.0 };
+    /// let mut c = Coord3d::new([1.0, 2.0, 3.0]);
     /// c.amplify_in(3.0);
     /// assert!((c.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c.y - 6.0).abs() < GEOMETRICAL_TOLERANCE);
@@ -432,7 +465,7 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord3d{ x: 1.0, y: 2.0, z: 3.0 };
+    /// let c0 = Coord3d::new([1.0, 2.0, 3.0]);
     /// let c1 = c0.amplify_out(3.0);
     /// assert!((c1.x - 3.0).abs() < GEOMETRICAL_TOLERANCE);
     /// assert!((c1.y - 6.0).abs() < GEOMETRICAL_TOLERANCE);
@@ -455,17 +488,17 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let mut c = Coord3d{ x: 1.0, y: 1.0, z: 1.0 };
-    /// c.add_in(1.0, &Coord3d{x: 10.0, y: 10.0, z: 10.0});
+    /// let mut c = Coord3d::new([1.0, 2.0, 3.0]);
+    /// c.add_in(1.0, &Coord3d::new([10.0, 10.0, 10.0]));
     /// assert!((c.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c.z - 11.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c.y - 12.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c.z - 13.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn add_in(&mut self, a: f64, c: &Coord3d) -> &mut Self
     {
         self.x += a * c.x;
         self.y += a * c.y;
-        self.z += a * c.y;
+        self.z += a * c.z;
         self
     }
 
@@ -478,11 +511,11 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord3d{x: 1.0, y: 1.0, z: 1.0};
-    /// let c1 = c0.add_out(1.0, &Coord3d{x: 10.0, y: 10.0, z: 10.0});
+    /// let c0 = Coord3d::new([1.0, 2.0, 3.0]);
+    /// let c1 = c0.add_out(1.0, &Coord3d::new([10.0, 10.0, 10.0]));
     /// assert!((c1.x - 11.0).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c1.y - 11.0).abs() < GEOMETRICAL_TOLERANCE);
-    /// assert!((c1.z - 11.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.y - 12.0).abs() < GEOMETRICAL_TOLERANCE);
+    /// assert!((c1.z - 13.0).abs() < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn add_out(&self, a: f64, c: &Coord3d) -> Self
     {
@@ -503,9 +536,9 @@ impl Coord3d {
     /// use mersh::base::*;
     ///
     /// let a = 4.;
-    /// let mut c0 = Coord3d{ x: 1.0, y: 3.0, z: 5.0 };
+    /// let mut c0 = Coord3d::new([1.0, 3.0, 5.0]);
     /// let b = -2.;
-    /// let c1 = Coord3d{ x: 10., y: 10., z: 10. };
+    /// let c1 = Coord3d::new([10.0, 10.0, 10.0]);
     ///
     /// c0.mlt_add_in(a, b, &c1);
     ///
@@ -532,9 +565,9 @@ impl Coord3d {
     /// use mersh::base::*;
     ///
     /// let a = 4.;
-    /// let c0 = Coord3d{ x: 1.0, y: 3.0, z: 5.0 };
+    /// let c0 = Coord3d::new([1.0, 3.0, 5.0]);
     /// let b = -2.;
-    /// let c1 = Coord3d{ x: 10., y: 10., z: 10. };
+    /// let c1 = Coord3d::new([10.0, 10.0, 10.0]);
     ///
     /// let c2 = c0.mlt_add_out(a, b, &c1);
     ///
@@ -561,8 +594,8 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord3d { x: 1.0, y: 3.4, z: 2.0 };
-    /// let c1 = Coord3d { x: 6.0, y: -13.0, z: -1.98 };
+    /// let c0 = Coord3d::new([1.0, 3.4, 2.0]);
+    /// let c1 = Coord3d::new([6.0, -13.0, -1.98]);
     /// let c2 = c0.clone();
     ///
     /// assert!(!c0.equals(&c1, GEOMETRICAL_TOLERANCE));
@@ -579,7 +612,7 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord3d { x: 2.0, y: 2.0, z: 1.0 };
+    /// let c0 = Coord3d::new([2.0, 2.0, 1.0]);
     /// assert!((c0.sq_norm() - 9.0) < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn sq_norm(&self) -> f64
@@ -593,7 +626,7 @@ impl Coord3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let c0 = Coord3d { x: 2.0, y: 2.0, z: 23.1 };
+    /// let c0 = Coord3d::new([2.0, 2.0, 23.1]);
     /// assert!((c0.norm() - c0.sq_norm().sqrt()) < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn norm(&self) -> f64
@@ -605,20 +638,18 @@ impl Coord3d {
 impl Pnt3d {
     /// Creating new point from coordinates.
     ///
-    /// * `x` - First coordinate.
-    /// * `y` - Second coordinate.
-    /// * `z` - Third coordinate.
+    /// * `coords` - associated coordinates.
     ///
     /// # Example
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt3d::new(1.0, 0.0, 2.0);
-    /// assert!(p.coords.equals(&Coord3d { x: 1.0, y: 0.0, z: 2.0}, GEOMETRICAL_TOLERANCE));
+    /// let p = Pnt3d::new([1.0, 0.0, 2.0]);
+    /// assert!(p.coords.equals(&Coord3d::new([1.0, 0.0, 2.0]), GEOMETRICAL_TOLERANCE));
     /// ```
-    pub fn new(x: f64, y: f64, z: f64) -> Self
+    pub fn new(coords: [f64; 3]) -> Self
     {
-        Pnt3d{ coords: Coord3d { x, y, z } }
+        Pnt3d{ coords: Coord3d::new(coords) }
     }
 
     /// Computing distance to another 3d points.
@@ -630,7 +661,7 @@ impl Pnt3d {
     /// use mersh::base::*;
     ///
     /// let p = Pnt3d::default();
-    /// let q = Pnt3d::new(0.0, 1.0, 0.0);
+    /// let q = Pnt3d::new([0.0, 1.0, 0.0]);
     ///
     /// assert!((p.distance_to(&q) - 1.0) < GEOMETRICAL_TOLERANCE);
     /// ```
@@ -638,7 +669,7 @@ impl Pnt3d {
     /// # Example 1
     /// ```
     /// use mersh::base::*;
-    /// let p = Pnt3d::new(2.4, -1.9, 1.0);
+    /// let p = Pnt3d::new([2.4, -1.9, 1.0]);
     /// assert!(p.distance_to(&p) < GEOMETRICAL_TOLERANCE);
     /// ```
     pub fn distance_to(&self, q: &Pnt3d) -> f64
@@ -654,8 +685,8 @@ impl Pnt3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let p = Pnt3d::new(1.45, 3.0, 2.0);
-    /// let v = Vec3d::new(-0.1, 4.09, 0.98);
+    /// let p = Pnt3d::new([1.45, 3.0, 2.0]);
+    /// let v = Vec3d::new([-0.1, 4.09, 0.98]);
     /// let q = p.translate_by(&v);
     ///
     /// assert!((q.coords.x - p.coords.x - v.coords.x).abs() < GEOMETRICAL_TOLERANCE);
@@ -676,7 +707,7 @@ impl Pnt3d {
     /// use mersh::base::*;
     ///
     /// let p = Pnt3d::default();
-    /// let q = Pnt3d::new(1.0, 0.0, 0.0);
+    /// let q = Pnt3d::new([1.0, 0.0, 0.0]);
     ///
     /// let v0 = p.to(&q);
     /// let v1 = q.to(&p);
@@ -693,20 +724,18 @@ impl Pnt3d {
 impl Vec3d {
     /// Creating new vector from coordinates.
     ///
-    /// * `x` - First coordinate.
-    /// * `y` - Second coordinate.
-    /// * `z` - Third coordinate.
+    /// * `coords` - Associated coordinate.
     ///
     /// # Example
     /// ```
     /// use mersh::base::*;
     ///
-    /// let v = Vec3d::new(1.0, 0.0, 0.0);
-    /// assert!(v.coords.equals(&Coord3d{ x: 1.0, y: 0.0, z: 0.0 }, GEOMETRICAL_TOLERANCE));
+    /// let v = Vec3d::new([1.0, 0.0, 0.0]);
+    /// assert!(v.coords.equals(&Coord3d::new([1.0, 0.0, 0.0]), GEOMETRICAL_TOLERANCE));
     /// ```
-    pub fn new(x: f64, y: f64, z: f64) -> Self
+    pub fn new(coords: [f64; 3]) -> Self
     {
-        Vec3d{ coords: Coord3d { x, y, z } }
+        Vec3d{ coords: Coord3d::new(coords) }
     }
 
     /// Creating a vector by applying cross product. Out-of-place function.
@@ -717,30 +746,30 @@ impl Vec3d {
     /// ```
     /// use mersh::base::*;
     ///
-    /// let u = Vec3d::new(1.0, 0.0, 0.0);
-    /// let v = Vec3d::new(1.0, 2.0, 0.0);
+    /// let u = Vec3d::new([1.0, 0.0, 0.0]);
+    /// let v = Vec3d::new([1.0, 2.0, 0.0]);
     /// let w = u.cross_out(&v);
     ///
-    /// assert!(w.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z: 2.0 }, GEOMETRICAL_TOLERANCE));
+    /// assert!(w.coords.equals(&Coord3d::new([0.0, 0.0, 2.0]), GEOMETRICAL_TOLERANCE));
     /// ```
     ///
     /// # Example 1
     /// ```
     /// use mersh::base::*;
     ///
-    /// let u = Vec3d::new(1.0, 0.0, 0.0);
-    /// let v = Vec3d::new(1.0, 2.0, 0.0);
+    /// let u = Vec3d::new([1.0, 0.0, 0.0]);
+    /// let v = Vec3d::new([1.0, 2.0, 0.0]);
     /// let w = v.cross_out(&u);
     ///
-    /// assert!(w.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z: -2.0 }, GEOMETRICAL_TOLERANCE));
+    /// assert!(w.coords.equals(&Coord3d::new([0.0, 0.0, -2.0]), GEOMETRICAL_TOLERANCE));
     /// ```
     pub fn cross_out(&self, v: &Vec3d) -> Vec3d
     {
-        Vec3d::new(
+        Vec3d::new([
             self.coords.y * v.coords.z - self.coords.z * v.coords.y,
             self.coords.z * v.coords.x - self.coords.x * v.coords.z,
-            self.coords.x * v.coords.y - self.coords.y * v.coords.x,
-        )
+            self.coords.x * v.coords.y - self.coords.y * v.coords.x
+        ])
     }
 
     /// Creating new direction by normalizing the vector. Out-of-place function.
@@ -750,7 +779,7 @@ impl Vec3d {
     /// use mersh::base::*;
     ///
     /// let p = Pnt3d::default();
-    /// let q = Pnt3d::new(0.0, 3.0, 0.0);
+    /// let q = Pnt3d::new([0.0, 3.0, 0.0]);
     ///
     /// let u = p.to(&q);
     /// let v = q.to(&p);
@@ -758,8 +787,8 @@ impl Vec3d {
     /// let d = u.normalize_out();
     /// let l = v.normalize_out();
     ///
-    /// assert!(d.coords.equals(&Coord3d { x: 0.0, y: 1.0, z: 0.0}, GEOMETRICAL_TOLERANCE));
-    /// assert!(l.coords.equals(&Coord3d { x: 0.0, y:-1.0, z: 0.0}, GEOMETRICAL_TOLERANCE));
+    /// assert!(d.coords.equals(&Coord3d::new([0.0, 1.0, 0.0]), GEOMETRICAL_TOLERANCE));
+    /// assert!(l.coords.equals(&Coord3d::new([0.0,-1.0, 0.0]), GEOMETRICAL_TOLERANCE));
     /// ```
     pub fn normalize_out(&self) -> Dir3d
     {

@@ -14,39 +14,12 @@ pub struct EdgeView2d<'a> {
 }
 
 /// Structure for defining a 2d tri view.
-///
-/// Local numbering order of triangle is :
-///
-/// ```text
-/// P2
-///   *
-///   |`\
-///   |  `\
-///   |    `\
-///   |      `\
-///   |        `\
-///   *----------*
-/// P0             P1
-/// ```
 pub struct TriView2d<'a> {
     /// Reference to vertices of the triangle.
     pub points: [&'a Pnt2d; 3]
 }
 
 /// Structure for defining a 2d quad view.
-///
-/// Local numbering order of quadrangles is :
-///
-/// ```text
-/// P3                P2
-///    * ---------- *
-///    |            |
-///    |            |
-///    |            |
-///    |            |
-///    * ---------- *
-/// P0                P1
-/// ```
 pub struct QuadView2d<'a> {
     /// Reference to vertices of the quadrangle.
     pub points: [&'a Pnt2d; 4]
@@ -63,16 +36,17 @@ impl<'a> EdgeView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::default();
     ///
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.edges.push(Edge::new_untagged([0, 1]));
+    /// mesh.vertices.push(Pnt2d::new([0., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([1., 0.]));
+    /// mesh.edges.push(Edge::new([0, 1]));
     ///
-    /// let e = mesh.get_edge_view(0);
+    /// let e = mesh.get_edge_view(&mesh.edges[0]);
     /// assert!((e.get_length() - 1.0) < 1e-10);
     /// ```
     pub fn get_length(&self) -> f64
@@ -88,18 +62,19 @@ impl<'a> TriView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::default();
     ///
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    /// mesh.vertices.push(Pnt2d::new([0., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([1., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([0., 1.]));
+    /// mesh.triangles.push(Tri::new([0, 1, 2]));
     ///
     /// let e01 = mesh
-    ///     .get_tri_view(0)
+    ///     .get_tri_view(&mesh.triangles[0])
     ///     .get_edge_view(EdgeInTri::Edge01);
     ///
     /// assert!((e01.points[0].coords.x).abs() < 1e-10);
@@ -120,17 +95,18 @@ impl<'a> TriView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::default();
     ///
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    /// mesh.vertices.push(Pnt2d::new([0., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([1., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([0., 1.]));
+    /// mesh.triangles.push(Tri::new([0, 1, 2]));
     ///
-    /// let tri = mesh.get_tri_view(0);
+    /// let tri = mesh.get_tri_view(&mesh.triangles[0]);
     /// let area = tri.get_area();
     /// assert!((area - 0.5).abs() < 1e-10);
     /// ```
@@ -146,17 +122,18 @@ impl<'a> TriView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::default();
     ///
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    /// mesh.vertices.push(Pnt2d::new([0., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([1., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([0., 1.]));
+    /// mesh.triangles.push(Tri::new([0, 1, 2]));
     ///
-    /// let tri = mesh.get_tri_view(0);
+    /// let tri = mesh.get_tri_view(&mesh.triangles[0]);
     /// let bary = tri.get_barycenter();
     /// assert!((bary.coords.x - 0.5).abs() < 1e-10);
     /// assert!((bary.coords.y - 0.5).abs() < 1e-10);
@@ -180,19 +157,20 @@ impl<'a> QuadView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::default();
     ///
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([1., 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([1., 1.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0., 1.]));
-    /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
+    /// mesh.vertices.push(Pnt2d::new([0., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([1., 0.]));
+    /// mesh.vertices.push(Pnt2d::new([1., 1.]));
+    /// mesh.vertices.push(Pnt2d::new([0., 1.]));
+    /// mesh.quadrangles.push(Quad::new([0, 1, 2, 3]));
     ///
     /// let e23 = mesh
-    ///     .get_quad_view(0)
+    ///     .get_quad_view(&mesh.quadrangles[0])
     ///     .get_edge_view(EdgeInQuad::Edge23);
     ///
     /// assert!((e23.points[0].coords.x - 1.).abs() < 1e-10);
@@ -216,19 +194,20 @@ impl<'a> QuadView2d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh2d::default();
     ///
-    /// mesh.vertices.push(Vertex2d::new_untagged([0.0, 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([2.5, 0.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([2.5, 1.]));
-    /// mesh.vertices.push(Vertex2d::new_untagged([0.0, 1.]));
-    /// mesh.quadrangles.push(Quad::new_untagged([0, 1, 2, 3]));
+    /// mesh.vertices.push(Pnt2d::new([0.0, 0.]));
+    /// mesh.vertices.push(Pnt2d::new([2.5, 0.]));
+    /// mesh.vertices.push(Pnt2d::new([2.5, 1.]));
+    /// mesh.vertices.push(Pnt2d::new([0.0, 1.]));
+    /// mesh.quadrangles.push(Quad::new([0, 1, 2, 3]));
     ///
-    /// let t013 = mesh.get_quad_view(0).get_tri_view(TriInQuad::Tri013);
-    /// let t123 = mesh.get_quad_view(0).get_tri_view(TriInQuad::Tri123);
+    /// let t013 = mesh.get_quad_view(&mesh.quadrangles[0]).get_tri_view(TriInQuad::Tri013);
+    /// let t123 = mesh.get_quad_view(&mesh.quadrangles[0]).get_tri_view(TriInQuad::Tri123);
     /// let area = t013.get_area() + t123.get_area();
     ///
     /// assert!((area - 2.5).abs() < 1e-10);
@@ -255,39 +234,12 @@ pub struct EdgeView3d<'a> {
 }
 
 /// Structure for defining a 3d tri view.
-///
-/// Local numbering order of triangle is :
-///
-/// ```text
-/// P2
-///   *
-///   |`\
-///   |  `\
-///   |    `\
-///   |      `\
-///   |        `\
-///   *----------*
-/// P0             P1
-/// ```
 pub struct TriView3d<'a> {
     /// Reference to vertices of the triangle.
     pub points: [&'a Pnt3d; 3]
 }
 
 /// Structure for defining a 3d quad view.
-///
-/// Local numbering order of quadrangles is :
-///
-/// ```text
-/// P3                P2
-///    * ---------- *
-///    |            |
-///    |            |
-///    |            |
-///    |            |
-///    * ---------- *
-/// P0                P1
-/// ```
 pub struct QuadView3d<'a> {
     /// Reference to vertices of the quadrangle.
     pub points: [&'a Pnt3d; 4]
@@ -316,16 +268,17 @@ impl<'a> EdgeView3d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh3d::default();
     ///
-    /// mesh.vertices.push(Vertex3d::new_untagged([0., 0., 0.]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([1., 0., 0.]));
-    /// mesh.edges.push(Edge::new_untagged([0, 1]));
+    /// mesh.vertices.push(Pnt3d::new([0., 0., 0.]));
+    /// mesh.vertices.push(Pnt3d::new([1., 0., 0.]));
+    /// mesh.edges.push(Edge::new([0, 1]));
     ///
-    /// let e = mesh.get_edge_view(0);
+    /// let e = mesh.get_edge_view(&mesh.edges[0]);
     /// assert!((e.get_length() - 1.0) < 1e-10);
     /// ```
     pub fn get_length(&self) -> f64
@@ -345,14 +298,14 @@ impl<'a> TriView3d<'a> {
     ///
     /// let mut mesh = Mesh3d::default();
     ///
-    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 0.0, 0.0]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 1.0, 0.0]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([1.0, 0.0, 0.0]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 2, 1]));
+    /// mesh.vertices.push(Pnt3d::new([0.0, 0.0, 0.0]));
+    /// mesh.vertices.push(Pnt3d::new([0.0, 1.0, 0.0]));
+    /// mesh.vertices.push(Pnt3d::new([1.0, 0.0, 0.0]));
+    /// mesh.triangles.push(Tri::new([0, 1, 2]));
+    /// mesh.triangles.push(Tri::new([0, 2, 1]));
     ///
-    /// let n = mesh.get_tri_view(0).get_normal();
-    /// let m = mesh.get_tri_view(1).get_normal();
+    /// let n = mesh.get_tri_view(&mesh.triangles[0]).get_normal();
+    /// let m = mesh.get_tri_view(&mesh.triangles[1]).get_normal();
     ///
     /// assert!(n.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z:-1.0 }, GEOMETRICAL_TOLERANCE));
     /// assert!(m.coords.equals(&Coord3d{ x: 0.0, y: 0.0, z: 1.0 }, GEOMETRICAL_TOLERANCE));
@@ -370,17 +323,18 @@ impl<'a> TriView3d<'a> {
     ///
     /// # Example
     /// ```
+    /// use mersh::base::*;
     /// use mersh::elements::*;
     /// use mersh::mesh::*;
     ///
     /// let mut mesh = Mesh3d::default();
     ///
-    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 0.0, 0.0]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([0.0, 1.0, 0.0]));
-    /// mesh.vertices.push(Vertex3d::new_untagged([2.0, 0.0, 0.0]));
-    /// mesh.triangles.push(Tri::new_untagged([0, 1, 2]));
+    /// mesh.vertices.push(Pnt3d::new([0.0, 0.0, 0.0]));
+    /// mesh.vertices.push(Pnt3d::new([0.0, 1.0, 0.0]));
+    /// mesh.vertices.push(Pnt3d::new([2.0, 0.0, 0.0]));
+    /// mesh.triangles.push(Tri::new([0, 1, 2]));
     ///
-    /// let e = mesh.get_tri_view(0).get_edge_view(EdgeInTri::Edge20);
+    /// let e = mesh.get_tri_view(&mesh.triangles[0]).get_edge_view(EdgeInTri::Edge20);
     ///
     /// assert!((e.get_length() - 2.0).abs() < 1e-10);
     /// ```

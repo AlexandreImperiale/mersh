@@ -25,6 +25,7 @@ pub struct TagSet {
 
 impl TagSet {
     /// Accessing potential indexes associated to a tag name.
+    ///
     /// * `name` - Name of the tag,
     ///
     /// # Example
