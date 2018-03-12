@@ -7,6 +7,7 @@ extern crate std;
 //////////////////////////////////////////////////////////////
 
 /// Edge as a mesh element.
+#[derive(Serialize, Deserialize)]
 pub struct Edge {
     /// Associated index of vertices in mesh.
     pub indexes: [usize; 2],
@@ -27,6 +28,7 @@ pub struct Edge {
 ///   *----------*
 /// P0             P1
 /// ```
+#[derive(Serialize, Deserialize)]
 pub struct Tri {
     /// Associated index of vertices in mesh.
     pub indexes: [usize; 3],
@@ -44,18 +46,21 @@ pub struct Tri {
 ///    * ---------- *
 /// P0                P1
 /// ```
+#[derive(Serialize, Deserialize)]
 pub struct Quad {
     /// Associated index of vertices in mesh.
     pub indexes: [usize; 4],
 }
 
 /// Tetrahedron as a mesh element.
+#[derive(Serialize, Deserialize)]
 pub struct Tet {
     /// Associated index of vertices in mesh.
     pub indexes: [usize; 4],
 }
 
 /// Hexahedron as a mesh element.
+#[derive(Serialize, Deserialize)]
 pub struct Hexa {
     /// Associated index of vertices in mesh.
     pub indexes: [usize; 8],

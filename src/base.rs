@@ -1,3 +1,5 @@
+extern crate std;
+
 /// Associated geometrical tolerance.
 pub const GEOMETRICAL_TOLERANCE: f64 = 1e-12;
 
@@ -8,7 +10,7 @@ pub const GEOMETRICAL_TOLERANCE: f64 = 1e-12;
 //////////////////////////////////////////////////////////////
 
 /// Structure for defining 2d coordinates.
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Coord2d {
     /// First coordinate.
     pub x: f64,
@@ -17,21 +19,21 @@ pub struct Coord2d {
 }
 
 /// Structure for defining 2d points.
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Pnt2d {
     /// Coordinates associated to the point.
     pub coords: Coord2d,
 }
 
 /// Structure for defining 2d vectors.
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Vec2d {
     /// Coordinates associated to the vector.
     pub coords: Coord2d,
 }
 
 /// Structure for defining 2d directions (i.e. unit vectors).
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Dir2d {
     /// Coordinates associated to the direction.
     pub coords: Coord2d,
@@ -42,6 +44,25 @@ pub struct Dir2d {
 // 2D implementations.
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
+impl std::fmt::Display for Coord2d {
+    /// Implementing display for 2d coordinates. By default the number of decimal is set to 6.
+    ///
+    /// * `formatter` - input reference to formatter.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// let coords = Coord2d::new([1.0, 9.0]);
+    /// let formatted_coords = format!("{}", coords);
+    ///
+    /// assert_eq!("(1.000000, 9.000000)", formatted_coords);
+    /// ```
+    ///
+    fn fmt(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(formatter, "({:.6}, {:.6})", self.x, self.y)
+    }
+}
 
 impl Coord2d {
     /// Creating new coordinates.
@@ -379,7 +400,7 @@ impl Dir2d {
 //////////////////////////////////////////////////////////////
 
 /// Structure for defining 3d coordinates.
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Coord3d {
     /// First coordinate.
     pub x: f64,
@@ -390,21 +411,21 @@ pub struct Coord3d {
 }
 
 /// Structure for defining 3d points.
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Pnt3d {
     /// Coordinates associated to the point.
     pub coords: Coord3d,
 }
 
 /// Structure for defining 3d vectors.
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Vec3d {
     /// Coordinates associated to the vector.
     pub coords: Coord3d,
 }
 
 /// Structure for defining 3d directions (i.e. unit vectors).
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Dir3d {
     /// Coordinates associated to the direction.
     pub coords: Coord3d,
@@ -415,6 +436,25 @@ pub struct Dir3d {
 // 3D implementations.
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
+impl std::fmt::Display for Coord3d {
+    /// Implementing display for 3d coordinates. By default the number of decimal is set to 6.
+    ///
+    /// * `formatter` - input reference to formatter.
+    ///
+    /// # Example
+    /// ```
+    /// use mersh::base::*;
+    /// let coords = Coord3d::new([1.0, 0.0, 3.0]);
+    /// let formatted_coords = format!("{}", coords);
+    ///
+    /// assert_eq!("(1.000000, 0.000000, 3.000000)", formatted_coords);
+    /// ```
+    ///
+    fn fmt(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(formatter, "({:.6}, {:.6}, {:.6})", self.x, self.y, self.z)
+    }
+}
 
 impl Coord3d {
     /// Creating new coordinates.

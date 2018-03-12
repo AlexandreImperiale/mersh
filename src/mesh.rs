@@ -13,7 +13,7 @@ use std::vec::*;
 //////////////////////////////////////////////////////////////
 
 /// Structure defining a 2d tagged mesh.
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Mesh2d {
     pub vertices: Vec<Pnt2d>,
     pub edges: Vec<Edge>,
@@ -234,7 +234,7 @@ impl Mesh2d {
 //////////////////////////////////////////////////////////////
 
 /// Structure defining a 3d tagged mesh.
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Mesh3d {
     pub vertices: Vec<Pnt3d>,
     pub edges: Vec<Edge>,

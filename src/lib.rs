@@ -1,6 +1,9 @@
 #![cfg_attr(feature="clippy", feature(plugin))]
 #![cfg_attr(feature="clippy", plugin(clippy))]
 
+#[macro_use]
+extern crate serde_derive;
+
 /// Definition of basic geometrical utilities.
 pub mod base;
 

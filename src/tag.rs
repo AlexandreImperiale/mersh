@@ -11,7 +11,7 @@ use std::string::String;
 //////////////////////////////////////////////////////////////
 
 /// Definition of tag sets.
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct TagSet {
     /// Mapping between tag, represented as String, and set of indexes.
     tag_map: HashMap<String, Vec<usize>>,
