@@ -7,6 +7,9 @@ extern crate serde_derive;
 /// Definition of basic geometrical utilities.
 pub mod base;
 
+/// Definition of command to be applied to a mesh.
+pub mod cmd;
+
 /// Data structures for tagging utilities.
 pub mod tag;
 
