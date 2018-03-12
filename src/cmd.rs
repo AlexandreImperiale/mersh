@@ -157,15 +157,42 @@ pub fn apply_commands_3d(mesh: &mut Mesh3d, inputs: &[In]) -> Vec<Out>
 pub fn apply_command_2d(mesh: &mut Mesh2d, input: &In) -> Out
 {
     match *input {
-        In::GetVertex2d(index) => { let coords = &mesh.vertices[index].coords; Out::GotVertex2d([coords.x, coords.y]) },
-        In::PushVertex2d(coords) => { mesh.vertices.push(Pnt2d::new(coords)); Out::PushedVertex2d() },
-        In::PushTaggedVertex2d(coords, ref name) => { mesh.push_tagged_vertex(Pnt2d::new(coords), name); Out::PushedTaggedVertex2d() },
-        In::PushEdge(indexes) => { mesh.edges.push(Edge::new(indexes)); Out::PushedEdge() },
-        In::PushTaggedEdge(indexes, ref name) => { mesh.push_tagged_edge(Edge::new(indexes), name); Out::PushedTaggedEdge() },
-        In::PushTri(indexes) => { mesh.triangles.push(Tri::new(indexes)); Out::PushedTri() },
-        In::PushTaggedTri(indexes, ref name) => { mesh.push_tagged_triangle(Tri::new(indexes), name); Out::PushedTaggedTri() },
-        In::PushQuad(indexes) => { mesh.quadrangles.push(Quad::new(indexes)); Out::PushedQuad() },
-        In::PushTaggedQuad(indexes, ref name) => { mesh.push_tagged_quadrangle(Quad::new(indexes), name); Out::PushedTaggedQuad() },
+        In::GetVertex2d(index) => {
+            let coords = &mesh.vertices[index].coords;
+            Out::GotVertex2d([coords.x, coords.y])
+        },
+        In::PushVertex2d(coords) => {
+            mesh.vertices.push(Pnt2d::new(coords));
+            Out::PushedVertex2d()
+        },
+        In::PushTaggedVertex2d(coords, ref name) => {
+            mesh.push_tagged_vertex(Pnt2d::new(coords), name);
+            Out::PushedTaggedVertex2d()
+        },
+        In::PushEdge(indexes) => {
+            mesh.edges.push(Edge::new(indexes));
+            Out::PushedEdge()
+        },
+        In::PushTaggedEdge(indexes, ref name) => {
+            mesh.push_tagged_edge(Edge::new(indexes), name);
+            Out::PushedTaggedEdge()
+        },
+        In::PushTri(indexes) => {
+            mesh.triangles.push(Tri::new(indexes));
+            Out::PushedTri()
+        },
+        In::PushTaggedTri(indexes, ref name) => {
+            mesh.push_tagged_triangle(Tri::new(indexes), name);
+            Out::PushedTaggedTri()
+        },
+        In::PushQuad(indexes) => {
+            mesh.quadrangles.push(Quad::new(indexes));
+            Out::PushedQuad()
+        },
+        In::PushTaggedQuad(indexes, ref name) => {
+            mesh.push_tagged_quadrangle(Quad::new(indexes), name);
+            Out::PushedTaggedQuad()
+        },
         _ => panic!("Unsupported command.")
     }
 }
@@ -192,15 +219,42 @@ pub fn apply_command_2d(mesh: &mut Mesh2d, input: &In) -> Out
 pub fn apply_command_3d(mesh: &mut Mesh3d, input: &In) -> Out
 {
     match *input {
-        In::GetVertex3d(index) => { let coords = &mesh.vertices[index].coords; Out::GotVertex3d([coords.x, coords.y, coords.z]) },
-        In::PushVertex3d(coords) => { mesh.vertices.push(Pnt3d::new(coords)); Out::PushedVertex3d() },
-        In::PushTaggedVertex3d(coords, ref name) => { mesh.push_tagged_vertex(Pnt3d::new(coords), name); Out::PushedTaggedVertex3d()},
-        In::PushEdge(indexes) => { mesh.edges.push(Edge::new(indexes)); Out::PushedEdge() },
-        In::PushTaggedEdge(indexes, ref name) => { mesh.push_tagged_edge(Edge::new(indexes), name); Out::PushedTaggedEdge() },
-        In::PushTri(indexes) => { mesh.triangles.push(Tri::new(indexes)); Out::PushedTri() },
-        In::PushTaggedTri(indexes, ref name) => { mesh.push_tagged_triangle(Tri::new(indexes), name); Out::PushedTaggedTri() },
-        In::PushQuad(indexes) => { mesh.quadrangles.push(Quad::new(indexes)); Out::PushedQuad() },
-        In::PushTaggedQuad(indexes, ref name) => { mesh.push_tagged_quadrangle(Quad::new(indexes), name); Out::PushedTaggedQuad() },
+        In::GetVertex3d(index) => {
+            let coords = &mesh.vertices[index].coords;
+            Out::GotVertex3d([coords.x, coords.y, coords.z])
+        },
+        In::PushVertex3d(coords) => {
+            mesh.vertices.push(Pnt3d::new(coords));
+            Out::PushedVertex3d()
+        },
+        In::PushTaggedVertex3d(coords, ref name) => {
+            mesh.push_tagged_vertex(Pnt3d::new(coords), name);
+            Out::PushedTaggedVertex3d()
+        },
+        In::PushEdge(indexes) => {
+            mesh.edges.push(Edge::new(indexes));
+            Out::PushedEdge()
+        },
+        In::PushTaggedEdge(indexes, ref name) => {
+            mesh.push_tagged_edge(Edge::new(indexes), name);
+            Out::PushedTaggedEdge()
+        },
+        In::PushTri(indexes) => {
+            mesh.triangles.push(Tri::new(indexes));
+            Out::PushedTri()
+        },
+        In::PushTaggedTri(indexes, ref name) => {
+            mesh.push_tagged_triangle(Tri::new(indexes), name);
+            Out::PushedTaggedTri()
+        },
+        In::PushQuad(indexes) => {
+            mesh.quadrangles.push(Quad::new(indexes));
+            Out::PushedQuad()
+        },
+        In::PushTaggedQuad(indexes, ref name) => {
+            mesh.push_tagged_quadrangle(Quad::new(indexes), name);
+            Out::PushedTaggedQuad()
+        },
         _ => panic!("Unsupported command.")
     }
 }
