@@ -114,74 +114,29 @@ pub enum TriInQuad {
 impl Edge {
     /// Creating a new edge.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::elements::*;
-    ///
-    /// let idx = [0, 13];
-    /// let edge = Edge::new(idx);
-    ///
-    /// assert!(edge.indexes == idx);
-    /// ```
     pub fn new(indexes: [usize; 2]) -> Edge { Edge { indexes } }
 }
 
 impl Tri {
     /// Creating a new tri.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::elements::*;
-    ///
-    /// let idx = [0, 13, 24];
-    /// let tri = Tri::new(idx);
-    ///
-    /// assert!(tri.indexes == idx);
-    /// ```
     pub fn new(indexes: [usize; 3]) -> Tri { Tri { indexes } }
 }
 
 impl Quad {
     /// Creating a new quad.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::elements::*;
-    ///
-    /// let idx = [0, 13, 53, 21];
-    /// let quad = Quad::new(idx);
-    ///
-    /// assert!(quad.indexes == idx);
-    /// ```
     pub fn new(indexes: [usize; 4]) -> Quad { Quad { indexes } }
 }
 
 impl Tet {
     /// Creating a new tetrahedra.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::elements::*;
-    ///
-    /// let idx = [0, 13, 34, 98];
-    /// let tet = Tet::new(idx);
-    ///
-    /// assert!(tet.indexes == idx);
-    /// ```
     pub fn new(indexes: [usize; 4]) -> Tet { Tet { indexes } }
 }
 
 impl Hexa {
     /// Creating a new hexa.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::elements::*;
-    ///
-    /// let idx = [0, 13, 34, 98, 35, 69, 90, 43];
-    /// let hexa = Hexa::new(idx);
-    ///
-    /// assert!(hexa.indexes == idx);
-    /// ```
     pub fn new(indexes: [usize; 8]) -> Hexa { Hexa { indexes } }
 }

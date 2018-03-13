@@ -19,8 +19,6 @@ pub enum Resource {
     UInt(usize),
     /// Vector of floats.
     VecFloat(Vec<f64>),
-    /// Mesh 2d.
-    Mesh2d(Box<Mesh2d>),
     /// Mesh3d.
     Mesh3d(Box<Mesh3d>)
 }
@@ -32,14 +30,12 @@ pub enum Cmd {
     NewUInt{ input: usize, output_id: String },
     /// Creating a new vector of floats.
     NewVecFloat{ input: Vec<f64>, output_id: String },
-    /// Creating a new 2d mesh.
-    NewMesh2d{ output_id: String },
     /// Creating a new 3d mesh.
     NewMesh3d{ output_id: String },
-    /// Pushing vertex into 2d mesh.
-    PushVertex2d{ mesh_id: String, coords_id: String },
-    /// Accessing vertex in 2d mesh.
-    GetVertex2d{ mesh_id: String, idx_id: String, output_id: String }
+    /// Pushing vertex into 3d mesh.
+    PushVertex3d{ mesh_id: String, coords_id: String },
+    /// Accessing vertex in 3d mesh.
+    GetVertex3d{ mesh_id: String, idx_id: String, output_id: String }
 }
 
 /// Definition of an interpreted.
@@ -64,15 +60,6 @@ impl Interpreter {
     ///
     /// * `cmd` - a command to push in the queue.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// interpreter.push_cmd(Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
-    ///
-    /// assert_eq!(interpreter.cmd_queue.len(), 1);
-    /// ```
     pub fn push_cmd(&mut self, cmd: Cmd)
     {
         self.cmd_queue.push_back(cmd)
@@ -81,19 +68,6 @@ impl Interpreter {
     /// Applying every commands pushed in the interpreter queue.
     /// Commands in queue are automatically moved to interpreter history.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// interpreter.push_cmd(Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
-    /// interpreter.apply_cmds_in_queue();
-    ///
-    /// assert_eq!(interpreter.cmd_history.len(), 1);
-    /// assert_eq!(interpreter.cmd_queue.len(), 0);
-    /// if interpreter.resources.get(&"MyInt".to_string()).is_none() { assert!(false); }
-    ///
-    /// ```
     pub fn apply_cmds_in_queue(&mut self)
     {
         for _ in 0..self.cmd_queue.len() {
@@ -107,23 +81,14 @@ impl Interpreter {
     ///
     /// * `cmd` - a command to be applied on resources.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// interpreter.apply_cmd(&Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
-    /// if interpreter.resources.get(&"MyInt".to_string()).is_none() { assert!(false); }
-    /// ```
     pub fn apply_cmd(&mut self, cmd: &Cmd)
     {
         match *cmd {
             Cmd::NewUInt { input, ref output_id } => self.new_uint(input, output_id),
             Cmd::NewVecFloat { ref input, ref output_id } => self.new_vec_float(input, output_id),
-            Cmd::NewMesh2d { ref output_id } => self.new_mesh2d(output_id),
             Cmd::NewMesh3d { ref output_id } => self.new_mesh3d(output_id),
-            Cmd::PushVertex2d { ref mesh_id, ref coords_id } => self.push_vertex2d(mesh_id, coords_id),
-            Cmd::GetVertex2d { ref mesh_id, ref idx_id, ref output_id} => self.get_vertex2d(mesh_id, idx_id, output_id),
+            Cmd::PushVertex3d { ref mesh_id, ref coords_id } => self.push_vertex3d(mesh_id, coords_id),
+            Cmd::GetVertex3d { ref mesh_id, ref idx_id, ref output_id} => self.get_vertex3d(mesh_id, idx_id, output_id),
         }
     }
 
@@ -133,32 +98,6 @@ impl Interpreter {
     /// * `input` - input unsigned integer to be added to interpreter resources.
     /// * `output_id` - associated (unique) id.
     ///
-    /// # Example 0
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyInt");
-    ///
-    /// interpreter.new_uint(12, &id);
-    /// if let Some(rsrc) = interpreter.resources.get(&id) {
-    ///     match rsrc {
-    ///         &Resource::UInt(uint) => assert_eq!(uint, 12),
-    ///         _ => assert!(false)
-    ///     }
-    /// } else { assert!(false) }
-    /// ```
-    ///
-    /// # Example 1
-    /// ```should_panic
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyInt");
-    ///
-    /// interpreter.new_uint(12, &id);
-    /// interpreter.new_uint(223, &id); // => panics here !
-    /// ```
     pub fn new_uint(&mut self, input: usize, output_id: &str)
     {
         self.panic_if_defined(output_id);
@@ -170,111 +109,23 @@ impl Interpreter {
     /// * `input` - input unsigned integer to be added to interpreter resources.
     /// * `output_id` - associated (unique) id.
     ///
-    /// # Example 0
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyId");
-    ///
-    /// interpreter.new_vec_float(&vec![0., 25.0, 6.0], &id);
-    /// if let Some(rsrc) = interpreter.resources.get(&id) {
-    ///     match rsrc {
-    ///         &Resource::VecFloat(ref vec_float) => assert_eq!(vec_float[1], 25.0),
-    ///         _ => assert!(false)
-    ///     }
-    /// } else { assert!(false) }
-    /// ```
-    ///
-    /// # Example 1
-    /// ```should_panic
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyInt");
-    ///
-    /// interpreter.new_vec_float(&vec![0., 25.0, 6.0], &id);
-    /// interpreter.new_vec_float(&vec![0., 9.0], &id); // => panics here !
-    /// ```
     pub fn new_vec_float(&mut self, input: &[f64], output_id: &str)
     {
         self.panic_if_defined(output_id);
         self.resources.insert(String::from(output_id), Resource::VecFloat(input.to_vec()));
     }
 
-    /// Adding a new 2d mesh in resources.
-    ///
-    /// * `output_id` - associated (unique) id of the 2d mesh.
-    ///
-    /// # Example 0
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyMesh");
-    ///
-    /// interpreter.new_mesh2d(&id);
-    /// if let Some(rsrc) = interpreter.resources.get(&id) {
-    ///     match rsrc {
-    ///         &Resource::Mesh2d(_) => assert!(true),
-    ///         _ => assert!(false)
-    ///     }
-    /// } else { assert!(false) }
-    /// ```
-    ///
-    /// # Example 1
-    /// ```should_panic
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyMesh");
-    ///
-    /// interpreter.new_mesh2d(&id);
-    /// interpreter.new_mesh2d(&id); // => panics here !
-    /// ```
-    pub fn new_mesh2d(&mut self, output_id: &str)
-    {
-        self.panic_if_defined(output_id);
-        self.resources.insert(String::from(output_id), Resource::Mesh2d(Box::new(Mesh2d::default())));
-    }
-
     /// Adding a new 3d mesh in resources.
     ///
     /// * `output_id` - associated (unique) id of the 3d mesh.
     ///
-    /// # Example 0
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyMesh");
-    ///
-    /// interpreter.new_mesh3d(&id);
-    /// if let Some(rsrc) = interpreter.resources.get(&id) {
-    ///     match rsrc {
-    ///         &Resource::Mesh3d(_) => assert!(true),
-    ///         _ => assert!(false)
-    ///     }
-    /// } else { assert!(false) }
-    /// ```
-    ///
-    /// # Example 1
-    /// ```should_panic
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    /// let id = String::from("MyMesh");
-    ///
-    /// interpreter.new_mesh3d(&id);
-    /// interpreter.new_mesh3d(&id); // => panics here !
-    /// ```
     pub fn new_mesh3d(&mut self, output_id: &str)
     {
         self.panic_if_defined(output_id);
         self.resources.insert(String::from(output_id), Resource::Mesh3d(Box::new(Mesh3d::default())));
     }
 
-    /// Pushing a 2d vertex into a mesh.
+    /// Pushing a 3d vertex into a mesh.
     ///
     /// * `mesh_id` - id associated to the mesh.
     /// * `coords_id` - id associated to the coordinates of the vertex.
@@ -282,41 +133,17 @@ impl Interpreter {
     /// This function panics if neither the `mesh_id` nor the `coords_id` are ids associated to
     /// actual resources in the interpreter.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    ///
-    /// let coords_id = String::from("MyCoords");
-    /// interpreter.new_vec_float(&vec![0.0, 1.0], &coords_id);
-    ///
-    /// let mesh_id = String::from("MyMesh");
-    /// interpreter.new_mesh2d(&mesh_id);
-    ///
-    /// interpreter.push_vertex2d(&mesh_id, &coords_id);
-    ///
-    /// if let Some(rsrc) = interpreter.resources.get(&mesh_id) {
-    ///     match rsrc {
-    ///         &Resource::Mesh2d(ref mesh) => {
-    ///                 assert_eq!(mesh.vertices[0].coords.x, 0.0);
-    ///                 assert_eq!(mesh.vertices[0].coords.y, 1.0);
-    ///             },
-    ///         _ => assert!(false)
-    ///     }
-    /// } else { assert!(false) }
-    /// ```
-    pub fn push_vertex2d(&mut self, mesh_id: &str, coords_id: &str)
+    pub fn push_vertex3d(&mut self, mesh_id: &str, coords_id: &str)
     {
         let pnt;
         {
             let vec = self.get_mut_vec_float(coords_id);
-            pnt = Pnt2d::new([vec[0], vec[1]]);
+            pnt = Pnt3d::new([vec[0], vec[1], vec[2]]);
         }
-        self.get_mut_mesh2d(mesh_id).vertices.push(pnt);
+        self.get_mut_mesh3d(mesh_id).vertices.push(pnt);
     }
 
-    /// Accessing a 2d vertex in a mesh.
+    /// Accessing a 3d vertex in a mesh.
     ///
     /// * `mesh_id` - id associated to the mesh.
     /// * `idx_id` - id associated to the index of the vertex.
@@ -324,43 +151,13 @@ impl Interpreter {
     /// This function panics if neither the `mesh_id` nor the `idx_id` are ids associated to
     /// actual resources in the interpreter.
     ///
-    /// # Example
-    /// ```
-    /// use mersh::interpreter::*;
-    ///
-    /// let mut interpreter = Interpreter::default();
-    ///
-    /// let mesh_id = String::from("MyMesh");
-    /// interpreter.new_mesh2d(&mesh_id);
-    ///
-    /// let coords_id = String::from("MyCoords");
-    /// interpreter.new_vec_float(&vec![6.0, 1.0], &coords_id);
-    ///
-    /// interpreter.push_vertex2d(&mesh_id, &coords_id);
-    ///
-    /// let idx_id = String::from("MyId");
-    /// interpreter.new_uint(0, &idx_id);
-    ///
-    /// let output_id = String::from("MyVertex");
-    /// interpreter.get_vertex2d(&mesh_id, &idx_id, &output_id);
-    ///
-    /// if let Some(rsrc) = interpreter.resources.get(&output_id) {
-    ///     match rsrc {
-    ///         &Resource::VecFloat(ref vec) => {
-    ///                 assert_eq!(vec[0], 6.0);
-    ///                 assert_eq!(vec[1], 1.0);
-    ///             },
-    ///         _ => assert!(false)
-    ///     }
-    /// } else { assert!(false) }
-    /// ```
-    pub fn get_vertex2d(&mut self, mesh_id: &str, idx_id: &str, output_id: &str)
+    pub fn get_vertex3d(&mut self, mesh_id: &str, idx_id: &str, output_id: &str)
     {
         let coords;
         {
             let idx = self.get_mut_uint(idx_id);
-            let pnt = &self.get_mut_mesh2d(mesh_id).vertices[idx];
-            coords = [pnt.coords.x, pnt.coords.y];
+            let pnt = &self.get_mut_mesh3d(mesh_id).vertices[idx];
+            coords = [pnt.coords.x, pnt.coords.y, pnt.coords.z];
         }
         self.new_vec_float(&coords, output_id);
     }
@@ -373,6 +170,7 @@ impl Interpreter {
 //////////////////////////////////////////////////////////////
 
 impl Interpreter {
+
     // Checking if id is already defined. This function panics if id is already defined
     //  in the interpreter resources.
     fn panic_if_defined(&self, id: &str)
@@ -404,14 +202,14 @@ impl Interpreter {
         } else { panic!("Undefined id.") }
     }
 
-    // Accessing mutable reference to a 2d mesh from its id.
+    // Accessing mutable reference to a 3d mesh from its id.
     // This function panics if mesh id is not defined.
-    fn get_mut_mesh2d(&mut self, mesh_id: &str) -> &mut Mesh2d
+    fn get_mut_mesh3d(&mut self, mesh_id: &str) -> &mut Mesh3d
     {
         if let Some(mesh_rsrc) = self.resources.get_mut(mesh_id) {
             match *mesh_rsrc {
-                Resource::Mesh2d(ref mut mesh) => { mesh },
-                _ => panic!("No 2d mesh associated to id.")
+                Resource::Mesh3d(ref mut mesh) => { mesh },
+                _ => panic!("No 3d mesh associated to id.")
             }
         } else { panic!("Undefined id.") }
     }
