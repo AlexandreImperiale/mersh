@@ -123,7 +123,7 @@ impl Interpreter {
             Cmd::NewMesh2d { ref output_id } => self.new_mesh2d(output_id),
             Cmd::NewMesh3d { ref output_id } => self.new_mesh3d(output_id),
             Cmd::PushVertex2d { ref mesh_id, ref coords_id } => self.push_vertex2d(mesh_id, coords_id),
-            _ => panic!("Unsupported command.")
+            Cmd::GetVertex2d { ref mesh_id, ref idx_id, ref output_id} => self.get_vertex2d(mesh_id, idx_id, output_id),
         }
     }
 
@@ -308,10 +308,10 @@ impl Interpreter {
     /// ```
     pub fn push_vertex2d(&mut self, mesh_id: &str, coords_id: &str)
     {
-        let mut pnt = Pnt2d::default();
+        let pnt;
         {
             let vec = self.get_mut_vec_float(coords_id);
-            pnt.coords.x = vec[0]; pnt.coords.y = vec[1];
+            pnt = Pnt2d::new([vec[0], vec[1]]);
         }
         self.get_mut_mesh2d(mesh_id).vertices.push(pnt);
     }

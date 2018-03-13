@@ -12,7 +12,7 @@ fn main() {
 
                 let mut interpreter = mersh::interpreter::Interpreter::default();
                 interpreter.push_cmd(mersh::interpreter::Cmd::NewMesh2d{output_id: "mesh".to_string()});
-                interpreter.push_cmd(mersh::interpreter::Cmd::NewVecFloat{input: vec![0., 0.], output_id: "vec".to_string()});
+                interpreter.apply_cmds_in_queue();
 
                 rouille::Response::text(serde_json::to_string(&interpreter).unwrap())
          },
