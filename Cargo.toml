@@ -1,10 +1,9 @@
 [package]
 name = "mersh"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["AlexandreImperiale <https://github.com/AlexandreImperiale>"]
 description = "A rust crate for manipulating meshes."
-documentation = "https://alexandreimperiale.github.io/mersh-doc/"
-homepage = "https://alexandreimperiale.github.io/mersh/"
+homepage = "https://github.com/AlexandreImperiale/mersh"
 repository = "https://github.com/AlexandreImperiale/mersh"
 
 [dependencies]
@@ -12,4 +11,3 @@ clippy = { version = "*", optional = true }
 serde = "1.0.29"
 serde_derive = "1.0.29"
 serde_json = "1.0.11"
-rouille = "2.1.0"
