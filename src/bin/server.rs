@@ -11,8 +11,7 @@ fn main() {
        (GET) (/) => {
 
                 let mut interpreter = mersh::interpreter::Interpreter::default();
-                interpreter.push_cmd(mersh::interpreter::Cmd::NewMesh3d{output_id: "mesh".to_string()});
-                interpreter.apply_cmds_in_queue();
+                interpreter.apply_cmd(mersh::interpreter::Cmd::NewMesh3d{output_id: "mesh".to_string()});
 
                 rouille::Response::text(serde_json::to_string(&interpreter).unwrap())
          },

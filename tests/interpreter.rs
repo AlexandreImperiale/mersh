@@ -5,32 +5,11 @@ mod interpreter {
     use mersh::interpreter::*;
 
     #[test]
-    fn push_cmd() {
-
-        let mut interpreter = Interpreter::default();
-
-        interpreter.push_cmd(Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
-        assert_eq!(interpreter.cmd_queue.len(), 1);
-    }
-
-    #[test]
-    fn apply_cmds_in_queue() {
-
-        let mut interpreter = Interpreter::default();
-        interpreter.push_cmd(Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
-        interpreter.apply_cmds_in_queue();
-
-        assert_eq!(interpreter.cmd_history.len(), 1);
-        assert_eq!(interpreter.cmd_queue.len(), 0);
-        if interpreter.resources.get(&"MyInt".to_string()).is_none() { assert!(false); }
-    }
-
-    #[test]
     fn apply_cmd() {
 
         let mut interpreter = Interpreter::default();
 
-        interpreter.apply_cmd(&Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
+        interpreter.apply_cmd(Cmd::NewUInt{ input: 12, output_id: "MyInt".to_string() });
         if interpreter.resources.get(&"MyInt".to_string()).is_none() { assert!(false); }
     }
 

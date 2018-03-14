@@ -7,7 +7,7 @@ extern crate serde_derive;
 /// Definition of basic geometrical utilities.
 pub mod base;
 
-/// Definition of mersh interpreter
+/// Definition of an interpreter for mersh exposed commands.
 pub mod interpreter;
 
 /// Data structures for tagging utilities.
